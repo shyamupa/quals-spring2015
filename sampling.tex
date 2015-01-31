@@ -4,22 +4,39 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Partition Function Woes}
-  %% what is the paper trying to solve
+  Gibbs Distribution
+  \begin{align*}
+    \Pr(\x) =\frac{\exp(\phi(\x))}{Z} \tag{$Z=\sum_{\x} \phi(\x)$ is partition function}
+  \end{align*}
+  Sampling from the Gibbs Distribution
+  Approximate log Z using samples 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Gumbel Distribution}
   \begin{itemize}
-  \item Strong Convexity
-  %% \item Sub-differential (sub-gradient)
-  \item Convex Conjugate
-  \item Dual Norm
-  \item Strong Smoothness
+  \item \begin{align*}  
+    %% CDF(x) = \exp \left(-\exp\left(-\frac{(x-\mu)}{\beta}\right)\right)
+    CDF(x) = \exp \left(-\exp\left(-x+\mu\right)\right) \tag{$\mu$ is location parameter}
+    \end{align*}
+  %% \item Mean, $t = \mu+\gamma\beta$
+  \item Mean = \mu+\gamma$
+  %% \item In the remaining discussion, we will consider the form where $\beta=1$ and $\mu = -\gamma$,
+  %%   \begin{align*}
+  %%     CDF(x) = \exp \left(-\exp\left(-(x+\gamma)\right)\right)
+  %%   \end{align*}
+  \item Variance = $\frac{\pi^2}{6}$
   \end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Gumbel-Max Trick}
+\begin{frame}{Key Properties}
+  %% \item Max-Stability, from~\cite{hazan}
+  
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Gumbel and the Partition Function}
   
 \end{frame}
 
@@ -29,9 +46,14 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{High Dimensional Sampling is Exponential}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Top-Down Construction}
-  \begin{figure}
-    \includegraphics[scale=0.27]{images/str_convex.png}
-    \caption{From \cite{ShSh2012}. A $\sigma$ strongly convex function.}
-  \end{figure}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Perturb and MAP}
 \end{frame}
