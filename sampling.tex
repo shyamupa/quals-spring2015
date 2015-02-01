@@ -6,33 +6,48 @@
 \begin{frame}{Partition Function Woes}
   Gibbs Distribution
   \begin{align*}
-    \Pr(\x) =\frac{\exp(\phi(\x))}{Z} \tag{$Z=\sum_{\x} \phi(\x)$ is partition function}
+    \Pr(\x;\theta) =\frac{\exp(\theta^T\phi(\x))}{Z} \tag{$Z=\sum_{\x} \theta^T\phi(\x)$ is partition function}
   \end{align*}
-  Sampling from the Gibbs Distribution
-  Approximate log Z using samples 
+  ML parameter estimation
+  \begin{align*}
+    \nabla_\theta \log LLH = \E_{\Pr(x;\theta)}\left[\phi(\x)\right] - \frac{1}{T} \sum_i\phi(x_i)
+  \end{align*}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Gumbel Distribution}
-  \begin{itemize}
-  \item \begin{align*}  
-    %% CDF(x) = \exp \left(-\exp\left(-\frac{(x-\mu)}{\beta}\right)\right)
-    CDF(x) = \exp \left(-\exp\left(-x+\mu\right)\right) \tag{$\mu$ is location parameter}
-    \end{align*}
-  %% \item Mean, $t = \mu+\gamma\beta$
-  \item Mean = \mu+\gamma$
-  %% \item In the remaining discussion, we will consider the form where $\beta=1$ and $\mu = -\gamma$,
-  %%   \begin{align*}
-  %%     CDF(x) = \exp \left(-\exp\left(-(x+\gamma)\right)\right)
-  %%   \end{align*}
-  \item Variance = $\frac{\pi^2}{6}$
-  \end{itemize}
+  \begin{align*}  
+    & CDF(x) = \exp \left(-\exp\left(-x+\mu\right)\right) \tag{$\mu$ is location parameter} \\
+    & Mean = \mu+\gamma \tag{a fixed offset away from location} \\
+    & Variance = \frac{\pi^2}{6}
+  \end{align*}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Key Properties}
-  %% \item Max-Stability, from~\cite{hazan}
-  
+  For $G(i) \sim Gumbel(0)$,
+  \begin{align*}
+    & \argmax_i{G(i)+\phi(i)} \sim \frac{\exp(\phi(x))}{Z}
+    & \max_i{G(i)+\phi(i)} \sim Gumbel(\log Z) \tag{Max-Stability from \cite{hazan}}
+  \end{align*}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Gumbel-Max Trick (Discrete Case)}
+Suppose you have a discrete distribution specified by un-normalized log probabilities $\{\phi(i)\}_{i=1}^{k}$, i.e.,
+  \begin{align*}
+    \Pr(x_i) = \frac{\exp\phi(i)}{\sum_j\exp\phi(j)}
+  \end{align*}
+  We can draw samples from this distribution using the following procedure.
+  \begin{align*}
+    & \text{If} \qquad G(i) \sim Gumbel(0) \\
+    & \text{then} \qquad x_i \sim \argmax_i \{G(i) +\phi(i)\} 
+  \end{align*}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Is There A Gumbel Max Trick in Continuous Case?}
+  This paper --- Yes!
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -51,9 +66,13 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Top-Down Construction}
+\begin{frame}{Top-Down Construction of Gumbel Process}
+Assume log Z is computable for now.
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Perturb and MAP}
+\begin{frame}{Main Idea}
+  log Prior + log LLH = log Posterior
+  Sampling from posterior is hard.
+  Suppose 
 \end{frame}
