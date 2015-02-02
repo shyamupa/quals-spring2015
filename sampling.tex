@@ -1,4 +1,9 @@
-\begin{frame}{Premise of the Paper}
+\begin{frame}{About Me}
+\end{frame}
+\begin{frame}{My Current Research}
+  %% what is the paper trying to solve
+\end{frame}
+\begin{frame}{}
   %% what is the paper trying to solve
 \end{frame}
 
@@ -10,15 +15,17 @@
   \end{align*}
   ML parameter estimation
   \begin{align*}
-    \nabla_\theta \log LLH = \E_{\Pr(x;\theta)}\left[\phi(\x)\right] - \frac{1}{T} \sum_i\phi(x_i)
+    - \nabla_\theta \log LLH = \E_{\Pr(x;\theta)}\left[\phi(\x)\right] - \frac{1}{T} \sum_i\phi(x_i)
   \end{align*}
+  Computing $\E_{\Pr(x;\theta)}$ is not usually tractable. Resort to approximations - MCMC, Contrastive Divergence etc.
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Gumbel Distribution}
-  \begin{align*}  
-    & CDF(x) = \exp \left(-\exp\left(-x+\mu\right)\right) \tag{$\mu$ is location parameter} \\
-    & Mean = \mu+\gamma \tag{a fixed offset away from location} \\
+  \begin{align*}
+    & Gumbel(\mu) = \text{gumbel distribution with location parameter } \mu \\
+    & CDF(x;\mu) = \exp \left(-\exp\left(-x+\mu\right)\right) \\
+    & Mean = \mu+\gamma \tag{a fixed offset away from location parameter} \\
     & Variance = \frac{\pi^2}{6}
   \end{align*}
 \end{frame}
@@ -27,22 +34,23 @@
 \begin{frame}{Key Properties}
   For $G(i) \sim Gumbel(0)$,
   \begin{align*}
-    & \argmax_i{G(i)+\phi(i)} \sim \frac{\exp(\phi(x))}{Z}
+    & \argmax_i{G(i)+\phi(i)} \sim \frac{\exp(\phi(x))}{Z} \\
     & \max_i{G(i)+\phi(i)} \sim Gumbel(\log Z) \tag{Max-Stability from \cite{hazan}}
   \end{align*}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Gumbel-Max Trick (Discrete Case)}
-Suppose you have a discrete distribution specified by un-normalized log probabilities $\{\phi(i)\}_{i=1}^{k}$, i.e.,
-  \begin{align*}
-    \Pr(x_i) = \frac{\exp\phi(i)}{\sum_j\exp\phi(j)}
-  \end{align*}
+  Suppose you have a discrete distribution specified by un-normalized log probabilities $\{\phi(i)\}_{i=1}^{k}$, i.e.,
+  \begin{align}
+    \Pr(x_i) = \frac{\exp\phi(i)}{\sum_j\exp\phi(j)} \label{eq:gibbs}
+  \end{align}
   We can draw samples from this distribution using the following procedure.
   \begin{align*}
-    & \text{If} \qquad G(i) \sim Gumbel(0) \\
-    & \text{then} \qquad x_i \sim \argmax_i \{G(i) +\phi(i)\} 
+    & \text{Sample} \qquad G(i) \sim Gumbel(0) \text{ for } i=1..k\\
+    & \text{then} \qquad x_i \sim \argmax_i \{G(i) +\phi(i)\} \tag{the argmax of the perturbed probabilities is distributed as eq.\ref{eq:gibbs} above}
   \end{align*}
+  No need to compute the partition function, as long as you can compute the argmax!
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
