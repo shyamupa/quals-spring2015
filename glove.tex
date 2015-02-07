@@ -1,31 +1,43 @@
+\begin{frame}
+  \begin{center}
+    {\huge GloVe: Global Vectors for Word Representation
+    }
+    Pennington,Socher,Manning
+  \end{center}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}{A Brief History of Word Vectors}
   %% Word vectors capture linguistic regularities in a simple manner.
   \begin{align*}
-  king - man + woman \approx queen
+    king - man + woman \approx queen
   \end{align*}  
   %% No explanation was given in the original papers.
-  \footnotesize{Somewhat suprisingly, many of these patterns can be represented a linear translations}---\cite{Mikolov13a} \\
+  \footnotesize{Remarkably, training such a lexical model induces word repr. with striking semantic and syntactic properties.}---\cite{Mikolov13a} \\
   %% Levy showed that tranditional methods like count sparse contexts can perform equally well.
   \footnotesize{... traditional word similarities can perform just as well as neural embeddings.}---\cite{Levy14}
 \end{frame}
 
-\begin{frame}{Tasks}
+\begin{frame}{Evaluation}
   \begin{itemize}
-  \item Semantic Relatedness
+  \item Semantic Relatedness (intrinsic)
     \begin{itemize}
-      \item Athens is to Greece as Berlin is to ?
-      \end{itemize}
-  \item Syntactic Relatedness
+    \item Athens is to Greece as Berlin is to ? (Germany)
+    \item 
+    \end{itemize}
+  \item Syntactic Relatedness (intrinsic)
     \begin{itemize}
-      \item Car is to Cars as Family is to ?
-      \item 
-      \end{itemize}
+    \item Car is to Cars as Family is to ? (families)
+    \item Carry is to Carried as Go is to ? (went)
+    \end{itemize}
+  \item NER (extrinsic)
+    \begin{itemize}
+    \item User word vectors as continuous features in a NER system.
+    \end{itemize}
   \end{itemize}
-  %% \begin{itemize}
-  %% \item Semantic Relatedness \\
-  %%   \quote{Athens is to Greece as Berlin is to ?}
-  %% \item Syntactic Relatedness \\
-  %% \end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{What's new in this paper?}
+\item They claim their objective is explicitly modelling vector structure to facilitate linear 
+\end{frame}
