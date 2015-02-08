@@ -10,18 +10,19 @@
 \begin{frame}{A Brief History of Word Vectors}
   %% Word vectors capture linguistic regularities in a simple manner.
   \begin{align*}
-    king - man + woman \approx queen
+    v(king) - v(man) + v(woman) \approx v(queen)
   \end{align*}
-  Ways to obtain word vectors:
+  Ways of obtaining word vectors:
   \begin{itemize}
   \item Compute Global Statistics (LSA etc.)
-  \item Learn from Local Context (word2vec)
+  \item Learn from sliding Local Context (word2vec)
   \end{itemize}
   %% No explanation was given in the original papers.
   \footnotesize{Remarkably, training such a lexical model induces word repr. with striking semantic and syntactic properties.}---\cite{Mikolov13a} \\
   %% Levy showed that tranditional methods like count sparse contexts can perform equally well.
   \footnotesize{... traditional word similarities can perform just as well as neural embeddings.}---\cite{Levy14}
   %% talk about Dont Count Predict paper
+  This paper explicitly model the properties needed for achieving the above effect.
 \end{frame}
 
 \begin{frame}{Evaluation}
