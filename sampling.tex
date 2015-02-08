@@ -6,9 +6,9 @@
   \end{center}
 \end{frame}
 
-\begin{frame}{Premise of the Paper}
-  %% what is the paper trying to solve
-\end{frame}
+%% \begin{frame}{Premise of the Paper}
+%%   %% what is the paper trying to solve
+%% \end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -39,7 +39,8 @@
   For $G(i) \sim Gumbel(0)$,
   \begin{align*}
     & \argmax_i{G(i)+\phi(i)} \sim \frac{\exp(\phi(x))}{Z} \\
-    & \max_i{G(i)+\phi(i)} \sim Gumbel(\log Z) \tag{Max-Stability from \cite{hazan}}
+    & \max_i{G(i)+\phi(i)} \sim Gumbel(\log Z) \tag{Max-Stability}
+    %% proof in \cite{hazan}
   \end{align*}
 \end{frame}
 
@@ -58,7 +59,7 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Is There A Gumbel Max Trick in Continuous Case?}
+\begin{frame}{Is There A Gumbel Max Trick for Continuous Distributions?}
   This paper --- Yes!
 \end{frame}
 
@@ -79,7 +80,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Top-Down Construction of Gumbel Process}
-Assume log Z is computable for now.
+  Assume log Z is computable for now.
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -87,4 +88,50 @@ Assume log Z is computable for now.
   log Prior + log LLH = log Posterior
   Sampling from posterior is hard.
   Suppose 
+\end{frame}
+
+\begin{frame}{Main Idea}
+  \centering
+  \begin{tikzpicture}[scale=0.8]
+    %% \begin{axis}
+      %% \draw[step=0.5,gray] (-5,-5) grid (5,5);
+      \draw[very thick,gray,>-<] plot[smooth] coordinates {(-5,0)(-3,3) (0,-1) (3,3) (5,0)};
+      \node (ox) at (-4,-1) {o(x)};
+
+      \only<2>{
+        \path[draw,dotted,blue,very thick] (-5,5) -- (5,5);
+      }
+      %% \addplot+[ycomb,black,thick] {1};
+      %% \node[above] (g1) at (0,4) {};
+
+      \onslide<2->{
+        \path[draw,red,thick] (0,-1) -- (0,4) circle (1.5pt);
+        \node[above] at (0,4.25) {$g_1+o(x_1)$};
+      }
+      
+      \only<2,3>{
+        \path[draw,green,dotted,very thick] (-5,4) -- (5,4);
+      }
+      
+      \onslide<3->{
+        \path[draw,red,thick] (-3,3) -- (-3,2) circle (1.5pt);
+        \node[below] at (-3,1.5) {$g_2+o(x_2)$};
+      }
+
+      \only<3,4,5>{
+      \path[draw,dotted,blue,very thick] (-5,3.5) -- (0,3.5);
+      }
+      
+      \onslide<4->{
+        \path[draw,red,thick] (3,3) -- (3,4.5) circle (1.5pt);
+        \node[below] at (3,5.25) {$g_3+o(x_3)$};
+      }
+      \only<3->{
+        \path[draw,dotted,blue,very thick] (0,5) -- (5,5);
+      }
+      \only<4->{
+        \path[draw,green,dotted,very thick] (-5,4.5) -- (5,4.5);
+      }
+    %% \end{axis}
+  \end{tikzpicture}  
 \end{frame}
