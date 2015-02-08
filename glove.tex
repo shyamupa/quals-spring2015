@@ -53,6 +53,18 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{GloVe Model}
+\begin{align*}
+J = \sum_{i=1}^V f(X_{ij})(w_i^T\tilde{w_j} +b_i + \tilde{b_j} - \log X_{ij})
+\end{align*}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{GloVe Model}
+f should be
+    \begin{figure}
+      \includegraphics[scale=0.27]{images/weighting.png}
+      \caption{From}
+    \end{figure}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -75,12 +87,10 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Results}
-  \begin{figure}
     \begin{figure}
       \includegraphics[scale=0.27]{images/gloveVSword2vec.png}
       \caption{From}
     \end{figure}
-  \end{figure}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
