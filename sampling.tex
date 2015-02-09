@@ -27,8 +27,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Gumbel Distribution}
   \begin{align*}
-    & Gumbel(\mu) = \text{gumbel distribution with location parameter } \mu \\
-    & CDF(x;\mu) = \exp \left(-\exp\left(-x+\mu\right)\right) \\
+    & Gumbel(m) = \text{gumbel with location parameter $m$}\\
+    %% & CDF(x;\mu) = \exp \left(-\exp\left(-x+\mu\right)\right) \\
+    & F_m(g) = \Pr(G\le g) = \exp(-\exp(-g+m)) \tag{CDF for $Gumbel(m)$}\\
     & Mean = \mu+\gamma \tag{a fixed offset away from location parameter} \\
     & Variance = \frac{\pi^2}{6}
   \end{align*}
