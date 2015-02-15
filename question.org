@@ -1,0 +1,15 @@
+#+TITLE: Question in A* Sampling
+#+OPTIONS: tags:nil todo:nil toc:nil num:nil
+#+INCLUDE: "~/Dropbox/Private/org/revision/my_latex_preamble.org"
+
+\begin{align*}
+F_m(g) = \Pr(G\le g) = \exp(-\exp(-g+m)) \tag{CDF for $Gumbel(m)$}\\
+\Pr(\max G_k + o(X_k) \le g) = \prod_j F_{\log \nu} (g-o(X_j)) \tag{as $G_k \sim Gumbel(\log\nu)$ }\\
+= \exp(-\sum_j \exp(-g + o(X_j) + \log \nu)) \\
+= \exp\left(-\exp(-g + \log \nu) \times \sum_j \exp(o(X_j))\right)\\
+= \exp\left[-\exp\left(-g + \log \nu + \log \sum_j \exp(o(X_j))\right)\right] \\
+= \exp\left[-\exp\left(-g + \log \nu + \log \sum_j \exp(\phi(X_j) - i(X_j))\right)\right] \\
+= \exp\left[-\exp\left(-g + \log \sum_t \exp(i(X_t)) + \log \sum_j \exp(\phi(X_j) - i(X_j))\right)\right] \\
+= \exp\left[-\exp\left(-g + \log \sum_t \exp(i(X_t)) \times \sum_j \exp(\phi(X_j) - i(X_j))\right)\right] \\
+\neq \exp\left[-\exp\left(-g + \log \sum_k \exp(\phi(X_k)) \right) \right] \tag{but this should be equal! right?}
+\end{align*}

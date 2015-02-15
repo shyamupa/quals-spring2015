@@ -1,0 +1,87 @@
+% Created 2015-02-09 Mon 18:28
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[english]{babel}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{amsmath,mathtools}
+\usepackage[top=1in, bottom=1in, left=0.8in, right=0.8in]{geometry}
+\usepackage[makeroom]{cancel}
+\usepackage{algorithm}
+\usepackage{algpseudocode} % uses algorithmicx package automatically
+\usepackage{eqparbox}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=red,citecolor=green}
+\DeclareMathOperator*{\argmin}{\mathbf{arg\,min}}
+\DeclareMathOperator*{\argmax}{\mathbf{arg\,max}}
+\DeclareMathOperator*{\sup}{sup}
+\DeclareMathOperator{\F}{\mathscr{F}} % Function Classes
+\DeclareMathOperator{\H}{\mathscr{H}} % Hilbert Spaces
+\DeclareMathOperator{\R}{\mathbb{R}} % Reals
+\DeclareMathOperator{\E}{\mathbb{E}} % Expectation
+\DeclareMathOperator{\Or}{\mathcal{O}} % Order Notation
+\DeclareMathOperator{\Tr}{\textbf{Tr}} % Expectation
+\DeclareMathOperator{\grad}{\nabla} % Gradient
+\DeclareMathOperator{\LLH}{\mathcal{L}} % Log Likelihood etc.
+\DeclareMathOperator{\Lag}{\mathcal{L}} % Lagrangian etc.
+\DeclareMathOperator{\X}{\mathcal{X}} % input space X
+\DeclareMathOperator{\Y}{\mathcal{Y}} % output space Y
+\DeclareMathOperator{\bF}{\mathbf{F}}
+\DeclareMathOperator{\w}{\mathbf{w}} % weight vector
+\DeclareMathOperator{\y}{\mathbf{y}} % output structure
+\DeclareMathOperator{\x}{\mathbf{x}} % input structure
+\DeclareMathOperator{\implies}{\rightarrow} % implies
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\newcommand{\opt}[1]{{#1}^{*}} % Optimal
+\newcommand{\pred}[1]{\hat{#1}} % Prediction
+\newcommand{\dnorm}[1]{{#1}^{*}} % Dual Norm
+\newcommand{\dotprod}[2]{ {#1}^T{#2}} % w^Tx style
+\newcommand{\dotproduct}[2]{ \langle {#1},{#2} \rangle } % <w,x> style
+\newcommand{\Forall}{\,\forall\,} % for all with spacing
+\newcommand*{\Let}[2]{\State {#1} $\gets$ {#2}}
+\renewcommand{\Pr}{\mathbb{P}} % Probability
+\renewcommand{\vec}[1]{\mathbf{#1}} % vectors
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\renewcommand{\algorithmiccomment}[1]{\hfill$\triangleleft$\ \eqparbox{COMMENT}{#1}}
+\author{Shyam Upadhyay}
+\date{\today}
+\title{Question in A* Sampling}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs 24.4.1 (Org mode 8.2.6)}}
+\begin{document}
+
+\maketitle
+\begin{align*}
+F_m(g) = \Pr(G\le g) = \exp(-\exp(-g+m)) \tag{CDF for $Gumbel(m)$}\\
+\Pr(\max G_k + o(X_k) \le g) = \prod_j F_{\log \nu} (g-o(X_j)) \tag{as $G_k \sim Gumbel(\log\nu)$ }\\
+= \exp(-\sum_j \exp(-g + o(X_j) + \log \nu)) \\
+= \exp\left(-\exp(-g + \log \nu) \times \sum_j \exp(o(X_j))\right)\\
+= \exp\left[-\exp\left(-g + \log \nu + \log \sum_j \exp(o(X_j))\right)\right] \\
+= \exp\left[-\exp\left(-g + \log \nu + \log \sum_j \exp(\phi(X_j) - i(X_j))\right)\right] \\
+= \exp\left[-\exp\left(-g + \log \sum_t \exp(i(X_t)) + \log \sum_j \exp(\phi(X_j) - i(X_j))\right)\right] \\
+= \exp\left[-\exp\left(-g + \log \sum_t \exp(i(X_t)) \times \sum_j \exp(\phi(X_j) - i(X_j))\right)\right] \\
+\neq \exp\left[-\exp\left(-g + \log \sum_k \exp(\phi(X_k)) \right) \right] \tag{but this should be equal! right?}
+\end{align*}
+% Emacs 24.4.1 (Org mode 8.2.6)
+\end{document}
