@@ -1,4 +1,6 @@
 \documentclass[11pt]{beamer}
+\usetheme{Copenhagen}
+
 \usepackage{color,soul}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
@@ -36,7 +38,7 @@
 \DeclareMathOperator{\T}{\mathcal{T}} % set of Kernels
 
 %\DeclareMathOperator{\implies}{\rightarrow} % implies
-
+\newcommand{\highlightchunk}[2]{{ \color{#1} [ } #2 { \color{#1} ] }}
 \newcommand{\opt}[1]{{#1}^{*}} % give f* for Optimal, Dual ...
 \newcommand{\pred}[1]{\hat{#1}} % Prediction 
 \newcommand{\dotprod}[2]{ \langle {#1} , {#2} \rangle } % <w,x> style

@@ -14,22 +14,55 @@
 
 \begin{frame}{About Me}
 \begin{itemize}
-\item Working with Dan Roth.
-\item Interested in machine learning, dabble in NLP (I would like to be identified as a ML person instead of a linguist).
+\item Working with Dan Roth since August 2013.
+\item Interested in machine learning and NLP.
 \item Publication in AAAI'15 on Learning with Amortized Inference.
 \end{itemize}
 \end{frame}
 
 \begin{frame}{My Current Research}
 Grounding Events to a Knowledge Base
-\emph{After the death of Cromwell in 1658, Charles's chances of regaining the Crown at first seemed slim as Cromwell was succeeded as Lord Protector by his son, Richard.}
-
+\begin{block}{}
+After the {\color{blue} death of \highlightchunk{red}{Cromwell}} in 1658, \highlightchunk{red}{Charles'} chances of regaining the Crown at first seemed slim as Cromwell was succeeded as Lord Protector by his son, Richard.
+\end{block}
 \end{frame}
 
 \begin{frame}{Issues}
-Only 1\% of wikipedia pages are about events.
-Number higher if you consider events in subheading of a entities page eg. ``Invasion of Russia'' section under the wikipage of \textsc{Napolean}.
+\begin{itemize}
+\item Only 1\% of wikipedia pages are about events. Number higher if you consider events in subheading of an entity's page (eg. ``Invasion of Russia'' section under the wikipage of \textsc{Napolean}).
+\end{itemize}
 \end{frame}
+
+\begin{frame}{Comparison with Entity Wikification}
+\begin{itemize}
+\item Candidate generation is not as trivial as dictionary look-up.
+\pause
+\item {\color{red}solution:} Cascaded filtering.
+\pause
+\item Mentions are not as specific. "Chicago" vs "the civil war".
+\pause
+\item {\color{red}solution:} Dynamic context expansion.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+
+\begin{block}{Problem}
+Candidate generation is not as trivial as dictionary look-up.
+\end{block}
+
+\begin{exampleblock}{Possible Solution}
+Cascaded filtering
+\end{exampleblock}
+\begin{block}{Problem}
+Mentions are not as specific. "Chicago" vs "the civil war".
+\end{block}
+\begin{exampleblock}{Possible Solution}
+Cascaded filtering
+\end{exampleblock}
+
+\end{frame}
+
 
 \begin{frame}{Premise of the Paper}
   \begin{example}
