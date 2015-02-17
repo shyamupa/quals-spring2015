@@ -14,9 +14,12 @@
   \end{align*}
   Ways of obtaining word vectors:
   \begin{itemize}
-  \item Compute Global Statistics (LSA etc.)
-  \item Learn from sliding Local Context (word2vec)
+  \item Compute Global Statistics (LSA etc.) % HAL,LSA the name of the game is compute co-occurence
+    % fully unsupervised!
+  \item Learn from sliding Local Context (word2vec) %
+    % some training required
   \end{itemize}
+  Sometimes these methods end-up modeling the same objective (skip-gram).
   %% No explanation was given in the original papers.
   {\footnotesize Remarkably, training such a lexical model induces word repr. with striking semantic and syntactic properties---\cite{Mikolov13a}} \\
   %% Levy showed that tranditional methods like count sparse contexts can perform equally well.
@@ -25,12 +28,17 @@
   This paper explicitly model the properties needed for achieving the above effect.
 \end{frame}
 
+\begin{frame}{Problems}
+  Global Matrix Factorization Methods are prone to ill-effects of predominance of function words.
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Evaluation}
   \begin{itemize}
   \item Semantic Relatedness (intrinsic)
     \begin{itemize}
     \item Athens is to Greece as Berlin is to ? (Germany)
-    \item ANOTHER
+    \item Putin is to Russia as Sarkozy is to ? (France)
     \end{itemize}
   \item Syntactic Relatedness (intrinsic)
     \begin{itemize}
@@ -53,16 +61,26 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{GloVe Model}
-
-\begin{align*}
-J = \sum_{i=1}^V f(X_{ij})(w_i^T\tilde{w_j} +b_i + \tilde{b_j} - \log X_{ij})
-\end{align*}
-
+  \begin{align*}
+    & \Pr(\text{word j appears in context of word i}) = \Pr_{ij} \\
+    & \Pr_{ij} = \exp(\dotprod{w_i}{\tilde{w}_j}) \\
+    & \log \Pr_{ik} - \log\Pr_{jk} = \dotprod{w_i -w_j}{\tilde{w}_k}\\
+    & w_i^T\tilde{w_j} +b_i + \tilde{b_j} = \log X_{ij} \tag{this is what we want}\\
+  \end{align*}
+We can minimize 
+  \begin{align*}
+    & \text{} \sum_{i=1,j=1}^V \left( w_i^T\tilde{w_j} +b_i + \tilde{b_j} - \log X_{ij} \right)^2
+  \end{align*}
+  \pause
+  But wait!
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{GloVe Model}
-f should be
+  \begin{align*}
+  & J = \sum_{i=1,j=1}^V f(X_{ij}) \left( w_i^T\tilde{w_j} +b_i + \tilde{b_j} - \log X_{ij} \right)^2
+  \end{align*}
+  f should not overweight rare and too-frequent occurences.
     \begin{figure}
       \includegraphics[scale=0.27]{images/weighting.png}
       \caption{From}
@@ -111,4 +129,13 @@ f should be
       \includegraphics[width=\textwidth]{images/analogy3.png}
     \end{subfigure}%
   \end{figure}
+\end{frame}
+
+
+\begin{frame}
+  new ideas from Turian Ratinov Bengio,
+  curriculum training strategy?
+  liang's preprocessing
+  connotation vs denotation
+  distributional vs distributed
 \end{frame}
