@@ -10,7 +10,7 @@
 \begin{frame}{Introduction}
   \begin{itemize}
   %% Word vectors capture linguistic regularities in a simple manner.
-  \item Way of obtaining a mathematical representation of words.
+  \item A mathematical representation of words.
     %% conventional way - one hot repr lead to data sparsity, does not take word relationships into account
   \item Representation captures some form of ``related-ness''.
     \begin{figure}
@@ -23,11 +23,13 @@
 \begin{frame}{Generating Vector Representations}
   Word vectors can be generated in the following ways:
   \begin{itemize}
-  \item Compute Global Statistics followed by Factorization(LSA etc.) % HAL,LSA the name of the game is compute co-occurence
+  \item Cooccurence Matrix Factorization~\cite{Deerwester} % HAL,LSA the name of the game is compute co-occurence
     % fully unsupervised!
-  \item Learn from Local Context (word2vec) %
-    % some training required
+  \item Learn representation from Local Context~\cite{Mikolov13a}.%
+  \item Sometimes just using the explicit context representation suffices ~\cite{Levy14}.
+    %% Sometimes these methods end-up modeling the same objective (skip-gram).
   \end{itemize}
+  This paper proposes another way of 
 \end{frame}
 
 \begin{frame}{Analogy Discovery - Happy accident?}
@@ -38,13 +40,12 @@
       \includegraphics[scale=0.35]{images/mikolov.png}
       \caption{From}
     \end{figure}    
-  %% Sometimes these methods end-up modeling the same objective (skip-gram).
   %% No explanation was given in the original papers.
   %% {\footnotesize Remarkably, training such a lexical model induces word repr. with striking semantic and syntactic properties---\cite{Mikolov13a}} \\
   %% Levy showed that tranditional methods like count sparse contexts can perform equally well.
   %% {\footnotesize ... traditional word similarities can perform just as well as neural embeddings ---\cite{Levy14}} \\
   %% talk about Dont Count Predict paper
-  This paper explicitly models the properties needed for achieving the above effect.
+  This paper claims to explicitly model properties needed for achieving the above effect.
 \end{frame}
 
 \begin{frame}{Problems}
