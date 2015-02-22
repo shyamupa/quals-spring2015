@@ -36,17 +36,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Evaluation}
   \begin{itemize}
-  \item Semantic Relatedness (intrinsic)
+  \item Semantic Relatedness (Google Dataset) % intrinsic
     \begin{itemize}
     \item \textsc{Athens} is to \textsc{Greece} as \textsc{Berlin} is to ? (\textsc{Germany})
     \item \textsc{Putin} is to \textsc{Russia} as \textsc{Sarkozy} is to ? (\textsc{France})
     \end{itemize}
-  \item Syntactic Relatedness (intrinsic)
+  \item Syntactic Relatedness (MSR dataset) % intrinsic
     \begin{itemize}
     \item \textsc{Car} is to \textsc{Cars} as \textsc{Family} is to ? (\textsc{families})
     \item \textsc{Carry} is to \textsc{Carried} as \textsc{Go} is to ? (\textsc{went})
     \end{itemize}
-  \item NER (extrinsic)
+  \item NER 
     \begin{itemize}
     \item User word vectors as continuous features in a NER system.
     \end{itemize}
@@ -70,7 +70,7 @@
     & w_i^T\tilde{w_j} +b_i + \tilde{b_j} = \log X_{ij} \\
   \end{align*}
   \pause
-We can minimize 
+  We can minimize 
   \begin{align*}
     & \text{} \sum_{i=1,j=1}^V \left( w_i^T\tilde{w_j} +b_i + \tilde{b_j} - \log X_{ij} \right)^2
   \end{align*}
@@ -81,22 +81,22 @@ We can minimize
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{GloVe Model}
   \begin{align*}
-  & J = \sum_{i=1,j=1}^V f(X_{ij}) \left( w_i^T\tilde{w_j} +b_i + \tilde{b_j} - \log X_{ij} \right)^2
+    & J = \sum_{i=1,j=1}^V f(X_{ij}) \left( w_i^T\tilde{w_j} +b_i + \tilde{b_j} - \log X_{ij} \right)^2
   \end{align*}
   f should not overweight rare and too-frequent occurences.
-    \begin{figure}
-      \includegraphics[scale=0.27]{images/weighting.png}
-      \caption{From}
-    \end{figure}
+  \begin{figure}
+    \includegraphics[scale=0.27]{images/weighting.png}
+    \caption{From}
+  \end{figure}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% \begin{frame}{Training}
-  %% \begin{itemize}
-  %% \item Vector Length:
-  %% \item Context Size: 
-  %% \item Corpus Size: nothing supriszing
-  %% \end{itemize}
+%% \begin{itemize}
+%% \item Vector Length:
+%% \item Context Size: 
+%% \item Corpus Size: nothing supriszing
+%% \end{itemize}
 %% \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -112,10 +112,10 @@ We can minimize
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Results}
-    \begin{figure}
-      \includegraphics[scale=0.27]{images/gloveVSword2vec.png}
-      \caption{From}
-    \end{figure}
+  \begin{figure}
+    \includegraphics[scale=0.27]{images/gloveVSword2vec.png}
+    \caption{From}
+  \end{figure}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -141,4 +141,5 @@ We can minimize
   liang's preprocessing
   connotation vs denotation
   distributional vs distributed
+  exp not done MSR dataset, 
 \end{frame}

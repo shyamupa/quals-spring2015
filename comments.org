@@ -1,0 +1,2 @@
+* only add pivots reduce verbosity
+* add more pictures
