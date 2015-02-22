@@ -21,7 +21,8 @@
   \begin{align*}
     - \nabla_\theta \log LLH = \E_{\Pr(x;\theta)}\left[\phi(\x)\right] - \frac{1}{T} \sum_i\phi(x_i)
   \end{align*}
-  Computing $\E_{\Pr(x;\theta)}$ is not usually tractable. Resort to approximations - MCMC, Contrastive Divergence etc.
+  Computing $\E_{\Pr(x;\theta)}$ is not usually tractable (Sampling from posterior is hard).
+  Resort to approximations - MCMC, Contrastive Divergence etc.
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -57,6 +58,7 @@
     & \text{then} \qquad x_i \sim \argmax_i \{G(i) +\phi(i)\} \tag{the argmax of the perturbed probabilities is distributed as eq.\ref{eq:gibbs} above}
   \end{align*}
   No need to compute the partition function, as long as you can compute the (perturbed) argmax!
+  Note that the samples are exact. (No approximations!) (examples when things are approximations)
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -88,8 +90,8 @@
 \begin{frame}{Main Idea}
   \emph{We can transform a Gumbel process into another by adding the difference of their log densities.} \\
   log Prior + log LLH = log Posterior
-  Sampling from posterior is hard.
-  Suppose 
+  Suppose
+  So if I can easily draw samples from the prior and I have a way to compute the bound on the log-likelihood, then I can use Gumbel.
 \end{frame}
 
 \begin{frame}{Main Idea}
