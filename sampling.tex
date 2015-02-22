@@ -13,16 +13,18 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Partition Function Woes}
-  Gibbs Distribution
-  \begin{align*}
-    \Pr(\x;\theta) =\frac{\exp(\theta^T\phi(\x))}{Z} \tag{$Z=\sum_{\x} \theta^T\phi(\x)$ is partition function}
-  \end{align*}
-  ML parameter estimation,
-  \begin{align*}
-    - \nabla_\theta \log LLH = \E_{\Pr(x;\theta)}\left[\phi(\x)\right] - \frac{1}{T} \sum_i\phi(x_i)
-  \end{align*}
-  Computing $\E_{\Pr(x;\theta)}$ is not usually tractable (Sampling from posterior is hard).
-  Resort to approximations - MCMC, Contrastive Divergence etc.
+  \begin{itemize}
+  \item Gibbs Distribution
+    \begin{align*}
+      \Pr(\x;\theta) =\frac{\exp(\theta^T\psi(\x))}{Z} \tag{$Z=\sum_{\x} \theta^T\psi(\x)$}
+    \end{align*}
+  \item   ML parameter estimation,
+    \begin{align*}
+      - \nabla_\theta \log LLH = \E_{\Pr(x;\theta)}\left[\psi(\x)\right] - \frac{1}{T} \sum_i\psi(x_i)
+    \end{align*}
+  \item   Computing $\E_{\Pr(x;\theta)}$ is not usually tractable (Sampling from posterior is hard).
+  \item Resort to approximations - MCMC, Contrastive Divergence etc.
+  \end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -48,22 +50,32 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Gumbel-Max Trick (Discrete Case)}
-  Suppose you have a discrete distribution specified by un-normalized log probabilities $\{\phi(i)\}_{i=1}^{k}$, i.e.,
+  Suppose you have a discrete distribution specified by un-normalized log probabilities $\{\phi(i)\}_{i=1}^{k}$ over k configurations $\{x_1,\cdots,x_k\}$, i.e.,
   \begin{align}
     \Pr(x_i) = \frac{\exp\phi(i)}{\sum_j\exp\phi(j)} \label{eq:gibbs}
   \end{align}
   We can draw samples $x_i \sim \Pr$ from this distribution using the following procedure.
   \begin{align*}
     & \text{Sample} \qquad G(i) \sim Gumbel(0) \text{ for } i=1..k\\
-    & \text{then} \qquad x_i \sim \argmax_i \{G(i) +\phi(i)\} \tag{the argmax of the perturbed probabilities is distributed as eq.\ref{eq:gibbs} above}
+    & \text{then} \qquad \text{ Choose } x_j \text{ such that } j= \argmax_i \{G(i) +\phi(i)\} \tag{the argmax of the perturbed probabilities is distributed as eq.\ref{eq:gibbs} above}
   \end{align*}
-  No need to compute the partition function, as long as you can compute the (perturbed) argmax!
-  Note that the samples are exact. (No approximations!) (examples when things are approximations)
+
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Is There A Gumbel Max Trick for Continuous Distributions?}
-  This paper --- Yes!
+\begin{frame}{Wait ... So What?}
+  All this is cute, but what is the benefit?
+  \begin{itemize}
+  \item No need to compute the partition function, as long as you can compute the (perturbed) argmax!
+  \item Note that the samples are exact. (No approximations!)
+    (examples when things are approximations, MCMC ``once the chain reaches stationary distribution'')
+  \end{itemize}
+  But ...
+  \begin{itemize}
+  \item What happens if I increase 
+  \item \textsc{Question} Is There A Gumbel Max Trick for Continuous Distributions? One that does not resort to making infinite??exponential perturbations?
+  \item This paper --- Yes!
+  \end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
