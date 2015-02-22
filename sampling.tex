@@ -6,29 +6,26 @@
   \end{center}
 \end{frame}
 
-%% \begin{frame}{Premise of the Paper}
-%%   %% what is the paper trying to solve
-%% \end{frame}
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Partition Function Woes}
+\begin{frame}{Introduction - Partition Function Woes}
   \begin{itemize}
   \item Gibbs Distribution
     \begin{align*}
       \Pr(\x;\theta) =\frac{\exp(\theta^T\psi(\x))}{Z} \tag{$Z=\sum_{\x} \theta^T\psi(\x)$}
     \end{align*}
-  \item   ML parameter estimation,
+  \item ML parameter estimation,
     \begin{align*}
       - \nabla_\theta \log LLH = \E_{\Pr(x;\theta)}\left[\psi(\x)\right] - \frac{1}{T} \sum_i\psi(x_i)
     \end{align*}
-  \item   Computing $\E_{\Pr(x;\theta)}$ is not usually tractable (Sampling from posterior is hard).
-  \item Resort to approximations - MCMC, Contrastive Divergence etc.
+  \item   Computing $\E_{\Pr(x;\theta)}$ often intractable.
+  % Sampling from posterior is hard
+  \item So we resort to approximations. % MCMC, Contrastive Divergence
+  %% \item This paper provides a way to obtain exact samples from a intractable distribution.
   \end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Gumbel Distribution}
+\begin{frame}{Detour - Gumbel Distribution}
   \begin{align*}
     & Gumbel(m) = \text{gumbel with location parameter $m$}\\
     %% & CDF(x;\mu) = \exp \left(-\exp\left(-x+\mu\right)\right) \\
@@ -63,12 +60,12 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Wait ... So What?}
-  All this is cute, but what is the benefit?
+\begin{frame}{Benefits} %{Wait ... So What?}
+  %% All this is cute, but what is the benefit?
   \begin{itemize}
-  \item No need to compute the partition function, as long as you can compute the (perturbed) argmax!
-  \item Note that the samples are exact. (No approximations!)
-    (examples when things are approximations, MCMC ``once the chain reaches stationary distribution'')
+  \item Partition Function evaluation $\implies$ Computing (many) perturbed MAPs. % No need to compute the partition function, as long as you can compute the (perturbed) argmax!
+  \item \emph{Exact} samples from the target distribution. % Note that the samples are exact. (No approximations!)
+    %(examples when things are approximations, MCMC ``once the chain reaches stationary distribution'')
   \end{itemize}
   But ...
   \begin{itemize}
@@ -78,20 +75,20 @@
   \end{itemize}
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Gumbel and the Partition Function}
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% \begin{frame}{Gumbel and the Partition Function}
   
-\end{frame}
+%% \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Gumbel Process}
   %% just put image
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{High Dimensional Sampling is Exponential}
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% \begin{frame}{High Dimensional Sampling is Exponential}
 
-\end{frame}
+%% \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Top-Down Construction of Gumbel Process}

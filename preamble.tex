@@ -52,3 +52,17 @@
 
 \newcommand{\highlight}[1]{\colorbox{yellow}{$\displaystyle #1$}}
 \newcommand{\highlightmath}[1]{\colorbox{yellow}{\[\displaystyle #1\]}}
+\setbeamertemplate{footline}[frame number]
+
+
+\definecolor{lightblue}{rgb}{.90,.95,1}
+\sethlcolor{lightblue}
+\renewcommand<>{\hl}[1]{\only#2{\beameroriginal{\hl}}{#1}}
+
+% http://tex.stackexchange.com/questions/41683/why-is-it-that-coloring-in-soul-in-beamer-is-not-visible
+\makeatletter
+\newcommand\SoulColor{%
+  \let\set@color\beamerorig@set@color
+  \let\reset@color\beamerorig@reset@color}
+\makeatother
+\SoulColor
