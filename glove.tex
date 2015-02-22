@@ -7,26 +7,44 @@
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}{A Brief History of Word Vectors}
+\begin{frame}{Introduction}
+  \begin{itemize}
   %% Word vectors capture linguistic regularities in a simple manner.
-  Spread this out
+  \item Way of obtaining a mathematical representation of words.
+    %% conventional way - one hot repr lead to data sparsity, does not take word relationships into account
+  \item Representation captures some form of ``related-ness''.
+    \begin{figure}
+      \includegraphics[scale=0.35]{images/wordvec.png}
+      \caption{From}
+    \end{figure}    
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Generating Vector Representations}
+  Word vectors can be generated in the following ways:
+  \begin{itemize}
+  \item Compute Global Statistics followed by Factorization(LSA etc.) % HAL,LSA the name of the game is compute co-occurence
+    % fully unsupervised!
+  \item Learn from Local Context (word2vec) %
+    % some training required
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Analogy Discovery - Happy accident?}
   \begin{align*}
     v(king) - v(man) + v(woman) \approx v(queen)
   \end{align*}
-  Ways of obtaining word vectors:
-  \begin{itemize}
-  \item Compute Global Statistics (LSA etc.) % HAL,LSA the name of the game is compute co-occurence
-    % fully unsupervised!
-  \item Learn from sliding Local Context (word2vec) %
-    % some training required
-  \end{itemize}
-  Sometimes these methods end-up modeling the same objective (skip-gram).
+    \begin{figure}
+      \includegraphics[scale=0.35]{images/mikolov.png}
+      \caption{From}
+    \end{figure}    
+  %% Sometimes these methods end-up modeling the same objective (skip-gram).
   %% No explanation was given in the original papers.
-  {\footnotesize Remarkably, training such a lexical model induces word repr. with striking semantic and syntactic properties---\cite{Mikolov13a}} \\
+  %% {\footnotesize Remarkably, training such a lexical model induces word repr. with striking semantic and syntactic properties---\cite{Mikolov13a}} \\
   %% Levy showed that tranditional methods like count sparse contexts can perform equally well.
-  {\footnotesize ... traditional word similarities can perform just as well as neural embeddings ---\cite{Levy14}} \\
+  %% {\footnotesize ... traditional word similarities can perform just as well as neural embeddings ---\cite{Levy14}} \\
   %% talk about Dont Count Predict paper
-  This paper explicitly model the properties needed for achieving the above effect.
+  This paper explicitly models the properties needed for achieving the above effect.
 \end{frame}
 
 \begin{frame}{Problems}
@@ -36,12 +54,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Evaluation}
   \begin{itemize}
-  \item Semantic Relatedness (Google Dataset) % intrinsic
+  \item Semantic Relatedness % (Google Dataset) % intrinsic
     \begin{itemize}
     \item \textsc{Athens} is to \textsc{Greece} as \textsc{Berlin} is to ? (\textsc{Germany})
     \item \textsc{Putin} is to \textsc{Russia} as \textsc{Sarkozy} is to ? (\textsc{France})
     \end{itemize}
-  \item Syntactic Relatedness (MSR dataset) % intrinsic
+  \item Syntactic Relatedness % (Google dataset, MSR dataset) % intrinsic
     \begin{itemize}
     \item \textsc{Car} is to \textsc{Cars} as \textsc{Family} is to ? (\textsc{families})
     \item \textsc{Carry} is to \textsc{Carried} as \textsc{Go} is to ? (\textsc{went})
@@ -53,11 +71,19 @@
   \end{itemize}
 \end{frame}
 
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% \begin{frame}{What's new in this paper?}
+%%   \begin{itemize}
+%%   \item They claim their objective is explicitly modelling vector structure to facilitate linear 
+%%   \end{itemize}
+%% \end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{What's new in this paper?}
-  \begin{itemize}
-  \item They claim their objective is explicitly modelling vector structure to facilitate linear 
-  \end{itemize}
+\begin{frame}{GloVe Model}
+  \begin{figure}
+    \includegraphics[scale=0.23]{images/glove_int.png}
+  \end{figure}
+  $\frac{\Pr_{ik}}{\Pr_{jk}}$
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -80,10 +106,10 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{GloVe Model}
+  f should not overweight rare and too-frequent occurences.
   \begin{align*}
     & J = \sum_{i=1,j=1}^V f(X_{ij}) \left( w_i^T\tilde{w_j} +b_i + \tilde{b_j} - \log X_{ij} \right)^2
   \end{align*}
-  f should not overweight rare and too-frequent occurences.
   \begin{figure}
     \includegraphics[scale=0.27]{images/weighting.png}
     \caption{From}
