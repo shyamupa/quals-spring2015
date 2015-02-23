@@ -47,8 +47,8 @@
     %% Sometimes these methods end-up modeling the same objective (skip-gram).
     %% what abt random sampling
   \end{itemize}
-  This paper proposes another way of
-  They claim that their model combines advantages of both global and local? (??)
+  This paper proposes another way of obtaining word vectors via matrix factorization.
+  %% They claim that their model combines advantages of both global and local? (??)
 \end{frame}
 
 %% \begin{frame}{Problems}
@@ -82,9 +82,10 @@
   \end{align*}
   \pause
   \begin{align*}
-  & \frac{\Pr_{ik}}{\Pr_{jk}}=\exp(\dotprod{w_i -w_j}{\tilde{w}_k}) \\
-  & \log \Pr_{ik} - \log\Pr_{jk} = \dotprod{w_i -w_j}{\tilde{w}_k}\\
-  & w_i^T\tilde{w_j} +b_i + \tilde{b_j} = \log X_{ij}
+    & w_i^T\tilde{w_j} + \tilde{b_j} = \log X_{ij} - \log X_{i} \tag{$\Pr_{ik}=\frac{X_{ik}}{X_i}$} \\
+    %% & \frac{\Pr_{ik}}{\Pr_{jk}}=\exp(\dotprod{w_i -w_j}{\tilde{w}_k}) \\
+    %% & \log \Pr_{ik} - \log\Pr_{jk} = \dotprod{w_i -w_j}{\tilde{w}_k}\\
+    & w_i^T\tilde{w_j} +b_i + \tilde{b_j} = \log X_{ij}
   \end{align*}
   \pause
   We can minimize 

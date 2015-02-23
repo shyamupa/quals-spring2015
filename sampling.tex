@@ -35,10 +35,10 @@
     \pause
   \item Mean is $m+\gamma$, Variance is $\frac{\pi^2}{6}$.
     \pause
-  \item\alert<4->{For $G(i) \sim Gumbel(0)$,
+  \item\alert<4->{For $G(i) \sim Gumbel(0)$, and any $B \subseteq [n]$
     \begin{align*}
-      & \argmax_i{G(i)+\phi(i)} \sim \frac{\exp(\phi(x))}{Z} \\
-      & \max_i{G(i)+\phi(i)} \sim Gumbel(\log Z) \tag{Max-Stability}
+      & \argmax_{i \in B}{G(i)+\phi(i)} \sim \frac{\exp(\phi(i))}{\sum_{i \in B} \exp(\phi(i))} \\
+      & \max_{i \in B}{G(i)+\phi(i)} \sim Gumbel\left(\log \sum_{i \in B} \exp(\phi(i))\right) \tag{Max-Stability}
       %% proof in \cite{hazan}
     \end{align*}
   }
@@ -74,7 +74,7 @@
   \end{itemize}
   But ...
   \begin{itemize}
-  \item What happens if I increase 
+  \item What happens if we move from discrete to continuous space?
   \item \textsc{Question:} Is There A Gumbel Max Trick for Continuous Distributions? %% One that does not resort to making infinite??exponential perturbations?
     \pause
   \item {\color{red} This paper --- Yes!}
@@ -87,8 +87,14 @@
 %% \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Gumbel Process}
+\begin{frame}{Perturbing Gumbel Process Variates}
   %% just put image
+  For $B \subseteq \Omega$,
+  \begin{align*}
+  \max \{G_k \mid X_k \in B\} \sim Gumbel(log \mu(B)) \\
+  \argmax \{G_k \mid X_k \in B\} \sim \frac{\exp(\phi(x))1_{x \in B}}{\mu(B)} \\
+  \end{align*}
+  Then $\{ \max \{G_k \mid X_k \in B\} \mid B \subseteq \Omega\}$ is a Gumbel Process.
 \end{frame}
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -97,17 +103,40 @@
 %% \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Main Idea}
+  \emph{We can transform a Gumbel process into another by adding the difference of their log densities.} \\
+  \begin{align*}
+  & \mu(B) = \int_{x\in B} \exp(\phi(x)) \\
+  & \nu(B)=\int_{x\in B} \exp(i(x)) \\
+  & \text{ Let $o(x) = \phi(x) - i(x)$ be bounded} \\
+  & \{\{G_k + o(X_k) \mid X_k \in B\} \mid B \subseteq \R^d\} \text{ is a Gumbel Process with measure $\mu$}
+  \end{align*}
+   
+  %% So if I can easily draw samples from the prior and I have a way to compute the bound on the log-likelihood, then I can use Gumbel.
+\end{frame}
+\begin{frame}{Progress So Far}
+  \begin{itemize}
+  \item We wanted to draw samples from target distribution.
+  \item We reduced it to computing argmax of a sequence of samples from a exotic distribution. (because argmax follows the target dist)
+  \end{itemize}
+  Problems
+  \begin{itemize} 
+  \item Drawing samples from the distribution requires knowing Z of my target distribution.
+  \item We do not want to draw infinite samples to compute argmax on.
+  \end{itemize}
+  Solutions
+  \begin{itemize} 
+  \item I can draw samples from easier distribution, because I know its log Z. and then add the hard part to the samples before taking argmax.
+  \item Do A* search.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Top-Down Construction of Gumbel Process}
   Assume log Z is computable for now.
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Main Idea}
-  \emph{We can transform a Gumbel process into another by adding the difference of their log densities.} \\
-  log Prior + log LLH = log Posterior
-  Suppose
-  So if I can easily draw samples from the prior and I have a way to compute the bound on the log-likelihood, then I can use Gumbel.
-\end{frame}
+
 
 \begin{frame}{Main Idea}
   \centering
