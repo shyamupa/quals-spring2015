@@ -69,7 +69,9 @@
   \begin{figure}
     \includegraphics[scale=0.23]{images/glove_int.png}
   \end{figure}
-  $\frac{\Pr_{ik}}{\Pr_{jk}}$
+  \begin{align*}
+  \frac{\Pr(k \mid king)}{\Pr(k \mid queen)} \approx \frac{\Pr(k \mid man)}{\Pr(k \mid woman)}
+  \end{align*}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -193,5 +195,6 @@
   liang's preprocessing
   connotation vs denotation
   distributional vs distributed
-  exp not done MSR dataset, 
+  exp not done MSR dataset,
+  batch restriction for glove vs online training for skip gram
 \end{frame}
