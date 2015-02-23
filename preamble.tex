@@ -11,6 +11,7 @@
 \usepackage{mathrsfs}
 \usepackage{graphicx}
 \usepackage{tikz}
+\usetikzlibrary{calc}
 \usepackage{pgfplots}
 \usepackage{subcaption}
 \DeclareMathOperator*{\argmin}{{arg\,min}}
@@ -54,7 +55,7 @@
 \newcommand{\highlightmath}[1]{\colorbox{yellow}{\[\displaystyle #1\]}}
 \setbeamertemplate{footline}[frame number]
 
-
+\newcommand{\tikzmark}[1]{\tikz[overlay,remember picture] \node (#1) {};}
 \definecolor{lightblue}{rgb}{.90,.95,1}
 \sethlcolor{lightblue}
 \renewcommand<>{\hl}[1]{\only#2{\beameroriginal{\hl}}{#1}}
@@ -69,3 +70,7 @@
 
 
 \usepackage{appendixnumberbeamer}
+\setbeamercolor{alerted text}{fg=blue}
+
+
+% tikzmark command, for shading over items

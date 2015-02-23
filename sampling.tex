@@ -17,32 +17,38 @@
     \begin{align*}
       - \nabla_\theta \log LLH = \E_{\Pr(x;\theta)}\left[\psi(\x)\right] - \frac{1}{T} \sum_i\psi(x_i)
     \end{align*}
-  \item   Computing $\E_{\Pr(x;\theta)}$ often intractable.
+  \item   Computing $\E_{\Pr(x;\theta)}[.]$ often intractable.
   % Sampling from posterior is hard
   \item So we resort to approximations. % MCMC, Contrastive Divergence
-  %% \item This paper provides a way to obtain exact samples from a intractable distribution.
+    %% \item This paper provides a way to obtain exact samples from a intractable distribution.
+    %% sampling is inherently tied to Z
+    %% but computing Z is #P hard in general
   \end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Detour - Gumbel Distribution}
+\begin{frame}<1-3>[label=framelabel]{Detour - Gumbel Distribution}
+  Gumbel with location parameter $m$, $Gumbel(m)$.
   \begin{itemize}
-    \item Gumbel with location parameter $m$, $Gumbel(m)$.
     %% & CDF(x;\mu) = \exp \left(-\exp\left(-x+\mu\right)\right) \\
-    \item CDF for $Gumbel(m)$, $\Pr(G\le g) = \exp(-\exp(-g+m))$ \\
-    \item Mean is $m+\gamma$, Variance is $\frac{\pi^2}{6}$.
-    \item For $G(i) \sim Gumbel(0)$,
-      \begin{align*}
-        & \argmax_i{G(i)+\phi(i)} \sim \frac{\exp(\phi(x))}{Z} \\
-        & \max_i{G(i)+\phi(i)} \sim Gumbel(\log Z) \tag{Max-Stability}
-        %% proof in \cite{hazan}
-      \end{align*}
+  \item CDF for $Gumbel(m)$, $\Pr(G\le g) = \exp(-\exp(-g+m))$ \\
+    \pause
+  \item Mean is $m+\gamma$, Variance is $\frac{\pi^2}{6}$.
+    \pause
+  \item\alert<4->{For $G(i) \sim Gumbel(0)$,
+    \begin{align*}
+      & \argmax_i{G(i)+\phi(i)} \sim \frac{\exp(\phi(x))}{Z} \\
+      & \max_i{G(i)+\phi(i)} \sim Gumbel(\log Z) \tag{Max-Stability}
+      %% proof in \cite{hazan}
+    \end{align*}
+  }
   \end{itemize}
+  %% \pause\tikz[overlay,remember picture]{\draw[draw=red,thick,fill opacity=0.2] ($(boxlabel)+(-0.5,0.4)$) rectangle ($(boxlabel)+(11,-4.5)$);}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Key Properties}
-\end{frame}
+%% \begin{frame}{Key Properties}
+%% \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Gumbel-Max Trick (Discrete Case)}
@@ -57,7 +63,7 @@
   \end{align*}
 
 \end{frame}
-
+\againframe<4>{framelabel}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Benefits} %{Wait ... So What?}
   %% All this is cute, but what is the benefit?
