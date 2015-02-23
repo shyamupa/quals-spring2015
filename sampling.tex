@@ -26,23 +26,22 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Detour - Gumbel Distribution}
-  \begin{align*}
-    & Gumbel(m) = \text{gumbel with location parameter $m$}\\
+  \begin{itemize}
+    \item Gumbel with location parameter $m$, $Gumbel(m)$.
     %% & CDF(x;\mu) = \exp \left(-\exp\left(-x+\mu\right)\right) \\
-    & F_m(g) = \Pr(G\le g) = \exp(-\exp(-g+m)) \tag{CDF for $Gumbel(m)$}\\
-    & Mean = \mu+\gamma \tag{a fixed offset away from location parameter} \\
-    & Variance = \frac{\pi^2}{6}
-  \end{align*}
+    \item CDF for $Gumbel(m)$, $\Pr(G\le g) = \exp(-\exp(-g+m))$ \\
+    \item Mean is $m+\gamma$, Variance is $\frac{\pi^2}{6}$.
+    \item For $G(i) \sim Gumbel(0)$,
+      \begin{align*}
+        & \argmax_i{G(i)+\phi(i)} \sim \frac{\exp(\phi(x))}{Z} \\
+        & \max_i{G(i)+\phi(i)} \sim Gumbel(\log Z) \tag{Max-Stability}
+        %% proof in \cite{hazan}
+      \end{align*}
+  \end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Key Properties}
-  For $G(i) \sim Gumbel(0)$,
-  \begin{align*}
-    & \argmax_i{G(i)+\phi(i)} \sim \frac{\exp(\phi(x))}{Z} \\
-    & \max_i{G(i)+\phi(i)} \sim Gumbel(\log Z) \tag{Max-Stability}
-    %% proof in \cite{hazan}
-  \end{align*}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
