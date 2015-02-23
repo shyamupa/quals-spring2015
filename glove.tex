@@ -7,7 +7,7 @@
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}{Introduction}
+\begin{frame}{Introduction - What is a Word Vector?}
   \begin{itemize}
   %% Word vectors capture linguistic regularities in a simple manner.
   \item A mathematical representation of words.
@@ -20,19 +20,8 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Generating Vector Representations}
-  Word vectors can be generated in the following ways:
-  \begin{itemize}
-  \item Cooccurence Matrix Factorization~\cite{Deerwester} % HAL,LSA the name of the game is compute co-occurence
-    % fully unsupervised!
-  \item Learn representation from Local Context~\cite{Mikolov13a}.%
-  \item Sometimes just using the explicit context representation suffices ~\cite{Levy14}.
-    %% Sometimes these methods end-up modeling the same objective (skip-gram).
-  \end{itemize}
-  This paper proposes another way of 
-\end{frame}
-
-\begin{frame}{Analogy Discovery - Happy accident?}
+\begin{frame}{Structure in Word Vector Spaces}
+  The configuration of the vectors encode relationships between words.
   \begin{align*}
     v(king) - v(man) + v(woman) \approx v(queen)
   \end{align*}
@@ -48,29 +37,25 @@
   This paper claims to explicitly model properties needed for achieving the above effect.
 \end{frame}
 
-\begin{frame}{Problems}
-  Global Matrix Factorization Methods are prone to ill-effects of predominance of function words.
+\begin{frame}{Generating Vector Representations}
+  Word vectors can be generated in the following ways:
+  \begin{itemize}
+  \item Cooccurence Matrix Factorization~\cite{Deerwester} % HAL,LSA the name of the game is compute co-occurence
+    % fully unsupervised!
+  \item Learn representation from Local Context ~\cite{Mikolov13a}.%
+  \item Sometimes just using the explicit context representation suffices ~\cite{Levy14}.
+    %% Sometimes these methods end-up modeling the same objective (skip-gram).
+    %% what abt random sampling
+  \end{itemize}
+  This paper proposes another way of
+  They claim that their model combines advantages of both global and local? (??)
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Evaluation}
-  \begin{itemize}
-  \item Semantic Relatedness % (Google Dataset) % intrinsic
-    \begin{itemize}
-    \item \textsc{Athens} is to \textsc{Greece} as \textsc{Berlin} is to ? (\textsc{Germany})
-    \item \textsc{Putin} is to \textsc{Russia} as \textsc{Sarkozy} is to ? (\textsc{France})
-    \end{itemize}
-  \item Syntactic Relatedness % (Google dataset, MSR dataset) % intrinsic
-    \begin{itemize}
-    \item \textsc{Car} is to \textsc{Cars} as \textsc{Family} is to ? (\textsc{families})
-    \item \textsc{Carry} is to \textsc{Carried} as \textsc{Go} is to ? (\textsc{went})
-    \end{itemize}
-  \item NER 
-    \begin{itemize}
-    \item User word vectors as continuous features in a NER system.
-    \end{itemize}
-  \end{itemize}
-\end{frame}
+%% \begin{frame}{Problems}
+%%   Global Matrix Factorization Methods are prone to ill-effects of predominance of function words.
+%% \end{frame}
+
+
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% \begin{frame}{What's new in this paper?}
@@ -91,26 +76,30 @@
 \begin{frame}{GloVe Model}
   \begin{align*}
     %% & \Pr(\text{word j appears in context of word i}) = \Pr_{ij} \\
-    & \Pr_{ij} \propto \exp(\dotprod{w_i}{\tilde{w}_j}) \\
-    \pause
-    & \log \Pr_{ik} - \log\Pr_{jk} = \dotprod{w_i -w_j}{\tilde{w}_k}\\
-    & w_i^T\tilde{w_j} +b_i + \tilde{b_j} = \log X_{ij} \\
+    & \Pr_{ij} \propto \exp(\dotprod{w_i}{\tilde{w}_j}) \tag{log-bilinear model}
+  \end{align*}
+  \pause
+  \begin{align*}
+  & \frac{\Pr_{ik}}{\Pr_{jk}}=\exp(\dotprod{w_i -w_j}{\tilde{w}_k}) \\
+  & \log \Pr_{ik} - \log\Pr_{jk} = \dotprod{w_i -w_j}{\tilde{w}_k}\\
+  & w_i^T\tilde{w_j} +b_i + \tilde{b_j} = \log X_{ij}
   \end{align*}
   \pause
   We can minimize 
   \begin{align*}
-    & \text{} \sum_{i=1,j=1}^V \left( w_i^T\tilde{w_j} +b_i + \tilde{b_j} - \log X_{ij} \right)^2
+    & \sum_{i=1,j=1}^V \left( w_i^T\tilde{w_j} +b_i + \tilde{b_j} - \log X_{ij} \right)^2
   \end{align*}
   \pause
+  %% note the similarity with matrix factorization
   But wait!
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{GloVe Model}
-  f should not overweight rare and too-frequent occurences.
+\begin{frame}{GloVe Model - Introduce Weighted Cost}
   \begin{align*}
     & J = \sum_{i=1,j=1}^V f(X_{ij}) \left( w_i^T\tilde{w_j} +b_i + \tilde{b_j} - \log X_{ij} \right)^2
   \end{align*}
+  $f$ should not overweight rare and too-frequent occurences.
   \begin{figure}
     \includegraphics[scale=0.27]{images/weighting.png}
     \caption{From}
@@ -135,6 +124,42 @@
   \item Model trained on smaller wikipedia corpus( 1.6B tokens) does better on semantic task than model trained on larger corpus like gigaword (4.3B tokens)
   \item Idea: instead of using only word vector $w$, use $w+c$, where $c$ is the context vector (significant improvement in semantic task). This can be used for other models as well.
   \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Evaluation}
+  \begin{itemize}
+  \item Semantic Relatedness % (Google Dataset) % intrinsic
+    \begin{itemize}
+    \item \textsc{Athens} is to \textsc{Greece} as \textsc{Berlin} is to ? (\textsc{Germany})
+    \item \textsc{Putin} is to \textsc{Russia} as \textsc{Sarkozy} is to ? (\textsc{France})
+    \end{itemize}
+  \item Syntactic Relatedness % (Google dataset, MSR dataset) % intrinsic
+    \begin{itemize}
+    \item \textsc{Car} is to \textsc{Cars} as \textsc{Family} is to ? (\textsc{families})
+    \item \textsc{Carry} is to \textsc{Carried} as \textsc{Go} is to ? (\textsc{went})
+    \end{itemize}
+  \item NER 
+    \begin{itemize}
+    \item User word vectors as continuous features in a NER system.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Results}
+  \begin{figure}
+    \includegraphics[scale=0.27]{images/results1.png}
+    \caption{From}
+  \end{figure}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Results}
+  \begin{figure}
+    \includegraphics[scale=0.27]{images/results2.png}
+    \caption{From}
+  \end{figure}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
