@@ -64,17 +64,17 @@
 \begin{frame}{Benefits}
   %% Wait ... So What?
   %% All this is cute, but what is the benefit?
-  \begin{itemize}
+  \begin{itemize}[<+->]
   \item Partition Function evaluation $\implies$ Computing (many) perturbed MAPs. % We have reduced a to b. No need to compute the partition function, as long as you can compute the (perturbed) argmax!
   \item \emph{Exact} samples from the target distribution. % Note that the samples are exact. (No approximations!)
-    %% examples when things are approximations, MCMC ``once the chain reaches stationary distribution''
+  %% examples when things are approximations, MCMC ``once the chain reaches stationary distribution''
   \end{itemize}
+  \pause
   But ...
-  \begin{itemize}
+  \begin{itemize}[<+->]
   \item What happens if we move from discrete to continuous space?
   \item \textsc{Question:} Is There A Gumbel Max Trick for Continuous Distributions?
     %% One that does not resort to making infinite??exponential perturbations?
-    \pause
   \item {\color{red} This paper --- Yes!}
   \end{itemize}
 \end{frame}
@@ -95,18 +95,6 @@
   Then $\{ \max \{G_k \mid X_k \in B\} \mid B \subseteq \Omega\}$ is a Gumbel Process.
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Perturbing Gumbel Processes} % Main Idea
-  \emph{We can transform a Gumbel process into another by adding the difference of their log densities.} \\
-  \begin{align*}
-    & \mu(B) = \int_{x\in B} \exp(\phi(x)) \\
-    & \nu(B)=\int_{x\in B} \exp(i(x)) \tag{easy}\\
-    & \text{ Let $o(x) = \phi(x) - i(x)$ be bounded} \\
-  \end{align*}
-  If $G_k \sim Gumbel(\log\nu)$, then, $\{\max\{G_k + o(X_k) \mid X_k \in B\} \mid B \subseteq \R^d\}$ is a Gumbel Process with measure $\mu$.
-  
-  %% So if I can easily draw samples from the prior and I have a way to compute the bound on the log-likelihood, then I can use Gumbel.
-\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Top-Down Construction of Gumbel Process}
@@ -116,27 +104,27 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}<1>[label=progress]{Progress So Far}
   
-  \begin{itemize}
+  \begin{itemize}[<+->]
   \item \textsc{Goal}: Drawing samples from target distribution $\Pr$.
   \item Reduction: $\argmax$ of sequence of (perturbed) Gumbel samples. % We reduced it to computing argmax of a sequence of samples from a exotic distribution. % (because argmax follows the target dist)
   \end{itemize}
   \begin{overprint}
 
-    \onslide<1-2>
+    \onslide<3>
     \textbf{Problems}
     \begin{itemize}
     \item {\color{red}Problem 1:} Drawing Gumbels requires knowledge of $Z_{\Pr}$        % Drawing samples from the distribution requires knowing Z of my target distribution.
-    \item {\color{red}Problem 2:} Drawing infinite samples to compute argmax on. % We do not want to draw infinite samples to compute argmax on.
+    %% \item {\color{red}Problem 2:} Drawing infinite samples to compute argmax on. % We do not want to draw infinite samples to compute argmax on.
     \end{itemize}
 
-    \onslide<3>
+    \onslide<4>
     \textbf{Problems}
     \begin{itemize} 
     \item {\color{blue} Solution} Decompose! % I can draw samples from easier distribution, because I know its log Z. and then add the hard part to the samples before taking argmax.
     \item {\color{red} Problem 2:} Drawing infinite samples to compute argmax on. % We do not want to draw infinite samples to compute argmax on.
     \end{itemize}
 
-    \onslide<4>
+    \onslide<5>
     \textbf{Problems}
     \begin{itemize} 
     \item {\color{blue} Solution} Decompose! % I can draw samples from easier distribution, because I know its log Z. and then add the hard part to the samples before taking argmax.
@@ -147,6 +135,22 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \againframe<2-3>{progress}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Perturbing Gumbel Processes} % Main Idea
+  \emph{We can transform a Gumbel process into another by adding the difference of their log densities.} \\
+  \begin{align*}
+    & \mu(B) = \int_{x\in B} \exp(\phi(x)) \\
+    & \nu(B)=\int_{x\in B} \exp(i(x)) \tag{easy}\\
+    & \text{ Let $o(x) = \phi(x) - i(x)$ be bounded} \\
+  \end{align*}
+  If $G_k \sim Gumbel(\log\nu)$, then, $\{\max\{G_k + o(X_k) \mid X_k \in B\} \mid B \subseteq \R^d\}$ is a Gumbel Process with measure $\mu$.
+  %% So if I can easily draw samples from the prior and I have a way to compute the bound on the log-likelihood, then I can use Gumbel.
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\againframe<3-4>{progress}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Quick Review of A*}
   BFS exploration strategy
@@ -173,8 +177,6 @@
     
   \end{overprint}
 \end{frame}
-\againframe<3-4>{progress}
-
 \begin{frame}
   \only<1> {asdadasdas}
 
