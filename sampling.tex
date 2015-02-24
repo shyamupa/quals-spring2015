@@ -79,21 +79,17 @@
   \end{itemize}
 \end{frame}
 
-%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% \begin{frame}{Gumbel and the Partition Function}
-
-%% \end{frame}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{The Gumbel Process}
-  %% just put image
-  For $B \subseteq \Omega$,
+  %% This is not definition!
+  \begin{definition}
+      For $B \subseteq \Omega$,
   \begin{align*}
     \max \{G_k \mid X_k \in B\} \sim Gumbel(log \mu(B)) \\
     \argmax \{G_k \mid X_k \in B\} \sim \frac{\exp(\phi(x))1_{x \in B}}{\mu(B)} \\
   \end{align*}
   Then $\{ \max \{G_k \mid X_k \in B\} \mid B \subseteq \Omega\}$ is a Gumbel Process.
-\end{frame}
+  \end{definition}\end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -138,13 +134,17 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Perturbing Gumbel Processes} % Main Idea
-  \emph{We can transform a Gumbel process into another by adding the difference of their log densities.} \\
   \begin{align*}
-    & \mu(B) = \int_{x\in B} \exp(\phi(x)) \\
+    & \mu(B) = \int_{x\in B} \exp(\phi(x)) \tag{hard}\\
     & \nu(B)=\int_{x\in B} \exp(i(x)) \tag{easy}\\
-    & \text{ Let $o(x) = \phi(x) - i(x)$ be bounded} \\
+    & \text{ Let $o(x) = \phi(x) - i(x)$ be bounded}
   \end{align*}
-  If $G_k \sim Gumbel(\log\nu)$, then, $\{\max\{G_k + o(X_k) \mid X_k \in B\} \mid B \subseteq \R^d\}$ is a Gumbel Process with measure $\mu$.
+  \pause
+  \begin{property}
+    If $G_k \sim Gumbel(\log\nu)$, then, $\{\max\{G_k + o(X_k) \mid X_k \in B\} \mid B \subseteq \R^d\}$ is a Gumbel Process with measure $\mu$.
+  \end{property}
+  \pause
+  \emph{We can transform a Gumbel process into another by adding the difference of their log densities.} \\
   %% So if I can easily draw samples from the prior and I have a way to compute the bound on the log-likelihood, then I can use Gumbel.
 \end{frame}
 
