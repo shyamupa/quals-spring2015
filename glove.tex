@@ -9,7 +9,7 @@
 
 \begin{frame}{Introduction - What is a Word Vector?}
   \begin{itemize}
-  %% Word vectors capture linguistic regularities in a simple manner.
+    %% Word vectors capture linguistic regularities in a simple manner.
   \item A mathematical representation of words.
     %% conventional way - one hot repr lead to data sparsity, does not take word relationships into account
   \item Representation captures some form of ``related-ness''.
@@ -20,26 +20,11 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Structure in Word Vector Spaces}
-  The configuration of the vectors encode relationships between words.
-  \begin{align*}
-    v(king) - v(man) + v(woman) \approx v(queen)
-  \end{align*}
-    \begin{figure}
-      \includegraphics[scale=0.35]{images/mikolov.png}
-      \caption{From}
-    \end{figure}    
-  %% No explanation was given in the original papers.
-  %% {\footnotesize Remarkably, training such a lexical model induces word repr. with striking semantic and syntactic properties---\cite{Mikolov13a}} \\
-  %% Levy showed that tranditional methods like count sparse contexts can perform equally well.
-  %% {\footnotesize ... traditional word similarities can perform just as well as neural embeddings ---\cite{Levy14}} \\
-  %% talk about Dont Count Predict paper
-  This paper claims to explicitly model properties needed for achieving the above effect.
-\end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Generating Vector Representations}
   Word vectors can be generated in the following ways:
-  \begin{itemize}
+  \begin{itemize}[<+->]
   \item Cooccurence Matrix Factorization~\cite{Deerwester} % HAL,LSA the name of the game is compute co-occurence
     % fully unsupervised!
   \item Learn representation from Local Context ~\cite{Mikolov13a}.%
@@ -47,8 +32,32 @@
     %% Sometimes these methods end-up modeling the same objective (skip-gram).
     %% what abt random sampling
   \end{itemize}
-  This paper proposes another way of obtaining word vectors via matrix factorization.
+  \visible<4>
+  {This paper proposes another way of obtaining word vectors via matrix factorization.}
   %% They claim that their model combines advantages of both global and local? (??)
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Structure in Word Vector Spaces}
+  The configuration of the vectors encode relationships between words.
+  \begin{align*}
+    v(king) - v(man) + v(woman) \approx v(queen)
+  \end{align*}
+  \pause
+  \visible<2->
+      {
+        \begin{figure}
+          \includegraphics[scale=0.35]{images/mikolov.png}
+          \caption{From}
+        \end{figure}
+      }
+      %% No explanation was given in the original papers.
+      %% {\footnotesize Remarkably, training such a lexical model induces word repr. with striking semantic and syntactic properties---\cite{Mikolov13a}} \\
+      %% Levy showed that tranditional methods like count sparse contexts can perform equally well.
+      %% {\footnotesize ... traditional word similarities can perform just as well as neural embeddings ---\cite{Levy14}} \\
+      %% talk about Dont Count Predict paper
+      \visible<3>
+      {This paper claims to explicitly model properties needed for achieving the above effect.}
 \end{frame}
 
 %% \begin{frame}{Problems}
@@ -64,14 +73,17 @@
 %%   \end{itemize}
 %% \end{frame}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{GloVe Model}
   \begin{figure}
     \includegraphics[scale=0.23]{images/glove_int.png}
   \end{figure}
-  \begin{align*}
-  \frac{\Pr(k \mid king)}{\Pr(k \mid queen)} \approx \frac{\Pr(k \mid man)}{\Pr(k \mid woman)}
-  \end{align*}
+  \visible<2>{
+    \begin{align*}
+      \frac{\Pr(k \mid king)}{\Pr(k \mid queen)} \approx \frac{\Pr(k \mid man)}{\Pr(k \mid woman)}
+    \end{align*}    
+  }
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -100,13 +112,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{GloVe Model - Introduce Weighted Cost}
   \begin{align*}
-    & J = \sum_{i=1,j=1}^V f(X_{ij}) \left( w_i^T\tilde{w_j} +b_i + \tilde{b_j} - \log X_{ij} \right)^2
+    & J = \sum_{i=1,j=1}^V \alert{f(X_{ij})} \left( w_i^T\tilde{w_j} +b_i + \tilde{b_j} - \log X_{ij} \right)^2
   \end{align*}
   $f$ should not overweight rare and too-frequent occurences.
-  \begin{figure}
-    \includegraphics[scale=0.27]{images/weighting.png}
-    \caption{From}
-  \end{figure}
+
+  \visible<2>{
+    \begin{figure}
+      \includegraphics[scale=0.27]{images/weighting.png}
+      \caption{From}
+    \end{figure}
+  }
+  
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -131,7 +147,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Evaluation}
-  \begin{itemize}
+  \begin{itemize}[<+->]
   \item Semantic Relatedness % (Google Dataset) % intrinsic
     \begin{itemize}
     \item \textsc{Athens} is to \textsc{Greece} as \textsc{Berlin} is to ? (\textsc{Germany})
