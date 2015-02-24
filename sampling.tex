@@ -18,7 +18,7 @@
       - \nabla_\theta \log LLH = \E_{\Pr(x;\theta)}\left[\psi(\x)\right] - \frac{1}{T} \sum_i\psi(x_i)
     \end{align*}
   \item   Computing $\E_{\Pr(x;\theta)}[.]$ often intractable.
-  % Sampling from posterior is hard
+    % Sampling from posterior is hard
   \item So we resort to approximations. % MCMC, Contrastive Divergence
     %% \item This paper provides a way to obtain exact samples from a intractable distribution.
     %% sampling is inherently tied to Z
@@ -63,7 +63,7 @@
   \end{align*}
 
 \end{frame}
-\againframe<4>{framelabel}
+%% \againframe<4>{framelabel}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Benefits} %{Wait ... So What?}
   %% All this is cute, but what is the benefit?
@@ -83,7 +83,7 @@
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% \begin{frame}{Gumbel and the Partition Function}
-  
+
 %% \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -91,8 +91,8 @@
   %% just put image
   For $B \subseteq \Omega$,
   \begin{align*}
-  \max \{G_k \mid X_k \in B\} \sim Gumbel(log \mu(B)) \\
-  \argmax \{G_k \mid X_k \in B\} \sim \frac{\exp(\phi(x))1_{x \in B}}{\mu(B)} \\
+    \max \{G_k \mid X_k \in B\} \sim Gumbel(log \mu(B)) \\
+    \argmax \{G_k \mid X_k \in B\} \sim \frac{\exp(\phi(x))1_{x \in B}}{\mu(B)} \\
   \end{align*}
   Then $\{ \max \{G_k \mid X_k \in B\} \mid B \subseteq \Omega\}$ is a Gumbel Process.
 \end{frame}
@@ -106,36 +106,90 @@
 \begin{frame}{Main Idea}
   \emph{We can transform a Gumbel process into another by adding the difference of their log densities.} \\
   \begin{align*}
-  & \mu(B) = \int_{x\in B} \exp(\phi(x)) \\
-  & \nu(B)=\int_{x\in B} \exp(i(x)) \\
-  & \text{ Let $o(x) = \phi(x) - i(x)$ be bounded} \\
-  & \{\{G_k + o(X_k) \mid X_k \in B\} \mid B \subseteq \R^d\} \text{ is a Gumbel Process with measure $\mu$}
+    & \mu(B) = \int_{x\in B} \exp(\phi(x)) \\
+    & \nu(B)=\int_{x\in B} \exp(i(x)) \tag{easy}\\
+    & \text{ Let $o(x) = \phi(x) - i(x)$ be bounded} \\
   \end{align*}
-   
+  Then $\{\max\{G_k + o(X_k) \mid X_k \in B\} \mid B \subseteq \R^d\}$ is a Gumbel Process with measure $\mu$.
+  
   %% So if I can easily draw samples from the prior and I have a way to compute the bound on the log-likelihood, then I can use Gumbel.
 \end{frame}
-\begin{frame}{Progress So Far}
+
+\begin{frame}<1>[label=progress]{Progress So Far}
+  
   \begin{itemize}
-  \item We wanted to draw samples from target distribution.
-  \item We reduced it to computing argmax of a sequence of samples from a exotic distribution. (because argmax follows the target dist)
+  \item \textsc{Goal}: Drawing samples from target distribution $\Pr$.
+  \item Reduction: $\argmax$ of sequence of (perturbed) Gumbel samples. % We reduced it to computing argmax of a sequence of samples from a exotic distribution. % (because argmax follows the target dist)
   \end{itemize}
-  Problems
-  \begin{itemize} 
-  \item Drawing samples from the distribution requires knowing Z of my target distribution.
-  \item We do not want to draw infinite samples to compute argmax on.
-  \end{itemize}
-  Solutions
-  \begin{itemize} 
-  \item I can draw samples from easier distribution, because I know its log Z. and then add the hard part to the samples before taking argmax.
-  \item Do A* search.
-  \end{itemize}
+  \begin{overprint}
+
+    \onslide<1-2>
+    \textbf{Problems}
+    \begin{itemize}
+    \item {\color{red}Problem 1:} Drawing Gumbels requires knowledge of $Z_{\Pr}$        % Drawing samples from the distribution requires knowing Z of my target distribution.
+    \item {\color{red}Problem 2:} Drawing infinite samples to compute argmax on. % We do not want to draw infinite samples to compute argmax on.
+    \end{itemize}
+
+    \onslide<3>
+    \textbf{Problems}
+    \begin{itemize} 
+    \item {\color{blue} Solution} Decompose! % I can draw samples from easier distribution, because I know its log Z. and then add the hard part to the samples before taking argmax.
+    \item {\color{red} Problem 2:} Drawing infinite samples to compute argmax on. % We do not want to draw infinite samples to compute argmax on.
+    \end{itemize}
+
+    \onslide<4>
+    \textbf{Problems}
+    \begin{itemize} 
+    \item {\color{blue} Solution} Decompose! % I can draw samples from easier distribution, because I know its log Z. and then add the hard part to the samples before taking argmax.
+    \item {\color{blue} Solution} A* search.
+    \end{itemize}
+  \end{overprint}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Top-Down Construction of Gumbel Process}
   Assume log Z is computable for now.
 \end{frame}
+\againframe<2-3>{progress}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Quick Review of A*}
+  BFS exploration strategy
+  Uncover node in search space based on the following criteria,
+  \begin{overprint}
+    \onslide<1>
+    \begin{align*}
+      \min_{n \in Q} g(n) + h(n)
+    \end{align*}
 
+    \begin{itemize}
+    \item g(n) distance from the start node to node n (monotonically increasing)
+    \item h(n) estimate of distance from node n to the goal node
+    \end{itemize}
+    \onslide<2>
+    \begin{align*}
+      \max_{n \in Q} G(n) + H(n)
+    \end{align*}
+
+    \begin{itemize}
+    \item G(n) utility accumulated since the start node to node n (monotonically decreasing)
+    \item G(n) estimate of utility from node n to the goal node
+    \end{itemize}
+    
+  \end{overprint}
+\end{frame}
+\againframe<3-4>{progress}
+
+\begin{frame}
+  \only<1> {asdadasdas}
+
+  \visible<2>
+      {
+        But
+        hadsandsadla ca
+        dasd
+        adad
+        a}
+\end{frame}
 
 
 \begin{frame}{Main Idea}
@@ -188,6 +242,3 @@
   \end{tikzpicture}  
 \end{frame}
 
-\begin{frame}
-  But
-\end{frame}
