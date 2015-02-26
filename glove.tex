@@ -1,6 +1,7 @@
 \begin{frame}
   \begin{center}
-    {\huge GloVe: Global Vectors for Word Representation
+    {
+      \huge GloVe: Global Vectors for Word Representation
     } \\
     Pennington,Socher,Manning
   \end{center}
@@ -32,9 +33,10 @@
     %% Sometimes these methods end-up modeling the same objective (skip-gram).
     %% what abt random sampling
   \end{itemize}
-  \visible<4>
-  {This paper proposes another way of obtaining word vectors via matrix factorization.}
-  %% They claim that their model combines advantages of both global and local? (??)
+  \visible<4>{
+    This paper proposes another way of obtaining word vectors via matrix factorization.
+  }
+      %% They claim that their model combines advantages of both global and local? (??)
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -44,35 +46,24 @@
     v(king) - v(man) + v(woman) \approx v(queen)
   \end{align*}
   \pause
-  \visible<2->
-      {
-        \begin{figure}
-          \includegraphics[scale=0.35]{images/mikolov.png}
-          \caption{From}
-        \end{figure}
-      }
-      %% No explanation was given in the original papers.
-      %% {\footnotesize Remarkably, training such a lexical model induces word repr. with striking semantic and syntactic properties---\cite{Mikolov13a}} \\
-      %% Levy showed that tranditional methods like count sparse contexts can perform equally well.
-      %% {\footnotesize ... traditional word similarities can perform just as well as neural embeddings ---\cite{Levy14}} \\
-      %% talk about Dont Count Predict paper
-      \visible<3>
-      {This paper claims to explicitly model properties needed for achieving the above effect.}
+  \visible<2->{
+    \begin{figure}
+      \includegraphics[scale=0.35]{images/mikolov.png}
+      \caption{From}
+    \end{figure}
+  }
+  %% No explanation was given in the original papers.
+  %% {\footnotesize Remarkably, training such a lexical model induces word repr. with striking semantic and syntactic properties---\cite{Mikolov13a}} \\
+  %% Levy showed that tranditional methods like count sparse contexts can perform equally well.
+  %% {\footnotesize ... traditional word similarities can perform just as well as neural embeddings ---\cite{Levy14}} \\
+  %% talk about Dont Count Predict paper
+  \visible<3>{
+    This paper claims to explicitly model properties needed for achieving the above effect.
+  }
 \end{frame}
 
-%% \begin{frame}{Problems}
 %%   Global Matrix Factorization Methods are prone to ill-effects of predominance of function words.
-%% \end{frame}
-
-
-
-%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% \begin{frame}{What's new in this paper?}
-%%   \begin{itemize}
-%%   \item They claim their objective is explicitly modelling vector structure to facilitate linear 
-%%   \end{itemize}
-%% \end{frame}
-
+%%   They claim their objective is explicitly modelling vector structure to facilitate linear 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{GloVe Model}
@@ -98,9 +89,10 @@
   \end{align*}
   \visible<4->{
     We can minimize 
-  \begin{align*}
-    & \sum_{i=1,j=1}^V \left( w_i^T\tilde{w_j} +b_i + \tilde{b_j} - \log X_{ij} \right)^2
-  \end{align*}}
+    \begin{align*}
+      & \sum_{i=1,j=1}^V \left( w_i^T\tilde{w_j} +b_i + \tilde{b_j} - \log X_{ij} \right)^2
+    \end{align*}
+  }
   %% note the similarity with matrix factorization
   \visible<5->{But wait!}
 \end{frame}
@@ -117,7 +109,6 @@
       \caption{From}
     \end{figure}
   }
-  
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

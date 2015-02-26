@@ -9,17 +9,27 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Introduction - Partition Function Woes}
   \begin{itemize}
-  \item Gibbs Distribution
-    \begin{align*}
-      \Pr(\x;\theta) =\frac{\exp(\theta^T\psi(\x))}{Z} \tag{$Z=\sum_{\x} \theta^T\psi(\x)$}
-    \end{align*}
-  \item ML parameter estimation,
-    \begin{align*}
-      - \nabla_\theta \log LLH = \E_{\Pr(x;\theta)}\left[\psi(\x)\right] - \frac{1}{T} \sum_i\psi(x_i)
-    \end{align*}
-  \item   Computing $\E_{\Pr(x;\theta)}[.]$ often intractable.
-    % Sampling from posterior is hard
-  \item So we resort to approximations. % MCMC, Contrastive Divergence
+    \visible<1->{
+    \item Gibbs Distribution
+      \begin{align*}
+        \Pr(\x;\theta) =\frac{\exp(\theta^T\psi(\x))}{Z} \tag{$Z=\sum_{\x} \theta^T\psi(\x)$}
+      \end{align*}
+    }
+    \visible<2->{
+    \item ML parameter estimation,
+      \begin{align*}
+        - \nabla_\theta \log LLH = \E_{\Pr(x;\theta)}\left[\psi(\x)\right] - \frac{1}{T} \sum_i\psi(x_i)
+      \end{align*}
+    }
+
+    \visible<3->{  
+    \item Computing $\E_{\Pr(x;\theta)}[.]$ often intractable.
+    }
+    \visible<4->{
+    \item So we resort to approximations.
+      %% Sampling from posterior is hard
+      %% MCMC, Contrastive Divergence
+    }
     %% sampling is inherently tied to Z
     %% but computing Z is #P hard in general
     %% This paper provides a way to obtain exact samples from a intractable distribution.
@@ -29,21 +39,25 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}<1-3>[label=framelabel]{Detour - Gumbel Distribution}
   Gumbel with location parameter $m$, $Gumbel(m)$.
-  \begin{itemize}
-    %% & CDF(x;\mu) = \exp \left(-\exp\left(-x+\mu\right)\right) \\
-  \item CDF for $Gumbel(m)$, $\Pr(G\le g) = \exp(-\exp(-g+m))$ \\
-    \pause
-  \item Mean is $m+\gamma$, Variance is $\frac{\pi^2}{6}$.
-    \pause
-  \item\alert<4->{For $G(i) \sim Gumbel(0)$, and any $B \subseteq [n]$
-    \begin{align*}
-      & \argmax_{i \in B}{G(i)+\phi(i)} \sim \frac{\exp(\phi(i))}{\sum_{i \in B} \exp(\phi(i))} \\
-      & \max_{i \in B}{G(i)+\phi(i)} \sim Gumbel\left(\log \sum_{i \in B} \exp(\phi(i))\right) \tag{Max-Stability}
-      %% proof in \cite{hazan}
-    \end{align*}
-  }
+  \begin{itemize}[<+->]
+
+    \visible<1->{
+    \item CDF for $Gumbel(m)$, $\Pr(G\le g) = \exp(-\exp(-g+m))$
+    }
+
+    \visible<2->{
+    \item Mean is $m+\gamma$, Variance is $\frac{\pi^2}{6}$.
+    }
+
+    \visible<3->{
+    \item For $G(i) \sim Gumbel(0)$, and any $B \subseteq [n]$
+      \begin{align*}
+        & \argmax_{i \in B}{G(i)+\phi(i)} \sim \frac{\exp(\phi(i))}{\sum_{i \in B} \exp(\phi(i))} \\
+        & \max_{i \in B}{G(i)+\phi(i)} \sim Gumbel\left(\log \sum_{i \in B} \exp(\phi(i))\right) \tag{Max-Stability}
+        %% proof in \cite{hazan}
+      \end{align*}   
+    }
   \end{itemize}
-  %% \pause\tikz[overlay,remember picture]{\draw[draw=red,thick,fill opacity=0.2] ($(boxlabel)+(-0.5,0.4)$) rectangle ($(boxlabel)+(11,-4.5)$);}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -57,7 +71,6 @@
     & \text{Sample} \qquad G(i) \sim Gumbel(0) \text{ for } i=1..k\\
     & \text{then} \qquad \text{ Choose } x_j \text{ such that } j= \argmax_i \{G(i) +\phi(i)\} \tag{the argmax of the perturbed probabilities is distributed as eq.\ref{eq:gibbs} above}
   \end{align*}
-
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -65,17 +78,28 @@
   %% Wait ... So What?
   %% All this is cute, but what is the benefit?
   \begin{itemize}[<+->]
-  \item Partition Function evaluation $\implies$ Computing (many) perturbed MAPs. % We have reduced a to b. No need to compute the partition function, as long as you can compute the (perturbed) argmax!
-  \item \emph{Exact} samples from the target distribution. % Note that the samples are exact. (No approximations!)
-  %% examples when things are approximations, MCMC ``once the chain reaches stationary distribution''
+    \visible<1->{
+    \item Partition Function evaluation $\implies$ Computing (many) perturbed MAPs. % We have reduced a to b. No need to compute the partition function, as long as you can compute the (perturbed) argmax!
+      
+    }
+    \visible<2->{
+    \item \emph{Exact} samples from the target distribution. % Note that the samples are exact. (No approximations!)
+      %% examples when things are approximations, MCMC ``once the chain reaches stationary distribution''
+      
+    }
   \end{itemize}
-  \pause
-  But ...
+  
   \begin{itemize}[<+->]
-  \item What happens if we move from discrete to continuous space?
-  \item \textsc{Question:} Is There A Gumbel Max Trick for Continuous Distributions?
+    \visible<3->{
+    \item \textsc{Question:} What happens if we move from discrete to continuous space?
+    }
+    \visible<4->{
+    \item \textsc{Question:} Is There A Gumbel Max Trick for Continuous Distributions?
+    }
+    \visible<5->{
+    \item {\color{red} This paper --- Yes!}
+    }
     %% One that does not resort to making infinite??exponential perturbations?
-  \item {\color{red} This paper --- Yes!}
   \end{itemize}
 \end{frame}
 
@@ -83,14 +107,13 @@
 \begin{frame}{The Gumbel Process}
   %% This is not definition!
   \begin{definition}
-      For $B \subseteq \Omega$,
-  \begin{align*}
-    \max \{G_k \mid X_k \in B\} \sim Gumbel(log \mu(B)) \\
-    \argmax \{G_k \mid X_k \in B\} \sim \frac{\exp(\phi(x))1_{x \in B}}{\mu(B)} \\
-  \end{align*}
-  Then $\{ \max \{G_k \mid X_k \in B\} \mid B \subseteq \Omega\}$ is a Gumbel Process.
-  \end{definition}\end{frame}
-
+    For $B \subseteq \Omega$,
+    \begin{align*}
+      \max \{G_k \mid X_k \in B\} \sim Gumbel(log \mu(B)) \\
+      \argmax \{G_k \mid X_k \in B\} \sim \frac{\exp(\phi(x))1_{x \in B}}{\mu(B)} \\
+    \end{align*}
+    Then $\{ \max \{G_k \mid X_k \in B\} \mid B \subseteq \Omega\}$ is a Gumbel Process.
+\end{definition}\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Top-Down Construction of Gumbel Process}
@@ -99,10 +122,15 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}<1>[label=progress]{Progress So Far}
-  
   \begin{itemize}[<+->]
-  \item \textsc{Goal}: Drawing samples from target distribution $\Pr$.
-  \item Reduction: $\argmax$ of sequence of (perturbed) Gumbel samples. % We reduced it to computing argmax of a sequence of samples from a exotic distribution. % (because argmax follows the target dist)
+
+    \visible<1->{
+    \item \textsc{Goal}: Drawing samples from target distribution $\Pr$.
+    }
+
+    \visible<2->{
+    \item Reduction: $\argmax$ of sequence of (perturbed) Gumbel samples. % We reduced it to computing argmax of a sequence of samples from a exotic distribution. % (because argmax follows the target dist)
+    }
   \end{itemize}
   \begin{overprint}
 
@@ -110,7 +138,7 @@
     \textbf{Problems}
     \begin{itemize}
     \item {\color{red}Problem 1:} Drawing Gumbels requires knowledge of $Z_{\Pr}$        % Drawing samples from the distribution requires knowing Z of my target distribution.
-    %% \item {\color{red}Problem 2:} Drawing infinite samples to compute argmax on. % We do not want to draw infinite samples to compute argmax on.
+      %% \item {\color{red}Problem 2:} Drawing infinite samples to compute argmax on. % We do not want to draw infinite samples to compute argmax on.
     \end{itemize}
 
     \onslide<4>
@@ -135,17 +163,21 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Perturbing Gumbel Processes} % Main Idea
   \begin{align*}
-    & \mu(B) = \int_{x\in B} \exp(\phi(x)) \tag{hard}\\
-    & \nu(B)=\int_{x\in B} \exp(i(x)) \tag{easy}\\
-    & \text{ Let $o(x) = \phi(x) - i(x)$ be bounded}
+    \visible<1->{    & \mu(B) = \int_{x\in B} \exp(\phi(x)) \tag{hard}\\}
+    \visible<2->{    & \nu(B)=\int_{x\in B} \exp(i(x)) \tag{easy}\\}
+    \visible<3->{    & \text{Let $o(x) = \phi(x) - i(x)$ be bounded}}    
   \end{align*}
-  \pause
-  \begin{property}
-    If $G_k \sim Gumbel(\log\nu)$, then, $\{\max\{G_k + o(X_k) \mid X_k \in B\} \mid B \subseteq \R^d\}$ is a Gumbel Process with measure $\mu$.
-  \end{property}
-  \pause
-  \emph{We can transform a Gumbel process into another by adding the difference of their log densities.} \\
-  %% So if I can easily draw samples from the prior and I have a way to compute the bound on the log-likelihood, then I can use Gumbel.
+  \visible<4->
+      {
+        \begin{property}
+          If $G_k \sim Gumbel(\log\nu)$, then, $\{\max\{G_k + o(X_k) \mid X_k \in B\} \mid B \subseteq \R^d\}$ is a Gumbel Process with measure $\mu$.
+        \end{property}
+      }  
+      \visible<5->
+          {
+            \emph{We can transform a Gumbel process into another by adding the difference of their log densities.} \\
+          }
+          %% So if I can easily draw samples from the prior and I have a way to compute the bound on the log-likelihood, then I can use Gumbel.
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -177,18 +209,6 @@
     
   \end{overprint}
 \end{frame}
-\begin{frame}
-  \only<1> {asdadasdas}
-
-  \visible<2>
-      {
-        But
-        hadsandsadla ca
-        dasd
-        adad
-        a}
-\end{frame}
-
 
 \begin{frame}{Main Idea}
   \centering
@@ -240,3 +260,5 @@
   \end{tikzpicture}  
 \end{frame}
 
+\begin{frame}{Experimental Results}
+\end{frame}

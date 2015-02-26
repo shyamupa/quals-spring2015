@@ -1,11 +1,11 @@
 \documentclass[11pt]{beamer}
+\usepackage[utf8]{inputenc}
 
 \usetheme{Boadilla}
 \usecolortheme{dolphin}
 
 \usepackage{color,soul}
 \usepackage{multicol}
-\usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
@@ -16,6 +16,8 @@
 \usetikzlibrary{calc}
 \usepackage{pgfplots}
 \usepackage{subcaption}
+
+
 \DeclareMathOperator*{\argmin}{{arg\,min}}
 \DeclareMathOperator*{\argmax}{{arg\,max}}
 \DeclareMathOperator{\F}{\mathcal{F}} % Function Classes
@@ -49,7 +51,6 @@
 
 \newcommand*{\Let}[2]{\State {#1} $\gets$ {#2}}
 \newcommand{\Forall}{\,\forall\,} % for all with spacing
-%% \usepackage{enumitem}
 \usepackage{xcolor}
 
 \newcommand{\highlight}[1]{\colorbox{yellow}{$\displaystyle #1$}}
@@ -72,6 +73,7 @@
 
 \usepackage{appendixnumberbeamer}
 \setbeamercolor{alerted text}{fg=blue}
+\setbeamercovered{invisible}    % invisible future text instead of wash-out
 
 \newtheorem{property}{Property}
 % tikzmark command, for shading over items
