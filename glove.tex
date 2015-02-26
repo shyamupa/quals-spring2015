@@ -81,7 +81,7 @@
   \end{figure}
   \visible<2>{
     \begin{align*}
-      \frac{\Pr(k \mid king)}{\Pr(k \mid queen)} \approx \frac{\Pr(k \mid man)}{\Pr(k \mid woman)}
+      \frac{\Pr(k \mid king)}{\Pr(k \mid queen)} \approx \frac{\Pr(k \mid man)}{\Pr(k \mid woman)} \Forall k
     \end{align*}    
   }
 \end{frame}
@@ -90,23 +90,19 @@
 \begin{frame}{GloVe Model}
   \begin{align*}
     %% & \Pr(\text{word j appears in context of word i}) = \Pr_{ij} \\
-    & \Pr_{ij} \propto \exp(\dotprod{w_i}{\tilde{w}_j}) \tag{log-bilinear model}
-  \end{align*}
-  \pause
-  \begin{align*}
-    & w_i^T\tilde{w_j} + \tilde{b_j} = \log X_{ij} - \log X_{i} \tag{$\Pr_{ik}=\frac{X_{ik}}{X_i}$} \\
+    \visible<1->{& \Pr_{ij} \propto \exp({w_i}^T{\tilde{w}_j}) \tag{log-bilinear model} \\}
+    \visible<2->{& w_i^T\tilde{w_j} + \tilde{b_j} = \log X_{ij} - \log X_{i} \tag{$\Pr_{ik}=\frac{X_{ik}}{X_i}$} \\}
     %% & \frac{\Pr_{ik}}{\Pr_{jk}}=\exp(\dotprod{w_i -w_j}{\tilde{w}_k}) \\
     %% & \log \Pr_{ik} - \log\Pr_{jk} = \dotprod{w_i -w_j}{\tilde{w}_k}\\
-    & w_i^T\tilde{w_j} +b_i + \tilde{b_j} = \log X_{ij}
+    \visible<3->{& w_i^T\tilde{w_j} +b_i + \tilde{b_j} = \log X_{ij}}
   \end{align*}
-  \pause
-  We can minimize 
+  \visible<4->{
+    We can minimize 
   \begin{align*}
     & \sum_{i=1,j=1}^V \left( w_i^T\tilde{w_j} +b_i + \tilde{b_j} - \log X_{ij} \right)^2
-  \end{align*}
-  \pause
+  \end{align*}}
   %% note the similarity with matrix factorization
-  But wait!
+  \visible<5->{But wait!}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -115,7 +111,6 @@
     & J = \sum_{i=1,j=1}^V \alert{f(X_{ij})} \left( w_i^T\tilde{w_j} +b_i + \tilde{b_j} - \log X_{ij} \right)^2
   \end{align*}
   $f$ should not overweight rare and too-frequent occurences.
-
   \visible<2>{
     \begin{figure}
       \includegraphics[scale=0.27]{images/weighting.png}

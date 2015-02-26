@@ -18,7 +18,6 @@
 \usepackage{subcaption}
 \DeclareMathOperator*{\argmin}{{arg\,min}}
 \DeclareMathOperator*{\argmax}{{arg\,max}}
-%\DeclareMathOperator*{\sup}{sup}
 \DeclareMathOperator{\F}{\mathcal{F}} % Function Classes
 \DeclareMathOperator{\FF}{\mathcal{F}} % prettier function classes
 \DeclareMathOperator{\Hs}{\mathscr{H}} % Hilbert Spaces
@@ -38,10 +37,9 @@
 \DeclareMathOperator{\x}{\mathbf{x}} % input structure
 \DeclareMathOperator{\f}{\mathbf{f}} % function
 \DeclareMathOperator{\K}{\mathcal{K}} % set of Kernels
-\DeclareMathOperator{\vw}{\overrightarrow{w}} % set of Kernels
-\DeclareMathOperator{\T}{\mathcal{T}} % set of Kernels
+\DeclareMathOperator{\vw}{\overrightarrow{w}} % vector w
+\DeclareMathOperator{\T}{\mathcal{T}} % # of training eg.
 
-%\DeclareMathOperator{\implies}{\rightarrow} % implies
 \newcommand{\highlightchunk}[2]{{ \color{#1} [ } #2 { \color{#1} ] }}
 \newcommand{\opt}[1]{{#1}^{*}} % give f* for Optimal, Dual ...
 \newcommand{\pred}[1]{\hat{#1}} % Prediction 
@@ -50,7 +48,7 @@
 \renewcommand{\vec}[1]{\mathbf{#1}} % vectors
 
 \newcommand*{\Let}[2]{\State {#1} $\gets$ {#2}}
-
+\newcommand{\Forall}{\,\forall\,} % for all with spacing
 %% \usepackage{enumitem}
 \usepackage{xcolor}
 
