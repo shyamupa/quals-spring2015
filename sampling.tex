@@ -90,8 +90,8 @@
   \begin{figure} 
     \centering
     \begin{tikzpicture}[scale=0.7]
-      \draw[step=0.5,gray] (-5,-3) grid (5,3);
-      \path[draw,black,ultra thick] (-5,0)--(5,0);
+      %% \draw[step=0.5,gray] (-5,-3) grid (5,3);
+      \path[draw,black,ultra thick] (-5,0)--(6,0);
 
       \onslide<2->
       \path[draw,red,thick] (2.5,0) -- (2.5,4.0) circle (1.5pt);
@@ -129,18 +129,24 @@
 
   \begin{center}
     \only<2>{
-      \begin{align*}
-        & X_1 \sim \exp(\phi(x))/\mu(\Omega) \tag{assume $\log \mu(\Omega)$ is computable}\\
-        & G_1 \sim Gumbel(\log\mu(\Omega))
-      \end{align*}
+      $X_1 \sim \exp(\phi(x))/\mu(\Omega)$ \\
+      $G_1 \sim Gumbel(\log\mu(\Omega))$
+      %% \begin{align*}
+      %%   & X_1 \sim \exp(\phi(x))/\mu(\Omega) \tag{assume $\log \mu(\Omega)$ is computable}\\
+      %%   & G_1 \sim Gumbel(\log\mu(\Omega))
+      %% \end{align*}
     }
     \only<3>{
       $X_2 \sim \exp(\phi(x))1_{x \in B}/\mu(B)$ \\
       $G_2 \sim TrunGumbel(\log\mu(B),G_1)$ 
     }
     \only<4>{
-      Do same for other partition,\\
+      Do same for other partition $B^c$,\\
       first sampling the argmax $X_i$ and then sampling its value $G_i$
+    }
+    \only<5->{
+      Sample recursively.\\
+      You now have a sequence of $(G_i,X_i)$ samples from the Gumbel Process.
     }
   \end{center}
   %% Assume log Z is computable for now.
@@ -255,7 +261,7 @@
       %% \end{axis}
       
       \only<2>{
-        \path[draw,dotted,blue,very thick] (-5,5) -- (5,5);
+        \path[draw,dotted,blue,very thick] (-5,5.5) -- (5,5.5);
       }
       %% \addplot+[ycomb,black,thick] {1};
       %% \node[above] (g1) at (0,4) {};
@@ -272,16 +278,14 @@
       \onslide<3->{
         \path[draw,red,thick] (-3,3) -- (-3,2) circle (1.5pt);
         \node[below] at (-3,1.5) {$g_2+o(x_2)$};
+        \path[draw,red,thick] (3,3) -- (3,4.5) circle (1.5pt);
+        \node[below] at (3,5.25) {$g_3+o(x_3)$};
       }
 
       \only<3,4>{
         \path[draw,dotted,blue,very thick] (-5,3.5) -- (0,3.5);
       }
-      
-      \onslide<4->{
-        \path[draw,red,thick] (3,3) -- (3,4.5) circle (1.5pt);
-        \node[below] at (3,5.25) {$g_3+o(x_3)$};
-      }
+            
       \only<3>{
         \path[draw,dotted,blue,very thick] (0,4.75) -- (5,4.75);
       }
@@ -291,6 +295,8 @@
       \only<4->{
         \path[draw,blue,dotted,very thick] (0,3.75) -- (3,3.75);
         \path[draw,blue,dotted,very thick] (3,3.25) -- (5,3.25);
+        \path[draw,red,thick] (1.5,0.8) -- (1.5,0) circle (1.5pt);
+        \path[draw,red,thick] (4,2) -- (4,0.5) circle (1.5pt);
       }
     \end{tikzpicture}
   \end{figure}  
