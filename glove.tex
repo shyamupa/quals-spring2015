@@ -158,6 +158,7 @@
     \item Compute matrix $X$
     \item Do SGD.
     \end{itemize}
+    \textsc{Parameters:} vector dim., context size, corpus, $x_{max},\alpha$.
   \end{exampleblock}
   
   \onslide<3->
@@ -165,14 +166,18 @@
     \begin{itemize}[<+->]
     \item Semantic Relatedness % (Google Dataset) % intrinsic
       \begin{itemize}
-      \item \textsc{Athens} is to \textsc{Greece} as \textsc{Berlin} is to ? (\textsc{Germany})
+      %% \item \textsc{Athens} is to \textsc{Greece} as \textsc{Berlin} is to ? (\textsc{Germany})
       \item \textsc{Putin} is to \textsc{Russia} as \textsc{Sarkozy} is to ? (\textsc{France})
       \end{itemize}
     \item Syntactic Relatedness % (Google dataset, MSR dataset) % intrinsic
       \begin{itemize}
       \item \textsc{Car} is to \textsc{Cars} as \textsc{Family} is to ? (\textsc{families})
-      \item \textsc{Carry} is to \textsc{Carried} as \textsc{Go} is to ? (\textsc{went})
+      %% \item \textsc{Carry} is to \textsc{Carried} as \textsc{Go} is to ? (\textsc{went})
       \end{itemize}
+    \item Word Similarity
+      \begin{itemize}
+      \item Is \textsc{Tiger} more similar to \textsc{Jaguar} or \textsc{Mammal}?
+        \end{itemize}
     \item NER 
       \begin{itemize}
       \item Uses word vectors as continuous features in a NER system.
@@ -192,6 +197,10 @@
       \hline
       Model & Dim. & Size & Sem. & Syn. & Tot.\\
       \hline
+      \color<2->{red}{SG} & 300 & 1B & 61 & 61 & 61\\
+      \color<2->{red}{CBOW} & 300 & 1.6B & 16.1 & 52.6 & 36.1\\
+      GloVe & 300 & 1.6B & 80.8 & 61.5 & 70.3\\
+      \hline
       SVD & 300 & 6B & 6.3 & 8.1 & 7.3\\
       SVD-S & 300 & 6B & 36.7 & 46.6 & 42.1\\
       SVD-L & 300 & 6B & 56.6 & 63.0 & 60.1\\
@@ -199,10 +208,10 @@
       SG & 300 & 6B & 73.0 & 66.0 & 69.1\\
       GloVe & 300 & 6B & 77.4 & 67.0 & 71.7\\
       \hline
-      CBOW & 1000 & 6B & 57.3 & 68.9 & 63.7\\
-      SG & 1000 & 6B & 66.1 & 65.1 & 65.6\\
-      SVD-L & 300 & 6B & 38.4 & 58.2 & 49.2\\
-      GloVe & 300 & 6B & 81.9 & 69.3 & 75.0\\
+      \color<2->{red}{CBOW} & 1000 & 6B & 57.3 & 68.9 & 63.7\\
+      \color<2->{red}{SG} & 1000 & 6B & 66.1 & 65.1 & 65.6\\
+      SVD-L & 300 & 42B & 38.4 & 58.2 & 49.2\\
+      GloVe & 300 & 42B & 81.9 & 69.3 & 75.0\\
       \hline
     \end{tabular}
     \caption{\% accuracy on analogy discovery}
@@ -219,13 +228,13 @@
       \hline
       SVD & 6B & 35.3 & 35.1 & 42.5 & 38.3 & 25.6 \\
       SVD-S & 6B & 56.5 & 71.5 & 71.0 & 53.6 & 34.7\\
-      SVD-L & 6B & 65.7 & 63.0 & 60.1 & 56.5 & 37.0\\
+      \alert<2->{SVD-L} & 6B & 65.7 & 63.0 & 60.1 & 56.5 & 37.0\\
       CBOW & 6B & 57.2 & 65.6 & 68.2 & 57.0 & 32.5\\
       SG & 6B & 62.8 & 65.2 & 69.1 & 58.1 & 37.2\\
       GloVe & 6B & 65.8 & 72.7 & 77.8 & 53.9 & 38.1\\
       \hline
-      SVD-L & 42B & 74.0 & 76.4 & 74.1 & 58.3 & 39.9\\
-      GloVe & 42B & 75.9 & 83.6 & 82.9 & 59.6 & 47.8\\
+      \alert<3->{SVD-L} & 42B & 74.0 & 76.4 & 74.1 & 58.3 & 39.9\\
+      GloVe & 42B & {\bf 75.9} & {\bf 83.6} & {\bf 82.9} & {\bf 59.6} & {\bf 47.8}\\
       \hline
       CBOW & 100B & 68.4 & 79.6 & 75.4 & 59.4 & 45.5\\
       \hline
