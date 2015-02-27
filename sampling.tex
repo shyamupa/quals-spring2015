@@ -9,18 +9,18 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Introduction - Partition Function Woes}
   \begin{itemize}[<+->]
-    \item Gibbs Distribution
-      \begin{align*}
-        \Pr(\x;\theta) =\frac{\exp(\theta^T\psi(\x))}{Z} \tag{$Z=\sum_{\x} \theta^T\psi(\x)$}
-      \end{align*}
-    \item ML parameter estimation,
-      \begin{align*}
-        - \nabla_\theta \log LLH = \E_{\Pr(x;\theta)}\left[\psi(\x)\right] - \frac{1}{T} \sum_i\psi(x_i)
-      \end{align*}
-    \item Computing $\E_{\Pr(x;\theta)}[.]$ often intractable.
-    \item So we resort to approximations.
-      %% Sampling from posterior is hard
-      %% MCMC, Contrastive Divergence
+  \item Gibbs Distribution
+    \begin{align*}
+      \Pr(\x;\theta) =\frac{\exp(\theta^T\psi(\x))}{Z} \tag{$Z=\sum_{\x} \theta^T\psi(\x)$}
+    \end{align*}
+  \item ML parameter estimation,
+    \begin{align*}
+      - \nabla_\theta \log LLH = \E_{\Pr(x;\theta)}\left[\psi(\x)\right] - \frac{1}{T} \sum_i\psi(x_i)
+    \end{align*}
+  \item Computing $\E_{\Pr(x;\theta)}[.]$ often intractable.
+  \item So we resort to approximations.
+    %% Sampling from posterior is hard
+    %% MCMC, Contrastive Divergence
     %% sampling is inherently tied to Z
     %% but computing Z is #P hard in general
     %% This paper provides a way to obtain exact samples from a intractable distribution.
@@ -31,14 +31,14 @@
 \begin{frame}<1-3>[label=framelabel]{Detour - Gumbel Distribution}
   Gumbel with location parameter $m$, $Gumbel(m)$.
   \begin{itemize}[<+->]
-    \item CDF for $Gumbel(m)$, $\Pr(G\le g) = \exp(-\exp(-g+m))$
-    \item Mean is $m+\gamma$, Variance is $\frac{\pi^2}{6}$.
-    \item For $G(i) \sim Gumbel(0)$, and any $B \subseteq [n]$
-      \begin{align*}
-        & \argmax_{i \in B}{G(i)+\phi(i)} \sim \frac{\exp(\phi(i))}{\sum_{i \in B} \exp(\phi(i))} \\
-        & \max_{i \in B}{G(i)+\phi(i)} \sim Gumbel\left(\log \sum_{i \in B} \exp(\phi(i))\right) \tag{Max-Stability}
-        %% proof in \cite{hazan}
-      \end{align*}   
+  \item CDF for $Gumbel(m)$, $\Pr(G\le g) = \exp(-\exp(-g+m))$
+  \item Mean is $m+\gamma$, Variance is $\frac{\pi^2}{6}$.
+  \item For $G(i) \sim Gumbel(0)$, and any $B \subseteq [n]$
+    \begin{align*}
+      & \argmax_{i \in B}{G(i)+\phi(i)} \sim \frac{\exp(\phi(i))}{\sum_{i \in B} \exp(\phi(i))} \\
+      & \max_{i \in B}{G(i)+\phi(i)} \sim Gumbel\left(\log \sum_{i \in B} \exp(\phi(i))\right) \tag{Max-Stability}
+      %% proof in \cite{hazan}
+    \end{align*}   
   \end{itemize}
 \end{frame}
 
@@ -60,15 +60,15 @@
   %% Wait ... So What?
   %% All this is cute, but what is the benefit?
   \begin{itemize}[<+->]
-    \item Partition Function evaluation $\implies$ Computing (many) perturbed MAPs. % We have reduced a to b. No need to compute the partition function, as long as you can compute the (perturbed) argmax!
-    \item \emph{Exact} samples from the target distribution. % Note that the samples are exact. (No approximations!)
-      %% examples when things are approximations, MCMC ``once the chain reaches stationary distribution''
+  \item Partition Function evaluation $\implies$ Computing (many) perturbed MAPs. % We have reduced a to b. No need to compute the partition function, as long as you can compute the (perturbed) argmax!
+  \item \emph{Exact} samples from the target distribution. % Note that the samples are exact. (No approximations!)
+    %% examples when things are approximations, MCMC ``once the chain reaches stationary distribution''
   \end{itemize}
   
   \begin{itemize}[<+->]
-    \item \textsc{Question:} What happens if we move from discrete to continuous space?
-    \item \textsc{Question:} Is There A Gumbel Max Trick for Continuous Distributions?
-    \item {\color{red} This paper --- Yes!}
+  \item \textsc{Question:} What happens if we move from discrete to continuous space?
+  \item \textsc{Question:} Is There A Gumbel Max Trick for Continuous Distributions?
+  \item {\color{red} This paper --- Yes!}
     %% One that does not resort to making infinite??exponential perturbations?
   \end{itemize}
 \end{frame}
@@ -87,32 +87,70 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Top-Down Construction of Gumbel Process}
-  Assume log Z is computable for now.
   \begin{figure} 
     \centering
-    \begin{tikzpicture}[scale=0.8]
+    \begin{tikzpicture}[scale=0.7]
       \draw[step=0.5,gray] (-5,-3) grid (5,3);
       \path[draw,black,ultra thick] (-5,0)--(5,0);
 
-      \path[draw,red,thick] (2.5,0) -- (2.5,4.5) circle (1.5pt);
-      \node[below] at (2.5,0) {$X_1$};
-      \node[below] at (0.5,0) {\color{gray}{\tiny{B1}}};
-      \node[below] at (4.0,0) {\color{gray}{\tiny{B1}}};
+      \onslide<2->
+      \path[draw,red,thick] (2.5,0) -- (2.5,4.0) circle (1.5pt);
+      \node[below] (x1) at (2.5,0) {$X_1$};
+      \node[above] (g1) at (2.5,4.0) {$G_1$};
+      \node[below] at (0.5,0) {\color{gray}{\small{$B$}}};
+      \node[below] at (4.0,0) {\color{gray}{\small{$B^c$}}};
+
+      \onslide<3->
+      \path[draw,red,thick] (-2.0,0) -- (-2.0,3.0) circle (1.5pt);
+      \node[below] (x2) at (-2.0,0) {$X_2$};
+      \node[above] (g2) at (-2.0,3.0) {$G_2$};
+      \only<3>\path[draw,red,dotted,ultra thick,->] (2.5,4.0) -- (-2.0,3.0);
+
+      \onslide<4->
+      \path[draw,red,thick] (5.0,0) -- (5.0,-1.5) circle (1.5pt);
+      \node[above] at (5.0,0) {$X_3$};
+      \node[above] at (5.0,-1.5) {$G_3$};
+      \only<4>\path[draw,red,dotted,ultra thick,->] (2.5,4.0) -- (5.0,-1.5);
+
+      \onslide<5->
+      \path[draw,red,thick] (-1.0,0) -- (-1.0,1.5) circle (1.5pt);
+      \node[below] at (-1.0,0) {$X_4$};
+      \node[above] at (-1.0,1.5) {$G_4$};
+      \only<5>\path[draw,red,dotted,ultra thick,->] (-2.0,3.0) -- (-1.0,1.5);
+
+      \onslide<6->
+      \path[draw,red,thick] (-3.5,0) -- (-3.5,0.5) circle (1.5pt);
+      \node[below] at (-3.5,0) {$X_5$};
+      \node[above] at (-3.5,0.5) {$G_5$};
+      \only<6>\path[draw,red,dotted,ultra thick,->] (-2.0,3.0) -- (-3.5,0.5);
       
-      \path[draw,red,thick] (-2.0,0) -- (-2.0,3.5) circle (1.5pt);
-      \node[below] at (-2.0,0) {$X_2$};
-      
-      \path[draw,red,thick] (3.0,0) -- (3.0,-3.5) circle (1.5pt);
-      \node[above] at (3.0,0) {$X_3$};
     \end{tikzpicture}
   \end{figure}
+
+  \begin{center}
+    \only<2>{
+      \begin{align*}
+        & X_1 \sim \exp(\phi(x))/\mu(\Omega) \tag{assume $\log \mu(\Omega)$ is computable}\\
+        & G_1 \sim Gumbel(\log\mu(\Omega))
+      \end{align*}
+    }
+    \only<3>{
+      $X_2 \sim \exp(\phi(x))1_{x \in B}/\mu(B)$ \\
+      $G_2 \sim TrunGumbel(\log\mu(B),G_1)$ 
+    }
+    \only<4>{
+      Do same for other partition,\\
+      first sampling the argmax $X_i$ and then sampling its value $G_i$
+    }
+  \end{center}
+  %% Assume log Z is computable for now.
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}<1>[label=progress]{Progress So Far}
   \begin{itemize}[<+->]
-    \item \textsc{Goal}: Drawing samples from target distribution $\Pr$.
-    \item Reduction: $\argmax$ of sequence of (perturbed) Gumbel samples. % We reduced it to computing argmax of a sequence of samples from a exotic distribution. % (because argmax follows the target dist)
+  \item \textsc{Goal}: Drawing samples from target distribution $\Pr$.
+  \item Reduction: $\argmax$ of sequence of (perturbed) Gumbel samples. % We reduced it to computing argmax of a sequence of samples from a exotic distribution. % (because argmax follows the target dist)
   \end{itemize}
   \begin{overprint}
 
@@ -197,53 +235,65 @@
 \end{frame}
 
 \begin{frame}{Main Idea}
-  \centering
-  \begin{tikzpicture}[scale=0.8]
-    %% \draw[step=0.5,gray] (-5,-5) grid (5,5);
-    \draw[ultra thick,gray] plot[smooth] coordinates {(-6,0)(-5,0)(-3,3) (0,-1) (3,3) (5,0)};
-    \node (ox) at (-4,-1) {o(x)};
+  \begin{figure} 
+    \centering
+    \begin{tikzpicture}[scale=0.8]
+      %% \draw[step=0.5,gray] (-5,-5) grid (5,5);
 
-    %% \begin{axis}[height=10cm,width=10cm]
-    %%   \addplot[ultra thick,gray,smooth] coordinates {
-    %%     (-6,0)(-5,0)(-3,3) (0,-1) (3,3) (5,0)}
-    %%   node [pos=0.9,below left] {o(x)};
-    %% \end{axis}
-    
-    \only<2>{
-      \path[draw,dotted,blue,very thick] (-5,5) -- (5,5);
-    }
-    %% \addplot+[ycomb,black,thick] {1};
-    %% \node[above] (g1) at (0,4) {};
+      \only<1>{
+        \draw[ultra thick,gray] plot[smooth] coordinates {(-6,0) (5,0)};
+      }
+      
+      \onslide<2->
+      \draw[ultra thick,gray] plot[smooth] coordinates {(-6,0)(-5,0)(-3,3) (0,-1) (3,3) (5,0)};
+      \node (ox) at (-4,-1) {o(x)};
 
-    \onslide<2->{
-      \path[draw,red,thick] (0,-1) -- (0,4) circle (1.5pt);
-      \node[above] at (0,4.25) {$g_1+o(x_1)$};
-    }
-    
-    \only<2,3>{
-      \path[draw,green,dotted,very thick] (-5,4) -- (5,4);
-    }
-    
-    \onslide<3->{
-      \path[draw,red,thick] (-3,3) -- (-3,2) circle (1.5pt);
-      \node[below] at (-3,1.5) {$g_2+o(x_2)$};
-    }
+      %% \begin{axis}[height=10cm,width=10cm]
+      %%   \addplot[ultra thick,gray,smooth] coordinates {
+      %%     (-6,0)(-5,0)(-3,3) (0,-1) (3,3) (5,0)}
+      %%   node [pos=0.9,below left] {o(x)};
+      %% \end{axis}
+      
+      \only<2>{
+        \path[draw,dotted,blue,very thick] (-5,5) -- (5,5);
+      }
+      %% \addplot+[ycomb,black,thick] {1};
+      %% \node[above] (g1) at (0,4) {};
 
-    \only<3,4,5>{
-      \path[draw,dotted,blue,very thick] (-5,3.5) -- (0,3.5);
-    }
-    
-    \onslide<4->{
-      \path[draw,red,thick] (3,3) -- (3,4.5) circle (1.5pt);
-      \node[below] at (3,5.25) {$g_3+o(x_3)$};
-    }
-    \only<3->{
-      \path[draw,dotted,blue,very thick] (0,5) -- (5,5);
-    }
-    \only<4->{
-      \path[draw,green,dotted,very thick] (-5,4.5) -- (5,4.5);
-    }
-  \end{tikzpicture}  
+      \onslide<2->{
+        \path[draw,red,thick] (0,-1) -- (0,4) circle (1.5pt);
+        \node[above] at (0,4.25) {$g_1+o(x_1)$};
+      }
+      
+      \only<2,3>{
+        \path[draw,green,dotted,very thick] (-5,4) -- (5,4);
+      }
+      
+      \onslide<3->{
+        \path[draw,red,thick] (-3,3) -- (-3,2) circle (1.5pt);
+        \node[below] at (-3,1.5) {$g_2+o(x_2)$};
+      }
+
+      \only<3,4>{
+        \path[draw,dotted,blue,very thick] (-5,3.5) -- (0,3.5);
+      }
+      
+      \onslide<4->{
+        \path[draw,red,thick] (3,3) -- (3,4.5) circle (1.5pt);
+        \node[below] at (3,5.25) {$g_3+o(x_3)$};
+      }
+      \only<3>{
+        \path[draw,dotted,blue,very thick] (0,4.75) -- (5,4.75);
+      }
+      \only<4->{
+        \path[draw,green,dotted,very thick] (-5,4.5) -- (5,4.5);
+      }
+      \only<4->{
+        \path[draw,blue,dotted,very thick] (0,3.75) -- (3,3.75);
+        \path[draw,blue,dotted,very thick] (3,3.25) -- (5,3.25);
+      }
+    \end{tikzpicture}
+  \end{figure}  
 \end{frame}
 
 \begin{frame}{Experimental Results}
