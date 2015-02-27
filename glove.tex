@@ -33,9 +33,10 @@
     %% Sometimes these methods end-up modeling the same objective (skip-gram).
     %% what abt random sampling
   \end{itemize}
-  \visible<4>{
-    This paper proposes another way of obtaining word vectors via matrix factorization.
-  }
+  %% Say its task specific, therefore there has been a explosion of papers on this topic.
+  %% \visible<4>{
+  %%   This paper proposes another way of obtaining word vectors via matrix factorization.
+  %% }
       %% They claim that their model combines advantages of both global and local? (??)
 \end{frame}
 
@@ -43,7 +44,7 @@
 \begin{frame}{Structure in Word Vector Spaces}
   The configuration of the vectors encode relationships between words.
   \begin{align*}
-    v(king) - v(man) + v(woman) \approx v(queen)
+    vec(king) - vec(man) + vec(woman) \approx vec(queen)
   \end{align*}
   \pause
   \visible<2->{
@@ -58,7 +59,7 @@
   %% {\footnotesize ... traditional word similarities can perform just as well as neural embeddings ---\cite{Levy14}} \\
   %% talk about Dont Count Predict paper
   \visible<3>{
-    This paper claims to explicitly model properties needed for achieving the above effect.
+    This paper claims to explicitly model the properties needed for achieving the above effect.
   }
 \end{frame}
 
@@ -66,7 +67,7 @@
 %%   They claim their objective is explicitly modelling vector structure to facilitate linear 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{GloVe Model}
+\begin{frame}{GloVe Model - Intuition}
   \begin{figure}
     \includegraphics[scale=0.23]{images/glove_int.png}
   \end{figure}
@@ -78,7 +79,7 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{GloVe Model}
+\begin{frame}{GloVe Model - Derivation of Objective}
   \begin{align*}
     %% & \Pr(\text{word j appears in context of word i}) = \Pr_{ij} \\
     \visible<1->{& \Pr_{ij} \propto \exp({w_i}^T{\tilde{w}_j}) \tag{log-bilinear model} \\}
@@ -126,31 +127,41 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Model Parameters and Training}
-  \begin{itemize}
-  \item $x_{max},\alpha$
-  \item window size, vector dimension
-  \item corpus size
-  \end{itemize}
+%% \begin{frame}{Model Parameters and Training}
+%%   \begin{itemize}
+%%   \item $x_{max},\alpha$
+%%   \item window size, vector dimension
+%%   \item corpus size
+%%   \end{itemize}
+%%   \begin{itemize}[<+->]
+%%   \item Compute $X$
+%%   \item $J$ is optimized using SGD.
+%%   \end{itemize}
+%% \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% \begin{frame}{Model Analysis}
+%%   \begin{itemize}
+%%   \item Vector Length:
+%%   \item Context Size: 
+%%   \item Corpus Size: nothing suprising
+%%   \item Model trained on smaller wikipedia corpus( 1.6B tokens) does better on semantic task than model trained on larger corpus like gigaword (4.3B tokens)
+%%   \item Idea: instead of using only word vector $w$, use $w+c$, where $c$ is the context vector (significant improvement in semantic task). This can be used for other models as well.
+%%   \end{itemize}
+%% \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Training and Evaluation}
+
+  \begin{exampleblock}{Training}
   \begin{itemize}[<+->]
-  \item Compute $X$
-  \item $J$ is optimized using SGD.
+  \item Compute matrix $X$
+  \item Do SGD.
   \end{itemize}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Model Analysis}
-  \begin{itemize}
-  \item Vector Length:
-  \item Context Size: 
-  \item Corpus Size: nothing suprising
-  \item Model trained on smaller wikipedia corpus( 1.6B tokens) does better on semantic task than model trained on larger corpus like gigaword (4.3B tokens)
-  \item Idea: instead of using only word vector $w$, use $w+c$, where $c$ is the context vector (significant improvement in semantic task). This can be used for other models as well.
-  \end{itemize}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Evaluation}
+  \end{exampleblock}
+  
+  \onslide<3->
+  \begin{exampleblock}{Evaluation}
   \begin{itemize}[<+->]
   \item Semantic Relatedness % (Google Dataset) % intrinsic
     \begin{itemize}
@@ -164,24 +175,70 @@
     \end{itemize}
   \item NER 
     \begin{itemize}
-    \item User word vectors as continuous features in a NER system.
+    \item Uses word vectors as continuous features in a NER system.
     \end{itemize}
   \end{itemize}
+  \end{exampleblock}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Results on Analogy Discovery}
+  %% \begin{figure}
+  %%   \includegraphics[scale=0.27]{images/results1_1.png}
+  %% \end{figure}
   \begin{figure}
-    \includegraphics[scale=0.27]{images/results1.png}
-    \caption{\% accuracy on analogy discovery}
+    \centering
+  \begin{tabular}{|ccc|ccc|}
+    \hline
+    Model & Dim. & Size & Sem. & Syn. & Tot.\\
+    \hline
+    SVD & 300 & 6B & 6.3 & 8.1 & 7.3\\
+    SVD-S & 300 & 6B & 36.7 & 46.6 & 42.1\\
+    SVD-L & 300 & 6B & 56.6 & 63.0 & 60.1\\
+    CBOW & 300 & 6B & 63.6 & 67.4 & 65.7\\
+    SG & 300 & 6B & 73.0 & 66.0 & 69.1\\
+    GloVe & 300 & 6B & 77.4 & 67.0 & 71.7\\
+    \hline
+    CBOW & 1000 & 6B & 57.3 & 68.9 & 63.7\\
+    SG & 1000 & 6B & 66.1 & 65.1 & 65.6\\
+    SVD-L & 300 & 6B & 38.4 & 58.2 & 49.2\\
+    GloVe & 300 & 6B & 81.9 & 69.3 & 75.0\\
+    \hline
+  \end{tabular}
+  \caption{\% accuracy on analogy discovery}
   \end{figure}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Results on Word Similarity}
   \begin{figure}
-    \includegraphics[scale=0.4]{images/results2.png}
+    %% \includegraphics[scale=0.4]{images/results2.png}
+      \begin{tabular}{|cc|ccccc|}
+    \hline
+    Model & Size & WS353 & MC & RG & SCWS & RW\\
+    \hline
+    SVD & 6B & 35.3 & 35.1 & 42.5 & 38.3 & 25.6 \\
+    SVD-S & 6B & 56.5 & 71.5 & 71.0 & 53.6 & 34.7\\
+    SVD-L & 6B & 65.7 & 63.0 & 60.1 & 56.5 & 37.0\\
+    CBOW & 6B & 57.2 & 65.6 & 68.2 & 57.0 & 32.5\\
+    SG & 6B & 62.8 & 65.2 & 69.1 & 58.1 & 37.2\\
+    GloVe & 6B & 65.8 & 72.7 & 77.8 & 53.9 & 38.1\\
+    \hline
+    SVD-L & 42B & 74.0 & 76.4 & 74.1 & 58.3 & 39.9\\
+    GloVe & 42B & 75.9 & 83.6 & 82.9 & 59.6 & 47.8\\
+    \hline
+    CBOW & 100B & 68.4 & 79.6 & 75.4 & 59.4 & 45.5\\
+    \hline
+      \end{tabular}
     \caption{Spearman's correlation on word similarity with 300 dim. vectors.}
+  \end{figure}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Results on NER}
+  \begin{figure}
+    \includegraphics[scale=0.4]{images/ner.png}
+    \caption{F1 on NER with 50d vectors.}
   \end{figure}
 \end{frame}
 
@@ -196,23 +253,29 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Results}
+\begin{frame}{Choice of Corpus}
   \begin{figure}
     \centering
-    \begin{subfigure}[b]{0.33\textwidth}
-      \includegraphics[width=\textwidth]{images/analogy1.png}
-    \end{subfigure}%
-    \begin{subfigure}[b]{0.33\textwidth}
-      \includegraphics[width=\textwidth]{images/analogy2.png}
-    \end{subfigure}%
-    \begin{subfigure}[b]{0.33\textwidth}
-      \includegraphics[width=\textwidth]{images/analogy3.png}
-    \end{subfigure}%
+    \includegraphics[scale=0.4]{images/corpus.png}
+    %% \begin{subfigure}[b]{0.33\textwidth}
+    %%   \includegraphics[width=\textwidth]{images/analogy1.png}
+    %% \end{subfigure}%
+    %% \begin{subfigure}[b]{0.33\textwidth}
+    %%   \includegraphics[width=\textwidth]{images/analogy2.png}
+    %% \end{subfigure}%
+    %% \begin{subfigure}[b]{0.33\textwidth}
+    %%   \includegraphics[width=\textwidth]{images/analogy3.png}
+    %% \end{subfigure}%
   \end{figure}
 \end{frame}
 
-
-\begin{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Conclusion}
+  \begin{itemize}
+  \item Nice formulation
+  \item 
+  \item Missing 
+  \end{itemize}
   new ideas from Turian Ratinov Bengio,
   curriculum training strategy?
   liang's preprocessing
