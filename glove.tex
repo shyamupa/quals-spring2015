@@ -10,8 +10,7 @@
 
 \begin{frame}{Introduction - What is a Word Vector?}
   \begin{itemize}
-    %% Word vectors capture linguistic regularities in a simple manner.
-  \item A mathematical representation of words.
+  \item A mathematical representation of words as real valued vectors.
     %% conventional way - one hot repr lead to data sparsity, does not take word relationships into account
   \item Representation captures some form of ``related-ness''.
     \begin{figure}
@@ -26,23 +25,22 @@
 \begin{frame}{Generating Vector Representations}
   Word vectors can be generated in the following ways:
   \begin{itemize}[<+->]
-  \item Cooccurence Matrix Factorization~\cite{Deerwester}
+  \item Cooccurence Matrix Factorization ~\cite{Deerwester}
     % HAL,LSA the name of the game is compute co-occurence
   \item Learn representation from Local Context ~\cite{Mikolov13a}.
   \item Sometimes just using the explicit context representation suffices ~\cite{Levy14}.
     %% Sometimes these methods end-up modeling the same objective (skip-gram).
-    %% what abt random sampling
+    %% what abt random sampling?
   \end{itemize}
   %% Say its task specific, therefore there has been a explosion of papers on this topic.
-  %% \visible<4>{
-  %%   This paper proposes another way of obtaining word vectors via matrix factorization.
-  %% }
+  %% This paper proposes another way of obtaining word vectors via matrix factorization.
   %% They claim that their model combines advantages of both global and local? (??)
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Structure in Word Vector Spaces}
   The configuration of the vectors encode relationships between words.
+  %% Word vectors capture linguistic regularities in a simple manner.
   \begin{align*}
     vec(king) - vec(man) + vec(woman) \approx vec(queen)
   \end{align*}
@@ -50,13 +48,14 @@
   \visible<2->{
     \begin{figure}
       \includegraphics[scale=0.35]{images/mikolov.png}
-      \caption{From}
+      \caption{From ~\cite{Mikolov13a}}
+      %% vectors offsets illustrate the gender relation. another projection illustrate plurality.
     \end{figure}
   }
   %% No explanation was given in the original papers.
-  %% {\footnotesize Remarkably, training such a lexical model induces word repr. with striking semantic and syntactic properties---\cite{Mikolov13a}} \\
+  %% Remarkably, training such a lexical model induces word repr. with striking semantic and syntactic properties---\cite{Mikolov13a}
   %% Levy showed that tranditional methods like count sparse contexts can perform equally well.
-  %% {\footnotesize ... traditional word similarities can perform just as well as neural embeddings ---\cite{Levy14}} \\
+  %% ... traditional word similarities can perform just as well as neural embeddings ---\cite{Levy14}
   %% talk about Dont Count Predict paper
   \visible<3>{
     This paper claims to explicitly model the properties needed for achieving the above effect.
@@ -64,17 +63,18 @@
 \end{frame}
 
 %%   Global Matrix Factorization Methods are prone to ill-effects of predominance of function words.
-%%   They claim their objective is explicitly modelling vector structure to facilitate linear 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{GloVe Model - Intuition}
   \begin{figure}
     \includegraphics[scale=0.23]{images/glove_int.png}
   \end{figure}
+  %% in cases like water and fashion the affinity/dissimilarity is almost the same, 
+  %% whereas in solid and gas the affinity shifts towards a particular word
   \visible<2>{
-    \begin{align*}
-      \frac{\Pr(k \mid king)}{\Pr(k \mid queen)} \approx \frac{\Pr(k \mid man)}{\Pr(k \mid woman)} \Forall k
-    \end{align*}    
+      \begin{align*}
+            \frac{\Pr(k \mid king)}{\Pr(k \mid queen)} \approx \frac{\Pr(k \mid man)}{\Pr(k \mid woman)} \Forall k
+      \end{align*}
   }
 \end{frame}
 
@@ -83,12 +83,13 @@
   \begin{align*}
     %% & \Pr(\text{word j appears in context of word i}) = \Pr_{ij} \\
     \visible<1->{& \Pr_{ij} \propto \exp({w_i}^T{\tilde{w}_j}) \tag{log-bilinear model} \\}
-    \visible<2->{& w_i^T\tilde{w_j} + \tilde{b_j} = \log X_{ij} - \log X_{i} \tag{$\Pr_{ik}=\frac{X_{ik}}{X_i}$} \\}
+    \visible<2->{& w_i^T\tilde{w_j} = \log X_{ij} - \log X_{i} \tag{$\Pr_{ik}=\frac{X_{ik}}{X_i}$} \\}
     %% & \frac{\Pr_{ik}}{\Pr_{jk}}=\exp(\dotprod{w_i -w_j}{\tilde{w}_k}) \\
     %% & \log \Pr_{ik} - \log\Pr_{jk} = \dotprod{w_i -w_j}{\tilde{w}_k}\\
-    \visible<3->{& w_i^T\tilde{w_j} +b_i + \tilde{b_j} = \log X_{ij}}
+    \visible<3->{& w_i^T\tilde{w_j} +b_i = \log X_{ij}} \\
+    \visible<4->{& w_i^T\tilde{w_j} +b_i + \tilde{b_j} = \log X_{ij}}
   \end{align*}
-  \visible<4->{
+  \visible<5->{
     We can minimize 
     \begin{align*}
       & \sum_{i=1,j=1}^V \left( w_i^T\tilde{w_j} +b_i + \tilde{b_j} - \log X_{ij} \right)^2
@@ -96,8 +97,9 @@
   }
   %% note the similarity with matrix factorization
   \begin{center}
-    \visible<5->{But wait!}
+    \visible<6->{But wait!}
   \end{center}
+%% The problem is that X_ij are estimated from data. Some values will be very large/small, so our vectors will devote more/less time reducing the loss on them.
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -106,7 +108,7 @@
     & J = \sum_{i=1,j=1}^V \alert{f(X_{ij})} \left( w_i^T\tilde{w_j} +b_i + \tilde{b_j} - \log X_{ij} \right)^2
   \end{align*}
   \begin{center}
-    $f$ should not overweight rare and too-frequent occurences.
+    $f$ should not overweight rare and too-frequent co-occurences.
   \end{center}
   \visible<2->{
     \begin{align*}
@@ -116,12 +118,14 @@
         1 & \text{ otherwise}
       \end{cases}
       %% explain what x_max and \alpha do
+      %% x_max prevents too-freq t overweigh
+      %% large alpha means underweigh rare occurences more severely
     \end{align*}
   }
   \visible<3->{
     \begin{figure}
       \includegraphics[scale=0.27]{images/weighting.png}
-      \caption{From}
+      \caption{$f$ with $\alpha=3/4$}
     \end{figure}
   }
 \end{frame}
@@ -156,13 +160,15 @@
   \begin{exampleblock}{Training}
     \begin{itemize}[<+->]
     \item Compute matrix $X$
+      %% this is a batch computation
     \item Do SGD.
+      %% you sample a entry from X, compute grad and descend
     \end{itemize}
     \onslide<3->{\textsc{Parameters:} vector dim., context size, corpus, $x_{max},\alpha$.}
   \end{exampleblock}
   
   \onslide<4->
-  \begin{exampleblock}{Evaluation}
+  \begin{alertblock}{Evaluation}
     \begin{itemize}[<+->]
     \item Semantic Relatedness % (Google Dataset) % intrinsic
       \begin{itemize}
@@ -181,7 +187,7 @@
       \item Uses word vectors as continuous features in a NER system.
       \end{itemize}
     \end{itemize}
-  \end{exampleblock}
+  \end{alertblock}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -253,8 +259,8 @@
       SVD & 90.8 & 85.7 & 77.3 & 73.7\\
       SVD-S & 91.0 & 85.5 & 77.6 & 74.3\\
       SVD-L & 90.5 & 84.8 & 73.6 & 71.5\\
-      HPCA & 92.6 & 88.7 & 81.7 & 80.7 \\
-      CW & 92.2 & 87.4 & 81.7 & 80.2\\
+      %% HPCA & 92.6 & 88.7 & 81.7 & 80.7 \\
+      %% CW & 92.2 & 87.4 & 81.7 & 80.2\\
       CBOW & 93.1 & 88.2 & 82.2 & 81.1\\
       GloVe & 93.2 & 88.3 & 82.9 & 82.2\\
       \hline
@@ -263,15 +269,6 @@
   \end{figure}
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{GloVe vs. word2vec}
-  \begin{figure}
-    \centering
-    \includegraphics[scale=0.29]{images/gloveVSword2vec.png}
-    \caption{Runtime and Accuracy Comparison}
-    %% take this with a pinch of salt
-  \end{figure}
-\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Choice of Corpus}
@@ -291,17 +288,29 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{GloVe vs. word2vec}
+  \begin{figure}
+    \centering
+    \includegraphics[scale=0.29]{images/gloveVSword2vec.png}
+    \caption{Runtime and Accuracy Comparison}
+    %% take this with a pinch of salt
+  \end{figure}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Conclusion}
   \begin{itemize}
+  \item Boils down the task of learning representations to a bare minimum
   \item Nice formulation
-  \item 
-  \item Missing 
+  \item Need of a standardized evaluation
+  \item Few experiments were not entirely fair, but ...
   \end{itemize}
-  new ideas from Turian Ratinov Bengio,
-  curriculum training strategy?
-  liang's preprocessing
-  connotation vs denotation
-  distributional vs distributed
-  exp not done MSR dataset,
-  batch restriction for glove vs online training for skip gram
+  %% new ideas from Turian Ratinov Bengio,
+  %% curriculum training strategy?
+  %% liang's preprocessing
+  %% connotation vs denotation
+  %% distributional vs distributed
+  %% exp not done MSR dataset,
+  %% batch restriction for glove vs online training for skip gram
 \end{frame}
