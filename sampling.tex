@@ -49,26 +49,34 @@
 \begin{frame}{Gumbel-Max Trick (Discrete Case)}
   \onslide<1->
   \begin{property}
-    For $G(i) \sim Gumbel(0)$, and any $B \subseteq [n]$
+    \footnotesize{
+          For $G(i) \sim Gumbel(0)$, and any $B \subseteq [n]$
     \begin{align*}
       & \argmax_{i \in B}{G(i)+\phi(i)} \sim \frac{\exp(\phi(i))}{\sum_{i \in B} \exp(\phi(i))} \\
       & \max_{i \in B}{G(i)+\phi(i)} \sim Gumbel\left(\log \sum_{i \in B} \exp(\phi(i))\right) \tag{Max-Stability}
       %% proof in \cite{hazan}
     \end{align*}
+    }
   \end{property}
   %% Suppose you have a discrete distribution specified by un-normalized log probabilities $\{\phi(i)\}_{i=1}^{k}$ over k configurations $\{x_1,\cdots,x_k\}$, i.e.,
   \onslide<2->
+  \begin{usage}
+    \footnotesize{
   Easy Sampling with un-normalized log probabilities,
   \begin{align}
     \Pr(x_i) = \frac{\exp\phi(i)}{\sum_j\exp\phi(j)} \tag{$i \in [k]$}
   \end{align}
+  \vspace{-5mm}
   %% We can draw samples $x_i \sim \Pr$ from this distribution using the following procedure.
   \onslide<3->
   \begin{align*}
     & \text{Sample} \qquad G(i) \sim Gumbel(0) \text{ for } i=1..k\\
     & \text{then} \qquad \text{ Choose } x_j \text{ such that } j= \argmax_i \{G(i) +\phi(i)\}
-    %% \tag{the argmax of the perturbed probabilities is distributed as eq.\ref{eq:gibbs} above}
   \end{align*}
+      %% the argmax of the perturbed probabilities is distributed as eq.\ref{eq:gibbs} above
+
+  }
+  \end{usage}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -203,7 +211,7 @@
 \againframe<2-3>{progress}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Perturbing Gumbel Processes} % Main Idea
+\begin{frame}{Solution - Perturbing Gumbel Processes} % Main Idea
   \begin{align*}
     \visible<1->{
       & \mu(B) = \int_{x\in B} \exp(\phi(x)) \tag{hard}\\
@@ -238,7 +246,6 @@
     \begin{align*}
       \min_{n \in Q} g(n) + h(n)
     \end{align*}
-
     \begin{itemize}
     \item g(n) distance from the start node to node n (monotonically increasing)
     \item h(n) estimate of distance from node n to the goal node
@@ -247,7 +254,6 @@
     \begin{align*}
       \max_{n \in Q} G(n) + H(n)
     \end{align*}
-
     \begin{itemize}
     \item G(n) utility accumulated since the start node to node n (monotonically decreasing)
     \item G(n) estimate of utility from node n to the goal node
