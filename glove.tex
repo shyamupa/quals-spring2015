@@ -9,13 +9,15 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}{Introduction - What is a Word Vector?}
-  \begin{itemize}
+  \begin{itemize}[<+->]
   \item A mathematical representation of words as real valued vectors.
+    %% way of representing a word as real valued (possibly dense) vector
     %% conventional way - one hot repr lead to data sparsity, does not take word relationships into account
   \item Representation captures some form of ``related-ness''.
+    %% should express some notion of similarity b/w words
     \begin{figure}
       \includegraphics[scale=0.35]{images/wordvec.png}
-      \caption{From}
+      %% here is a 2d projection of vec for a few words. notice the cosine of the angles b/w them
     \end{figure}    
   \end{itemize}
 \end{frame}
@@ -26,7 +28,7 @@
   Word vectors can be generated in the following ways:
   \begin{itemize}[<+->]
   \item Cooccurence Matrix Factorization ~\cite{Deerwester}
-    % HAL,LSA the name of the game is compute co-occurence
+    % LSA,PCA,HAL the name of the game is compute co-occurence
   \item Learn representation from Local Context ~\cite{Mikolov13a}.
   \item Sometimes just using the explicit context representation suffices ~\cite{Levy14}.
     %% Sometimes these methods end-up modeling the same objective (skip-gram).
@@ -38,7 +40,7 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Structure in Word Vector Spaces}
+\begin{frame}{Motivation of the Paper}
   The configuration of the vectors encode relationships between words.
   %% Word vectors capture linguistic regularities in a simple manner.
   \begin{align*}
@@ -66,15 +68,34 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{GloVe Model - Intuition}
-  \begin{figure}
-    \includegraphics[scale=0.23]{images/glove_int.png}
+  \begin{figure}[scale=0.8]
+    %% \includegraphics[scale=0.23]{images/glove_int.png}
+    \begin{tabular}{c|cccc}
+       & $k=solid$ & $k=gas$ & $k=water$ & $k=fashion$\\
+      \hline
+      $\Pr(k \mid ice)$ & \only<1-2>{$1.9 \times 10^{-4}$}\only<3->{large} & \only<1-2>{$6.6 \times 10^{-5}$}\only<3->{small} & \only<1-2>{$3.0 \times 10^{-3}$}\only<3->{large} & \only<1-2>{$1.7 \times 10^{-5}$}\only<3->{small} \\
+      $\Pr(k \mid steam)$ & \only<1-2>{$2.2 \times 10^{-5}$}\only<3->{small} & \only<1-2>{$7.8 \times 10^{-4}$}\only<3->{large} & \only<1-2>{$2.2 \times 10^{-3}$}\only<3->{large} & \only<1-2>{$1.8 \times 10^{-5}$}\only<3->{small} \\
+      \visible<2->{
+       $\frac{\Pr(k \mid ice)}{\Pr(k \mid steam)}$ & \only<2>{$8.9$}\only<3->{large} & \only<2>{$8.5 \times 10^{-5}$}\only<3->{small} & \only<2>{$1.36$}\only<3->{$\sim 1$} & \only<2>{$0.96$}\only<3->{$\sim 1$}
+      }
+    \end{tabular}
   \end{figure}
+  %% the ratio helps discriminate the words that distinguish ice from stream.
   %% in cases like water and fashion the affinity/dissimilarity is almost the same, 
-  %% whereas in solid and gas the affinity shifts towards a particular word
-  \visible<2>{
-      \begin{align*}
-            \frac{\Pr(k \mid king)}{\Pr(k \mid queen)} \approx \frac{\Pr(k \mid man)}{\Pr(k \mid woman)} \Forall k
-      \end{align*}
+  %% whereas in solid and gas the affinity shifts towards a particular related word
+  \visible<4->{
+    \begin{center}
+      Ratio of probabilities is the key!
+    \end{center}
+      %% \begin{align*}
+      %%   \frac{\Pr(k \mid ice)}{\Pr(k \mid steam)} \approx \frac{\Pr(k \mid solid)}{\Pr(k \mid gas)} \Forall k
+      %% \end{align*}
+  }
+  \visible<5->{
+    \begin{align*} 
+      & w_i^Tw_j = \log \Pr(j\mid i) \\
+      & (w_{ice}-w_{steam})^T w_j = \log\frac{\Pr(j \mid ice)}{\Pr(j \mid steam)}
+    \end{align*}
   }
 \end{frame}
 
@@ -82,7 +103,7 @@
 \begin{frame}{GloVe Model - Derivation of Objective}
   \begin{align*}
     %% & \Pr(\text{word j appears in context of word i}) = \Pr_{ij} \\
-    \visible<1->{& \Pr_{ij} \propto \exp({w_i}^T{\tilde{w}_j}) \tag{log-bilinear model} \\}
+    %% \visible<1->{& \Pr_{ij} \propto \exp({w_i}^T{\tilde{w}_j}) \tag{log-bilinear model} \\}
     \visible<2->{& w_i^T\tilde{w_j} = \log X_{ij} - \log X_{i} \tag{$\Pr_{ik}=\frac{X_{ik}}{X_i}$} \\}
     %% & \frac{\Pr_{ik}}{\Pr_{jk}}=\exp(\dotprod{w_i -w_j}{\tilde{w}_k}) \\
     %% & \log \Pr_{ik} - \log\Pr_{jk} = \dotprod{w_i -w_j}{\tilde{w}_k}\\
@@ -99,7 +120,7 @@
   \begin{center}
     \visible<6->{But wait!}
   \end{center}
-%% The problem is that X_ij are estimated from data. Some values will be very large/small, so our vectors will devote more/less time reducing the loss on them.
+  %% The problem is that X_ij are estimated from data. Some values will be very large/small (most of them will be zero), so our learning algo will waste effort on optimizing to fit the useless entries.
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -107,10 +128,11 @@
   \begin{align*}
     & J = \sum_{i=1,j=1}^V \alert{f(X_{ij})} \left( w_i^T\tilde{w_j} +b_i + \tilde{b_j} - \log X_{ij} \right)^2
   \end{align*}
-  \begin{center}
-    $f$ should not overweight rare and too-frequent co-occurences.
-  \end{center}
+  
   \visible<2->{
+    \begin{center}
+      $f$ should not overweight rare and too-frequent co-occurences.
+    \end{center}
     \begin{align*}
       f(x)=
       \begin{cases}
@@ -165,12 +187,15 @@
       %% you sample a entry from X, compute grad and descend
     \end{itemize}
     \onslide<3->{\textsc{Parameters:} vector dim., context size, corpus, $x_{max},\alpha$.}
+    %% wide range of parameters that you can play with, and they do have effect
   \end{exampleblock}
   
   \onslide<4->
   \begin{alertblock}{Evaluation}
+    %% we will evaluate the model on 3 fronts
     \begin{itemize}[<+->]
     \item Semantic Relatedness % (Google Dataset) % intrinsic
+      %% assess how good the vectors are at finding semantic relatedness
       \begin{itemize}
       \item \textsc{Putin} is to \textsc{Russia} as \textsc{Sarkozy} is to ? (\textsc{France})
       \end{itemize}
@@ -203,19 +228,19 @@
       \hline
       \color<2->{red}{SG} & 300 & 1B & 61 & 61 & 61\\
       \color<2->{red}{CBOW} & 300 & 1.6B & 16.1 & 52.6 & 36.1\\
-      GloVe & 300 & 1.6B & 80.8 & 61.5 & 70.3\\
+      GloVe & 300 & 1.6B & \underline{80.8} & \underline{61.5} & \underline{70.3}\\
       \hline
       SVD & 300 & 6B & 6.3 & 8.1 & 7.3\\
       SVD-S & 300 & 6B & 36.7 & 46.6 & 42.1\\
       SVD-L & 300 & 6B & 56.6 & 63.0 & 60.1\\
-      CBOW & 300 & 6B & 63.6 & 67.4 & 65.7\\
+      CBOW & 300 & 6B & 63.6 & \underline{67.4} & 65.7\\
       SG & 300 & 6B & 73.0 & 66.0 & 69.1\\
-      GloVe & 300 & 6B & 77.4 & 67.0 & 71.7\\
+      GloVe & 300 & 6B & \underline{77.4} & 67.0 & \underline{71.7}\\
       \hline
       \color<2->{red}{CBOW} & 1000 & 6B & 57.3 & 68.9 & 63.7\\
       \color<2->{red}{SG} & 1000 & 6B & 66.1 & 65.1 & 65.6\\
       SVD-L & 300 & 42B & 38.4 & 58.2 & 49.2\\
-      GloVe & 300 & 42B & 81.9 & 69.3 & 75.0\\
+      GloVe & 300 & 42B & \underline{81.9} & \underline{69.3} & \underline{75.0}\\
       \hline
     \end{tabular}
     \caption{\% accuracy on analogy discovery}
@@ -289,14 +314,14 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}{GloVe vs. word2vec}
-  \begin{figure}
-    \centering
-    \includegraphics[scale=0.29]{images/gloveVSword2vec.png}
-    \caption{Runtime and Accuracy Comparison}
-    %% take this with a pinch of salt
-  \end{figure}
-\end{frame}
+%% \begin{frame}{GloVe vs. word2vec}
+%%   \begin{figure}
+%%     \centering
+%%     \includegraphics[scale=0.29]{images/gloveVSword2vec.png}
+%%     \caption{Runtime and Accuracy Comparison}
+%%     %% take this with a pinch of salt
+%%   \end{figure}
+%% \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Conclusion}
