@@ -7,35 +7,35 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Introduction - Partition Function Woes}
-  \begin{itemize}[<+->]
-  \item Gibbs Distribution
-    \begin{align*}
-      \Pr(\x;\theta) =\frac{\exp(\theta^T\psi(\x))}{Z} \tag{$Z=\sum_{\x} \theta^T\psi(\x)$}
-    \end{align*}
-    %% standard/popular way of probabilistic modeling 
-  \item Parameter Estimation,
-    \begin{align*}
-      - \nabla_\theta \log LLH = \E_{\Pr(x;\theta)}\left[\psi(\x)\right] - \frac{1}{T} \sum_i\psi(x_i)
-    \end{align*}
-    %% suppose you are doing parameter estimation using MLE.
-  \item Computing $\E_{\Pr(x;\theta)}[.]$ often intractable.
-    %% may have to sum over exponential # of states
-  \item So we resort to approximations.
-    %% Sampling from posterior is hard
-    %% MCMC, Contrastive Divergence
-    %% sampling is inherently tied to Z
-    %% but computing Z is #P hard in general
-    %% This paper provides a way to obtain exact samples from a intractable distribution.
-  \end{itemize}
-\end{frame}
+%% \begin{frame}{Introduction - Partition Function Woes}
+%%   \begin{itemize}[<+->]
+%%   \item Gibbs Distribution
+%%     \begin{align*}
+%%       \Pr(\x;\theta) =\frac{\exp(\theta^T\psi(\x))}{Z(\theta)} \tag{$Z=\sum_{\x} \theta^T\psi(\x)$}
+%%     \end{align*}
+%%     %% A standard/popular way of probabilistic modeling 
+%%   \item Parameter Estimation,
+%%     \begin{align*}
+%%       - \frac{1}{T}\nabla_\theta \sum_i\log LLH = \E_{\Pr(x;\theta)}\left[\psi(\x)\right] - \frac{1}{T} \sum_i\psi(x_i)
+%%     \end{align*}
+%%     %% suppose you are doing parameter estimation using MLE.
+%%   \item Computing $\E_{\Pr(x;\theta)}[.]$ often intractable.
+%%     %% may have to sum over exponential # of states
+%%   \item So we resort to approximations.
+%%     %% Sampling from posterior is hard
+%%     %% MCMC, Contrastive Divergence
+%%     %% sampling is inherently tied to Z
+%%     %% but computing Z is #P hard in general
+%%     %% This paper provides a way to obtain exact samples from a intractable distribution.
+%%   \end{itemize}
+%% \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}[label=framelabel]{Detour - Gumbel Distribution}
+\begin{frame}[label=framelabel]{Gumbel Distribution}
   %% mathematical machinery 
   \begin{itemize}[<+->]
   \item Models distribution of maximas of samples from exponential-like distributions.
-  %% \item Gumbel with location parameter $m$, $Gumbel(m)$.
+    %% \item Gumbel with location parameter $m$, $Gumbel(m)$.
   \item CDF for $Gumbel(m)$, $\Pr(G\le g) = \exp(-\exp(-g+m))$
     %% \item Mean is $m+\gamma$, Variance is $\frac{\pi^2}{6}$.
     \begin{figure}
@@ -50,32 +50,32 @@
   \onslide<1->
   \begin{property}
     \footnotesize{
-          For $G(i) \sim Gumbel(0)$, and any $B \subseteq [n]$
-    \begin{align*}
-      & \argmax_{i \in B}{G(i)+\phi(i)} \sim \frac{\exp(\phi(i))}{\sum_{i \in B} \exp(\phi(i))} \\
-      & \max_{i \in B}{G(i)+\phi(i)} \sim Gumbel\left(\log \sum_{i \in B} \exp(\phi(i))\right) \tag{Max-Stability}
-      %% proof in \cite{hazan}
-    \end{align*}
+      For $G(i) \sim Gumbel(0)$, and any $B \subseteq [n]$
+      \begin{align*}
+        & \argmax_{i \in B}{G(i)+\phi(i)} \sim \frac{\exp(\phi(i))}{\sum_{i \in B} \exp(\phi(i))} \\
+        & \max_{i \in B}{G(i)+\phi(i)} \sim Gumbel\left(\log \sum_{i \in B} \exp(\phi(i))\right) \tag{Max-Stability}
+        %% proof in \cite{hazan}
+      \end{align*}
     }
   \end{property}
   %% Suppose you have a discrete distribution specified by un-normalized log probabilities $\{\phi(i)\}_{i=1}^{k}$ over k configurations $\{x_1,\cdots,x_k\}$, i.e.,
   \onslide<2->
-  \begin{usage}
+  \begin{usage}[The Gumbel Max-Trick]
     \footnotesize{
-  Easy Sampling with un-normalized log probabilities,
-  \begin{align}
-    \Pr(x_i) = \frac{\exp\phi(i)}{\sum_j\exp\phi(j)} \tag{$i \in [k]$}
-  \end{align}
-  \vspace{-5mm}
-  %% We can draw samples $x_i \sim \Pr$ from this distribution using the following procedure.
-  \onslide<3->
-  \begin{align*}
-    & \text{Sample} \qquad G(i) \sim Gumbel(0) \text{ for } i=1..k\\
-    & \text{then} \qquad \text{ Choose } x_j \text{ such that } j= \argmax_i \{G(i) +\phi(i)\}
-  \end{align*}
+      Drawing samples from discrete dist. when given un-normalized log probabilities,
+      \begin{align}
+        \Pr(x_i) = \frac{\exp\phi(i)}{\sum_j\exp\phi(j)} \tag{$i \in [k]$}
+      \end{align}
+      \vspace{-5mm}
+      %% We can draw samples $x_i \sim \Pr$ from this distribution using the following procedure.
+      \onslide<3->
+      \begin{align*}
+        & \text{Sample} \qquad G(i) \sim Gumbel(0) \text{ for } i=1..k\\
+        & \text{then} \qquad \text{ Choose } x_j \text{ such that } j= \argmax_i \{G(i) +\phi(i)\}
+      \end{align*}
       %% the argmax of the perturbed probabilities is distributed as eq.\ref{eq:gibbs} above
 
-  }
+    }
   \end{usage}
 \end{frame}
 
@@ -128,25 +128,25 @@
       \path[draw,red,thick] (-2.0,0) -- (-2.0,3.0) circle (1.5pt);
       \node[below] (x2) at (-2.0,0) {$X_2$};
       \node[above] (g2) at (-2.0,3.0) {$G_2$};
-      \only<3>\path[draw,red,dotted,ultra thick,->] (2.5,4.0) -- (-2.0,3.0);
+      \only<3>\path[draw,blue,dotted,ultra thick,->] (2.5,4.0) -- (-2.0,3.0);
 
       \onslide<4->
       \path[draw,red,thick] (5.0,0) -- (5.0,-1.5) circle (1.5pt);
       \node[above] at (5.0,0) {$X_3$};
-      \node[above] at (5.0,-1.5) {$G_3$};
-      \only<4>\path[draw,red,dotted,ultra thick,->] (2.5,4.0) -- (5.0,-1.5);
+      \node[below] at (5.0,-1.5) {$G_3$};
+      \only<4>\path[draw,blue,dotted,ultra thick,->] (2.5,4.0) -- (5.0,-1.5);
 
       \onslide<5->
       \path[draw,red,thick] (-1.0,0) -- (-1.0,1.5) circle (1.5pt);
       \node[below] at (-1.0,0) {$X_4$};
       \node[above] at (-1.0,1.5) {$G_4$};
-      \only<5>\path[draw,red,dotted,ultra thick,->] (-2.0,3.0) -- (-1.0,1.5);
+      \only<5>\path[draw,blue,dotted,ultra thick,->] (-2.0,3.0) -- (-1.0,1.5);
 
       \onslide<6->
       \path[draw,red,thick] (-3.5,0) -- (-3.5,0.5) circle (1.5pt);
       \node[below] at (-3.5,0) {$X_5$};
       \node[above] at (-3.5,0.5) {$G_5$};
-      \only<6>\path[draw,red,dotted,ultra thick,->] (-2.0,3.0) -- (-3.5,0.5);
+      \only<6>\path[draw,blue,dotted,ultra thick,->] (-2.0,3.0) -- (-3.5,0.5);
       
     \end{tikzpicture}
   \end{figure}
@@ -307,7 +307,7 @@
       \only<3,4>{
         \path[draw,dotted,blue,very thick] (-5,3.5) -- (0,3.5);
       }
-            
+      
       \only<3>{
         \path[draw,dotted,blue,very thick] (0,4.75) -- (5,4.75);
       }
