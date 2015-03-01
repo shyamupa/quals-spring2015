@@ -54,13 +54,13 @@
               extra x ticks={0},  % Add an extra tick at position x=1
               extra x tick style={    % Set styles that only apply to the extra tick
                 xticklabel pos=right,   % Put the label on the right ( = top) side of the plot
-                xticklabels={mean of gaussian/ mode of gumbel}, % Set the label text
-                xmajorgrids=true            % Draw grid line
+                xticklabels={m}, % Set the label text
+                xmajorgrids=true,            % Draw grid line
               }
             ]
             \addplot table [x=X, y=gumbel] {data/data.dat};
             \addplot table [x=X, y=gaussian] {data/data.dat};
-            \legend{gumbel,gaussian}
+            \legend{gumbel(0),gaussian(0)}
           \end{axis}
         \end{tikzpicture}
         
@@ -143,7 +143,7 @@
   \item \textsc{Question:} What happens if we move from discrete to continuous space?
   \item \textsc{Question:} Is There A Gumbel Max Trick for Continuous Distributions?
   \item {\color{red} This paper --- Yes!}
-    %% One that does not resort to making infinite??exponential perturbations?
+    %% One that does not resort to making infinite exponential perturbations?
   \end{itemize}
 \end{frame}
 
@@ -207,13 +207,12 @@
       \node[below] at (-3.5,0) {$X_5$};
       \node[above] at (-3.5,0.5) {$G_5$};
       \only<6>\path[draw,blue,dotted,ultra thick,->] (-2.0,3.0) -- (-3.5,0.5);
-      
     \end{tikzpicture}
   \end{figure}
 
   \begin{center}
     \only<2>{
-      $X_1 \sim \exp(\phi(x))/\mu(\Omega)$ \\
+      $X_1 \sim \exp(\phi(x))/\mu(\Omega)$ % (global maximum)\\
       $G_1 \sim Gumbel(\log\mu(\Omega))$ \\
       and partition space accordingly
       
