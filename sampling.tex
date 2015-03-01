@@ -32,34 +32,48 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}[label=framelabel]{Gumbel Distribution}
-  %% mathematical machinery 
+  %% First lets establish the mathematical machinery 
   \begin{itemize}[<+->]
-  \item Models distribution of maximas of samples from exponential-like distributions.
-    %% \item Gumbel with location parameter $m$, $Gumbel(m)$.
+  \item Distribution of maximas of samples from exponential-like distributions.
+    %% We will work with Gumbel with location parameter only.
   \item CDF for $Gumbel(m)$, $\Pr(G\le g) = \exp(-\exp(-g+m))$
-    %% \item Mean is $m+\gamma$, Variance is $\frac{\pi^2}{6}$.
-    \begin{figure}
-      \centering
-      \includegraphics[scale=0.7]{images/gumbel.png}
-    \end{figure}   
+    %% Mean is $m+\gamma$, Variance is $\frac{\pi^2}{6}$.
   \end{itemize}
+      \begin{figure}
+      \centering
+      %% \begin{minipage}{0.45\textwidth}
+      %%   \includegraphics[height=5cm,width=6cm]{images/gumbel.png}
+      %% \end{minipage}
+      %% \hfill
+      %% \begin{minipage}{0.45\textwidth}
+        \includegraphics[scale=0.2]{images/gumbel_2.png}
+      %% \end{minipage}
+    \end{figure}   
+
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Gumbel-Max Trick (Discrete Case)}
+\begin{frame}{Motivation}
+  %% motivation stems from a trick made possible by the gumbel distribution 
   \onslide<1->
   \begin{property}
     \footnotesize{
       For $G(i) \sim Gumbel(0)$, and any $B \subseteq [n]$
       \begin{align*}
-        & \argmax_{i \in B}{G(i)+\phi(i)} \sim \frac{\exp(\phi(i))}{\sum_{i \in B} \exp(\phi(i))} \\
-        & \max_{i \in B}{G(i)+\phi(i)} \sim Gumbel\left(\log \sum_{i \in B} \exp(\phi(i))\right) \tag{Max-Stability}
+        \onslide<2->{
+          & \max_{i \in B}{G(i)+\phi(i)} \sim Gumbel\left(\log \sum_{i \in B} \exp(\phi(i))\right) \tag{Max-Stability}\\
+          %% max of perturbed gumbels is also gumbelly distributed
+        }
+        \onslide<3->{
+          & \argmax_{i \in B}{G(i)+\phi(i)} \sim \frac{\exp(\phi(i))}{\sum_{i \in B} \exp(\phi(i))}
+        }
+        %% position of the optimas are distributed acc. to gibbs
         %% proof in \cite{hazan}
       \end{align*}
     }
   \end{property}
   %% Suppose you have a discrete distribution specified by un-normalized log probabilities $\{\phi(i)\}_{i=1}^{k}$ over k configurations $\{x_1,\cdots,x_k\}$, i.e.,
-  \onslide<2->
+  \onslide<4->
   \begin{usage}[The Gumbel Max-Trick]
     \footnotesize{
       Drawing samples from discrete dist. when given un-normalized log probabilities,
@@ -68,7 +82,7 @@
       \end{align}
       \vspace{-5mm}
       %% We can draw samples $x_i \sim \Pr$ from this distribution using the following procedure.
-      \onslide<3->
+      \onslide<5->
       \begin{align*}
         & \text{Sample} \qquad G(i) \sim Gumbel(0) \text{ for } i=1..k\\
         & \text{then} \qquad \text{ Choose } x_j \text{ such that } j= \argmax_i \{G(i) +\phi(i)\}
@@ -99,15 +113,25 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{The Gumbel Process}
-  %% This is not definition!
+    \footnotesize{
   \begin{definition}
+    $\{G_\mu \mid B \subseteq \Omega\}$ is a Gumbel Process if,
+    \begin{align*} 
+      & G_\mu \sim Gumbel(\log \mu(B)) \tag{samples are maxes}\\
+      & G_\mu(B) \perp G_\mu(B^c) \tag{samples are disjoint}\\
+      & G_\mu(A \cup B) = \max(G_\mu(A),G_\mu(B)) \tag{maxes are consistent}
+    \end{align*}
+  \end{definition}
+  \begin{property}
     For $B \subseteq \Omega$,
     \begin{align*}
       \max \{G_k \mid X_k \in B\} \sim Gumbel(log \mu(B)) \\
-      \argmax \{G_k \mid X_k \in B\} \sim \frac{\exp(\phi(x))1_{x \in B}}{\mu(B)} \\
+      \argmax \{G_k \mid X_k \in B\} \sim \frac{\exp(\phi(x))1_{x \in B}}{\mu(B)}
     \end{align*}
     Then $\{ \max \{G_k \mid X_k \in B\} \mid B \subseteq \Omega\}$ is a Gumbel Process.
-\end{definition}\end{frame}
+  \end{property}
+  }
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Top-Down Construction of Gumbel Process}
@@ -154,7 +178,9 @@
   \begin{center}
     \only<2>{
       $X_1 \sim \exp(\phi(x))/\mu(\Omega)$ \\
-      $G_1 \sim Gumbel(\log\mu(\Omega))$
+      $G_1 \sim Gumbel(\log\mu(\Omega))$ \\
+      and partition space accordingly
+      
       %% \begin{align*}
       %%   & X_1 \sim \exp(\phi(x))/\mu(\Omega) \tag{assume $\log \mu(\Omega)$ is computable}\\
       %%   & G_1 \sim Gumbel(\log\mu(\Omega))
@@ -162,15 +188,18 @@
     }
     \only<3>{
       $X_2 \sim \exp(\phi(x))1_{x \in B}/\mu(B)$ \\
-      $G_2 \sim TrunGumbel(\log\mu(B),G_1)$ 
+      $G_2 \sim TruncGumbel(\log\mu(B),G_1)$ \\
+      sample $X_2$ from partition $B$, and also sample the regional max $G_2$.
     }
     \only<4>{
       Do same for other partition $B^c$,\\
-      first sampling the argmax $X_i$ and then sampling its value $G_i$
+      first sampling the argmax $X_i$ \\
+      and then sampling its value $G_i$.
     }
     \only<5->{
       Sample recursively.\\
-      You now have a sequence of $(G_i,X_i)$ samples from the Gumbel Process.
+      You now have a sequence of $(G_i,X_i)$ \\
+      samples from the Gumbel Process.
     }
   \end{center}
   %% Assume log Z is computable for now.
