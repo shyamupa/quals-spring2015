@@ -8,37 +8,24 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{My Current Research}
-  Grounding Events to a Knowledge Base
-
+\begin{frame}{Grounding Events to a Knowledge Base}
   \begin{block}{Example}
-    After the death of \highlightchunk{red}{Cromwell} in 1658, \highlightchunk{red}{Charles'} chances of regaining the Crown at first seemed slim as Cromwell was succeeded as Lord Protector by his son, Richard.
+    After the {\color<2>{blue} death of \highlightchunk{red}{Cromwell}}, \highlightchunk{red}{Charles'} chances of regaining the Crown at first seemed slim as Cromwell was succeeded as Lord Protector by his son, Richard.
   \end{block}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{My Current Research}
-  Grounding Events to a Knowledge Base
-
-  \begin{block}{Example}
-    After the {\color{blue} death of \highlightchunk{red}{Cromwell}} in 1658, \highlightchunk{red}{Charles'} chances of regaining the Crown at first seemed slim as Cromwell was succeeded as Lord Protector by his son, Richard.
-  \end{block}
-
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Motivation}
-  \begin{itemize}
-  \item Event mentions in a text demonstrate ambiguity and variability just like named-entities.
+  \begin{itemize}[<+->]
+  \item Event mentions in a text demonstrate ambiguity and variability.
     \begin{exampleblock}{Variability}
-      \emph{Battle of Waterloo, defeat at Waterloo, campaign of Waterloo, the 1815 battle, Napolean's defeat, French cavalry attack}
+      {Battle of Waterloo, defeat at Waterloo, campaign of Waterloo, the 1815 battle, Napolean's defeat, French cavalry attack}
     \end{exampleblock}
 
-    \begin{exampleblock}{Example for Ambiguity}
-      \emph{\highlightchunk{red}{At the Olympics} in Athens, Greece, Kupets won a silver medal with her fellow U.S. team members in the team all-around competition.}
+    \begin{exampleblock}{Ambiguity}
+      {\highlightchunk{red}{At the Olympics} in Athens, Greece, Kupets won a silver medal with her fellow U.S. team members in the team all-around competition.}
     \end{exampleblock}
-  \item Benefits of grounding events - more context available for downstream tasks like event coreference, news aggregation etc.
+  \item Benefits of grounding - more context available for downstream tasks like event coreference, news aggregation etc.
   \end{itemize}
 \end{frame}
 
@@ -46,30 +33,34 @@
 \begin{frame}{Comparison with Entity Wikification}
 
   \begin{itemize}[<+->]
-  \item \emph{Scarcity of training data}: Only 1\% of wikipedia pages are about events. Number higher if you consider events in subheading of an entity's page (eg. ``Invasion of Russia'' section under the wikipage of \textsc{Napolean}).
-  \item Candidate generation is not as trivial as dictionary look-up.
+  \item \emph{Scarcity of training data}: Only 1\% of wikipedia pages are about events.
+    %% Number higher if you consider events in subheading of an entity's page (eg. ``Invasion of Russia'' section under the wikipage of \textsc{Napolean}).
+  \item Non-Trivial Candidate Generation.
+    %% is not as trivial as dictionary look-up.
   \item {\color{red}solution:} Cascaded filtering.
-  \item Mentions are not as specific. "Chicago" vs "the civil war".
+  \item Definition of Event Mention
+    %% Mentions are not as specific. "Chicago" vs "the civil war".
   \item {\color{red}solution:} Dynamic context expansion.
   \end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
+%% \begin{frame}
 
-  \begin{block}{Problem}
-    Candidate generation is not as trivial as dictionary look-up.
-  \end{block}
+%%   \begin{block}{Problem}
+%%     Candidate generation is not as trivial as dictionary look-up.
+%%   \end{block}
 
-  \begin{exampleblock}{Possible Solution}
-    Cascaded filtering
-  \end{exampleblock}
+%%   \begin{exampleblock}{Possible Solution}
+%%     Cascaded filtering
+%%   \end{exampleblock}
 
-  \begin{block}{Problem}
-    Mentions are not as specific. "Chicago" vs "the civil war".
-  \end{block}
+%%   \begin{block}{Problem}
+%%     Mentions are not as specific. "Chicago" vs "the civil war".
+%%   \end{block}
 
-  \begin{exampleblock}{Possible Solution}
-    Cascaded filtering
-  \end{exampleblock}
-\end{frame}
+%%   \begin{exampleblock}{Possible Solution}
+%%     Cascaded filtering
+%%   \end{exampleblock}
+
+%% \end{frame}
