@@ -40,16 +40,51 @@
     %% Mean is $m+\gamma$, Variance is $\frac{\pi^2}{6}$.
   \end{itemize}
       \begin{figure}
-      \centering
-      %% \begin{minipage}{0.45\textwidth}
-      %%   \includegraphics[height=5cm,width=6cm]{images/gumbel.png}
-      %% \end{minipage}
-      %% \hfill
-      %% \begin{minipage}{0.45\textwidth}
-        \includegraphics[scale=0.2]{images/gumbel_2.png}
-      %% \end{minipage}
-    \end{figure}   
+        \centering
 
+        \begin{tikzpicture}[scale=0.8] % plotting with data in columns
+          \begin{axis}[
+              xlabel=x,
+              ylabel=y,
+              legend style={
+                at={(0.5,-0.18)},       % 0.5 times xmin,xmax and -0.18 times ymin,ymax, think affine comb.
+                anchor=north,
+                legend columns=-1       % no columns, only rows
+              },
+              extra x ticks={0},  % Add an extra tick at position x=1
+              extra x tick style={    % Set styles that only apply to the extra tick
+                xticklabel pos=right,   % Put the label on the right ( = top) side of the plot
+                xticklabels={mean of gaussian/ mode of gumbel}, % Set the label text
+                xmajorgrids=true            % Draw grid line
+              }
+            ]
+            \addplot table [x=X, y=gumbel] {data/data.dat};
+            \addplot table [x=X, y=gaussian] {data/data.dat};
+            \legend{gumbel,gaussian}
+          \end{axis}
+        \end{tikzpicture}
+        
+      %% \begin{tikzpicture}
+      %%   \node[anchor=south west,inner sep=0] (image) at (0,0) {\includegraphics[width=0.5\textwidth]{images/gumbel_4.png}};
+
+      %%   %% \draw[help lines,xstep=1,ystep=1] (0,0) grid (6,5);
+      %%   %% \foreach \x in {0,1,...,5} { \node [anchor=north] at (\x,0) {\x,0};}
+      %%   %% \foreach \y in {0,1,...,4} { \node [anchor=east] at (0,\y) {0,\y};}
+
+      %%   \begin{scope}[x={(image.south east)},y={(image.north west)}]
+      %%     %% \draw[red,ultra thick,rounded corners] (0.62,0.65) rectangle (0.78,0.75);
+      %%     %% \path[draw,black,ultra thick] (3.1,0) -- (3.1,0.2);
+      %%   \end{scope}
+      %% \end{tikzpicture}
+      %% %% %% %% \begin{minipage}{0.45\textwidth}
+      %% %% %% %%   \includegraphics[height=5cm,width=6cm]{images/gumbel.png}
+      %% %% %% %% \end{minipage}
+      %% %% %% %% \hfill
+      %% %% %% %% \begin{minipage}{0.45\textwidth}
+      %% %%   \includegraphics[scale=0.4]{images/gumbel_4.png}
+      %% %% %% %% \end{minipage}
+      \end{figure}   
+    
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -88,7 +123,6 @@
         & \text{then} \qquad \text{ Choose } x_j \text{ such that } j= \argmax_i \{G(i) +\phi(i)\}
       \end{align*}
       %% the argmax of the perturbed probabilities is distributed as eq.\ref{eq:gibbs} above
-
     }
   \end{usage}
 \end{frame}
@@ -98,7 +132,9 @@
   %% Wait ... So What?
   %% All this is cute, but what is the benefit?
   \begin{itemize}[<+->]
-  \item Partition Function evaluation $\implies$ Computing (many) perturbed MAPs. % We have reduced a to b. No need to compute the partition function, as long as you can compute the (perturbed) argmax!
+  \item Partition Function evaluation $\implies$ Computing (many) perturbed MAPs.
+    %% We have reduced a to b. No need to compute the partition function, as long as you can compute the (perturbed) argmax!
+    %% perturbation is un-normalized
   \item \emph{Exact} samples from the target distribution. % Note that the samples are exact. (No approximations!)
     %% examples when things are approximations, MCMC ``once the chain reaches stationary distribution''
   \end{itemize}
@@ -209,14 +245,15 @@
 \begin{frame}<1>[label=progress]{Progress So Far}
   \begin{itemize}[<+->]
   \item \textsc{Goal}: Drawing samples from target distribution $\Pr$.
-  \item Reduction: $\argmax$ of sequence of (perturbed) Gumbel samples. % We reduced it to computing argmax of a sequence of samples from a exotic distribution. % (because argmax follows the target dist)
+  \item Reduction: $\argmax$ of sequence of (perturbed) Gumbel samples.
+    %% We reduced it to computing argmax of a sequence of samples from a exotic distribution. % (because argmax follows the target dist)
   \end{itemize}
   \begin{overprint}
 
     \onslide<3>
     \textbf{Problems}
     \begin{itemize}
-    \item {\color{red}Problem 1:} Drawing Gumbels requires knowledge of $Z_{\Pr}$        % Drawing samples from the distribution requires knowing Z of my target distribution.
+    \item {\color{red}Problem 1:} Computing $Z_{\Pr}$        % Drawing samples from the distribution requires knowing Z of my target distribution.
       %% \item {\color{red}Problem 2:} Drawing infinite samples to compute argmax on. % We do not want to draw infinite samples to compute argmax on.
     \end{itemize}
 
