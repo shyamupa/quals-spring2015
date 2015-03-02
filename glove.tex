@@ -91,12 +91,14 @@
       %%   \frac{\Pr(k \mid ice)}{\Pr(k \mid steam)} \approx \frac{\Pr(k \mid solid)}{\Pr(k \mid gas)} \Forall k
       %% \end{align*}
   }
-  \visible<5->{
     \begin{align*} 
-      & w_i^Tw_j = \log \Pr(j\mid i) \\
-      & (w_{ice}-w_{steam})^T w_j = \log\frac{\Pr(j \mid ice)}{\Pr(j \mid steam)}
+      \visible<5->{
+        w_i^Tw_j &= \log \Pr(j\mid i) \\
+      }
+      \visible<6->{
+        (w_{ice}-w_{steam})^T w_j &= \log\frac{\Pr(j \mid ice)}{\Pr(j \mid steam)}
+      }
     \end{align*}
-  }
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -133,6 +135,7 @@
     \begin{center}
       $f$ should not overweight rare and too-frequent co-occurences.
     \end{center}
+    %% f should clip values above a certain threshold
     \begin{align*}
       f(x)=
       \begin{cases}
@@ -140,7 +143,7 @@
         1 & \text{ otherwise}
       \end{cases}
       %% explain what x_max and \alpha do
-      %% x_max prevents too-freq t overweigh
+      %% x_max prevents too-freq to overweigh
       %% large alpha means underweigh rare occurences more severely
     \end{align*}
   }
@@ -296,21 +299,21 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Choice of Corpus}
-  \begin{figure}
-    \centering
-    \includegraphics[scale=0.4]{images/corpus.png}
-    %% \begin{subfigure}[b]{0.33\textwidth}
-    %%   \includegraphics[width=\textwidth]{images/analogy1.png}
-    %% \end{subfigure}%
-    %% \begin{subfigure}[b]{0.33\textwidth}
-    %%   \includegraphics[width=\textwidth]{images/analogy2.png}
-    %% \end{subfigure}%
-    %% \begin{subfigure}[b]{0.33\textwidth}
-    %%   \includegraphics[width=\textwidth]{images/analogy3.png}
-    %% \end{subfigure}%
-  \end{figure}
-\end{frame}
+%% \begin{frame}{Choice of Corpus}
+%%   \begin{figure}
+%%     \centering
+%%     \includegraphics[scale=0.4]{images/corpus.png}
+%%     %% \begin{subfigure}[b]{0.33\textwidth}
+%%     %%   \includegraphics[width=\textwidth]{images/analogy1.png}
+%%     %% \end{subfigure}%
+%%     %% \begin{subfigure}[b]{0.33\textwidth}
+%%     %%   \includegraphics[width=\textwidth]{images/analogy2.png}
+%%     %% \end{subfigure}%
+%%     %% \begin{subfigure}[b]{0.33\textwidth}
+%%     %%   \includegraphics[width=\textwidth]{images/analogy3.png}
+%%     %% \end{subfigure}%
+%%   \end{figure}
+%% \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
