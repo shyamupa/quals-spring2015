@@ -95,7 +95,6 @@
   %% motivation stems from a trick made possible by the gumbel distribution 
   \onslide<1->
   \begin{property}
-    \footnotesize{
       For $G(i) \sim Gumbel(0)$, and any $B \subseteq [n]$
       \begin{align*}
         \onslide<2->{
@@ -109,30 +108,28 @@
         %% proof in \cite{hazan}
       \end{align*}
       Also the $\argmax \perp \max$.
-    }
   \end{property}
+
+\end{frame}
+
+
+\begin{frame}{Motivation}
   %% Suppose you have a discrete distribution specified by un-normalized log probabilities $\{\phi(i)\}_{i=1}^{k}$ over k configurations $\{x_1,\cdots,x_k\}$, i.e.,
-  \onslide<4->
+  \onslide<1->
   \begin{usage}[The Gumbel Max-Trick]
-    \footnotesize{
       Drawing samples from following when given only $\phi(i)$,
-      \vspace{-3mm}
       \begin{align}
         \Pr(x_i) = \frac{\exp\phi(i)}{\sum_j\exp\phi(j)} \tag{$i \in [k]$}
       \end{align}
-      \vspace{-5mm}
       %% We can draw samples $x_i \sim \Pr$ from this distribution using the following procedure.
-      \onslide<5->
+      \onslide<2->
       \begin{align*}
         & \text{Sample} \qquad G(i) \sim Gumbel(0) \text{ for } i=1..k\\
         & \text{then} \qquad \text{ Choose } x_j \text{ such that } j= \argmax_i \{G(i) +\phi(i)\}
       \end{align*}
-      \vspace{-5mm}
       %% the argmax of the perturbed probabilities is distributed as eq.\ref{eq:gibbs} above
-    }
   \end{usage}
 \end{frame}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Benefits}
   %% Wait ... So What?
@@ -166,12 +163,12 @@
     \end{align*}
   \end{definition}
   \begin{property}
-    For $B \subseteq \Omega$,
+    For a Gumbel Process, $\{ \max \{G_k \mid X_k \in B\} \mid B \subseteq \Omega\}$,
     \begin{align*}
       \max \{G_k \mid X_k \in B\} \sim Gumbel(log \mu(B)) \\
       \argmax \{G_k \mid X_k \in B\} \sim \frac{\exp(\phi(x))1_{x \in B}}{\mu(B)}
     \end{align*}
-    Then $\{ \max \{G_k \mid X_k \in B\} \mid B \subseteq \Omega\}$ is a Gumbel Process.
+    
   \end{property}
   }
 \end{frame}
@@ -365,7 +362,7 @@
       %% \end{axis}
       
       \only<2>{
-        \path[draw,dotted,blue,very thick] (-5,5.5) -- (5,5.5);
+        \path[draw,dotted,blue,very thick] (-5,5.5) edge node[above] {upper bound} (5,5.5);
       }
       %% \addplot+[ycomb,black,thick] {1};
       %% \node[above] (g1) at (0,4) {};
@@ -376,7 +373,7 @@
       }
       
       \only<2,3>{
-        \path[draw,green,dotted,very thick] (-5,4) -- (5,4);
+        \path[draw,green,dotted,very thick] (-5,4) edge node[below right] {\only<2>{lower bound}} (5,4);
       }
       
       \onslide<3->{
