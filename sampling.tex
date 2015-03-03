@@ -108,13 +108,15 @@
         %% position of the optimas are distributed acc. to gibbs
         %% proof in \cite{hazan}
       \end{align*}
+      Also the $\argmax \perp \max$.
     }
   \end{property}
   %% Suppose you have a discrete distribution specified by un-normalized log probabilities $\{\phi(i)\}_{i=1}^{k}$ over k configurations $\{x_1,\cdots,x_k\}$, i.e.,
   \onslide<4->
   \begin{usage}[The Gumbel Max-Trick]
     \footnotesize{
-      Drawing samples from discrete dist. when given un-normalized log probabilities,
+      Drawing samples from following when given only $\phi(i)$,
+      \vspace{-3mm}
       \begin{align}
         \Pr(x_i) = \frac{\exp\phi(i)}{\sum_j\exp\phi(j)} \tag{$i \in [k]$}
       \end{align}
@@ -125,6 +127,7 @@
         & \text{Sample} \qquad G(i) \sim Gumbel(0) \text{ for } i=1..k\\
         & \text{then} \qquad \text{ Choose } x_j \text{ such that } j= \argmax_i \{G(i) +\phi(i)\}
       \end{align*}
+      \vspace{-5mm}
       %% the argmax of the perturbed probabilities is distributed as eq.\ref{eq:gibbs} above
     }
   \end{usage}
@@ -135,15 +138,16 @@
   %% Wait ... So What?
   %% All this is cute, but what is the benefit?
   \begin{itemize}[<+->]
-  \item Partition Function evaluation $\implies$ Computing (many) perturbed MAPs.
+  \item Partition Function estimation $\implies$ Computing (many) perturbed MAPs.
     %% We have reduced a to b. No need to compute the partition function, as long as you can compute the (perturbed) argmax!
     %% perturbation is un-normalized
-  \item \emph{Exact} samples from the target distribution. % Note that the samples are exact. (No approximations!)
+  %% \item \emph{Exact} samples from the target distribution. % Note that the samples are exact. (No approximations!)
     %% examples when things are approximations, MCMC ``once the chain reaches stationary distribution''
   \end{itemize}
   
   \begin{itemize}[<+->]
-  %% \item \textsc{Question:} What happens if we move from discrete to continuous space?
+  \item \textsc{Question:} What if $k$ is large?
+  \item \textsc{Question:} What happens if we move from discrete to continuous space?
   \item \textsc{Question:} Is There A Gumbel Max Trick for Continuous Distributions?
   \item {\color{red} This paper --- Yes!}
     %% One that does not resort to making infinite exponential perturbations?
@@ -154,10 +158,10 @@
 \begin{frame}{The Gumbel Process}
     \footnotesize{
   \begin{definition}
-    $\{G_\mu \mid B \subseteq \Omega\}$ is a Gumbel Process if,
+    $\{G_\mu(B) \mid B \subseteq \Omega\}$ is a Gumbel Process if,
     \begin{align*} 
-      & G_\mu \sim Gumbel(\log \mu(B)) \tag{samples are maxes}\\
-      & G_\mu(B) \perp G_\mu(B^c) \tag{samples are disjoint}\\
+      & G_\mu(B) \sim Gumbel(\log \mu(B)) \tag{samples are regional maxes}\\
+      & G_\mu(B) \perp G_\mu(B^c) \tag{regional maxes are independent}\\
       & G_\mu(A \cup B) = \max(G_\mu(A),G_\mu(B)) \tag{maxes are consistent}
     \end{align*}
   \end{definition}
@@ -180,13 +184,20 @@
     \begin{tikzpicture}[scale=0.7]
       %% \draw[step=0.5,gray] (-5,-3) grid (5,3);
       \path[draw,black,ultra thick] (-5,0)--(6,0);
+      \onslide<1>
+      \node[below] at (3,0) {$\Omega$};
 
       \onslide<2->
       \path[draw,red,thick] (2.5,0) -- (2.5,4.0) circle (1.5pt);
       \node[below] (x1) at (2.5,0) {$X_1$};
       \node[above] (g1) at (2.5,4.0) {$G_1$};
-      \node[below] at (0.5,0) {\color{gray}{\small{$B$}}};
-      \node[below] at (4.0,0) {\color{gray}{\small{$B^c$}}};
+
+      \onslide<2-3>{
+       \node[below] at (0.5,0) {\color{gray}{\small{$B$}}}; 
+      }
+      \onslide<2-3>{
+        \node[below] at (4.0,0) {\color{gray}{\small{$B^c$}}};
+      }
 
       \onslide<3->
       \path[draw,red,thick] (-2.0,0) -- (-2.0,3.0) circle (1.5pt);
@@ -215,7 +226,7 @@
   \end{figure}
     }
   \begin{center}
-    \only<2>{
+    \visible<2>{
       $X_1 \sim \exp(\phi(x))/\mu(\Omega)$ \\% (global maximum)
       $G_1 \sim Gumbel(\log\mu(\Omega))$ \\
       %% and partition space accordingly
@@ -225,20 +236,20 @@
       %%   & G_1 \sim Gumbel(\log\mu(\Omega))
       %% \end{align*}
     }
-    \only<3>{
+    \visible<3>{
       $X_2 \sim \exp(\phi(x))1_{x \in B}/\mu(B)$ \\
       $G_2 \sim TruncGumbel(\log\mu(B),G_1)$ \\
       %% sample $X_2$ from partition $B$, and also sample the regional max $G_2$.
     }
-    \only<4>{
-      Do same for other partition $B^c$,\\
-      first sampling the argmax $X_i$ \\
-      and then sampling its value $G_i$.
+    \visible<4>{
+      %% Do same for other partition $B^c$,\\
+      %% first sampling the argmax $X_i$ \\
+      %% and then sampling its value $G_i$.
     }
-    \only<5->{
-      Sample recursively.\\
-      You now have a sequence of $(G_i,X_i)$ \\
-      samples from the Gumbel Process.
+    \visible<5->{
+      %% Sample recursively.\\
+      %% You now have a sequence of $(G_i,X_i)$ \\
+      %% samples from the Gumbel Process.
     }
   \end{center}
   %% Assume log Z is computable for now.
@@ -308,26 +319,28 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Quick Review of A*}
-  BFS exploration strategy
-  Uncover node in search space based on the following criteria,
+  %% graph exploration strategy
+  %% Uncover node in search space based on the following criteria
+  Choose based on,
   \begin{overprint}
     \onslide<1>
     \begin{align*}
-      \min_{n \in Q} g(n) + h(n)
+      \min_{n \in Q} f(n) = \min_{n \in Q} g(n) + h(n)
     \end{align*}
     \begin{itemize}
-    \item g(n) distance from the start node to node n (monotonically increasing)
-    \item h(n) estimate of distance from node n to the goal node
+    \item g(n) distance from the start node to node n.
+    \item h(n) \emph{estimate} of distance from node n to the goal node.
+    %% optimistic for less cost
     \end{itemize}
     \onslide<2>
     \begin{align*}
-      \max_{n \in Q} G(n) + H(n)
+      \max_{n \in Q} F(n) = \max_{n \in Q} G(n) + H(n)
     \end{align*}
     \begin{itemize}
-    \item G(n) utility accumulated since the start node to node n (monotonically decreasing)
-    \item G(n) estimate of utility from node n to the goal node
+    \item G(n) utility accumulated since the start node to node n.
+    \item H(n) estimate of utility from node n to the goal node.
+    %% optimistic for more reward 
     \end{itemize}
-    
   \end{overprint}
 \end{frame}
 
