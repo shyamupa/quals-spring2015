@@ -231,14 +231,14 @@
       \hline
       \color<2->{red}{SG} & 300 & 1B & 61.0 & 61.0 & 61.0\\
       \color<2->{red}{CBOW} & 300 & 1.6B & 16.1 & 52.6 & 36.1\\
-      GloVe & 300 & 1.6B & \underline{80.8} & \underline{61.5} & \underline{70.3}\\
+      GloVe & 300 & 1.6B & \color<4->{green}{\underline{80.8}} & \underline{61.5} & \underline{70.3}\\
       \hline
       SVD & 300 & 6B & 6.3 & 8.1 & 7.3\\
       SVD-S & 300 & 6B & 36.7 & 46.6 & 42.1\\
       \color<3->{blue}{SVD-L} & 300 & 6B & 56.6 & 63.0 & 60.1\\
       CBOW & 300 & 6B & 63.6 & \underline{67.4} & 65.7\\
       SG & 300 & 6B & 73.0 & 66.0 & 69.1\\
-      GloVe & 300 & 6B & \underline{77.4} & 67.0 & \underline{71.7}\\
+      GloVe & 300 & 6B & \color<4->{green}{\underline{77.4}} & 67.0 & \underline{71.7}\\
       \hline
       \color<2->{red}{CBOW} & 1000 & 6B & 57.3 & 68.9 & 63.7\\
       \color<2->{red}{SG} & 1000 & 6B & 66.1 & 65.1 & 65.6\\
@@ -247,6 +247,10 @@
       \hline
     \end{tabular}
     \caption{\% accuracy on analogy discovery}
+    %% let me explain the models being compared
+    %% first these numbers are not a fair comp.
+    %% SVD-L degrades with more data.
+    %% For semantic rel. more data does not mean better perf.
   \end{figure}
 \end{frame}
 
@@ -294,6 +298,9 @@
       \hline
     \end{tabular}
     \caption{F1 on NER with 50d vectors.}
+    %% say CBOW and Glove are comparable
+    %% say why ACE vs MUC.
+    %% Better ways of doing this?
   \end{figure}
 \end{frame}
 
@@ -332,8 +339,11 @@
   \item Boils down the task of learning representations to a bare minimum
   \item Nice formulation
   \item Need of a standardized evaluation
-  \item Few experiments were not entirely fair, but ...
+  \item Age-old methods also work very well!
+  %% \item Few experiments were not entirely fair, but ...
   \end{itemize}
+\end{frame}
+
   %% new ideas from Turian Ratinov Bengio,
   %% curriculum training strategy?
   %% liang's preprocessing
@@ -341,4 +351,3 @@
   %% distributional vs distributed
   %% exp not done MSR dataset,
   %% batch restriction for glove vs online training for skip gram
-\end{frame}

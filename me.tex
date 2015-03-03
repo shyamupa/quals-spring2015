@@ -8,12 +8,23 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Grounding Events to a Knowledge Base}
-  \begin{block}{Example}
-    After the {\color<2>{blue} death of \highlightchunk{red}{Cromwell}}, \highlightchunk{red}{Charles'} chances of regaining the Crown at first seemed slim as Cromwell was succeeded as Lord Protector by his son, Richard.
-  \end{block}
+\begin{frame}
+  \begin{center}
+    {
+      \huge Grounding Events to a Knowledge Base
+    } \\
+    (current work)
+  \end{center}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{The Problem}
+
+  \begin{exampleblock}{Example}
+      The {\color<2->{red} battle}\only<3->{$\implies Battle of Trafalgar$} was the most decisive naval victory of the {\color<2->{red}war}\only<3->{$\implies Napoleanic Wars$}. The British led by Admiral Lord Nelson defeated the French off the coast of Spain. Nelson succumbed to his injuries in battle.
+      \end{exampleblock}
+  \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Motivation}
   \begin{itemize}[<+->]
@@ -29,18 +40,24 @@
   \end{itemize}
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Comparison with Entity Wikification}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Benefits to Entity Wikification}
+  \begin{block}{Example}
+    After the {\color<2>{blue} death of \highlightchunk{red}{Cromwell}}, \highlightchunk{red}{Charles'} chances of regaining the Crown at first seemed slim as Cromwell was succeeded as Lord Protector by his son, Richard.
+  \end{block}
+\end{frame}
 
+\begin{frame}{Comparison with Entity Wikification}
   \begin{itemize}[<+->]
   \item \emph{Scarcity of training data}: Only 1\% of wikipedia pages are about events.
     %% Number higher if you consider events in subheading of an entity's page (eg. ``Invasion of Russia'' section under the wikipage of \textsc{Napolean}).
+  \item Definition of Event Mention
+    %% Mentions are not as specific. "Chicago" vs "the civil war".
+  \item {\color{red}solution:} Dynamic mention expansion.
   \item Non-Trivial Candidate Generation.
     %% is not as trivial as dictionary look-up.
   \item {\color{red}solution:} Cascaded filtering.
-  \item Definition of Event Mention
-    %% Mentions are not as specific. "Chicago" vs "the civil war".
-  \item {\color{red}solution:} Dynamic context expansion.
+  \item Current system gets 62\% F1 on events in wikipedia.
   \end{itemize}
 \end{frame}
 
