@@ -22,13 +22,13 @@
 \begin{frame}{The Problem}
 
   \begin{exampleblock}{Example}
-      The {\color<2->{red} battle}\only<3->{$\implies Battle of Trafalgar$} was the most decisive naval victory of the {\color<2->{red}war}\only<3->{$\implies Napoleanic Wars$}. The British led by Admiral Lord Nelson defeated the French off the coast of Spain. Nelson succumbed to his injuries in battle.
+      \textbf<2>{The {\color<3->{red} battle}\only<4->{$\implies$ (Battle of Trafalgar)} was the most decisive naval victory of the {\color<3->{red}war}\only<4->{$\implies$ (Napoleanic Wars)}}. The British led by Admiral Lord Nelson defeated the French off the coast of Spain. Nelson succumbed to his injuries in battle.
       \end{exampleblock}
   \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Motivation}
   \begin{itemize}[<+->]
-  \item Event mentions in a text demonstrate ambiguity and variability.
+  \item Event mentions in a text display ambiguity and variability.
     \begin{exampleblock}{Variability}
       {Battle of Waterloo, defeat at Waterloo, campaign of Waterloo, the 1815 battle, Napolean's defeat, French cavalry attack}
     \end{exampleblock}
@@ -51,13 +51,13 @@
   \begin{itemize}[<+->]
   \item \emph{Scarcity of training data}: Only 1\% of wikipedia pages are about events.
     %% Number higher if you consider events in subheading of an entity's page (eg. ``Invasion of Russia'' section under the wikipage of \textsc{Napolean}).
-  \item Definition of Event Mention
+  \item Detection of Event Mention
     %% Mentions are not as specific. "Chicago" vs "the civil war".
-  \item {\color{red}solution:} Dynamic mention expansion.
+  %% \item {\color{red}solution:} Dynamic mention expansion.
   \item Non-Trivial Candidate Generation.
     %% is not as trivial as dictionary look-up.
-  \item {\color{red}solution:} Cascaded filtering.
-  \item Current system gets 62\% F1 on events in wikipedia.
+  %% \item {\color{red}solution:} Cascaded filtering.
+  \item \textsc{Status:} Current system gets 62\% F1 on events in wikipedia.
   \end{itemize}
 \end{frame}
 

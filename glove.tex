@@ -16,7 +16,19 @@
   \item Representation captures some form of ``related-ness''.
     %% should express some notion of similarity b/w words
     \begin{figure}
-      \includegraphics[scale=0.35]{images/wordvec.png}
+      \begin{tikzpicture}
+        \draw[step=0.5cm, gray!50] (-4, -3) grid (4,3); % good idea to have a grid
+        \node at (1,0) {car};
+        \node at (1,0.8) {bike};
+        \node at (3,-2.1) {king};
+        \node at (3,-2.5) {queen};
+        \node at (-3,2.3) {book};
+        \node at (-1,2) {magazine};
+        \node at (-3,-2.3) {muffin};
+        \node at (-1,-2) {cake};
+      \end{tikzpicture}
+
+      %% \includegraphics[scale=0.35]{images/wordvec.png}
       %% here is a 2d projection of vec for a few words. notice the cosine of the angles b/w them
     \end{figure}    
   \end{itemize}
@@ -24,13 +36,30 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+
+  \begin{center}
+    {
+      \huge Why Bother?
+    } \\
+  \end{center}
+  \pause
+  \begin{itemize}[<+->]
+  \item Problem with Conventional Methods
+  \item Distributional Hypothesis to the rescue!
+  \end{itemize}
+  
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Generating Vector Representations}
   Word vectors can be generated in the following ways:
   \begin{itemize}[<+->]
   \item Cooccurence Matrix Factorization ~\cite{Deerwester}
     % LSA,PCA,HAL the name of the game is compute co-occurence
+    % cmopute co-occurence and use a standard dim red technique
   \item Learn representation from Local Context ~\cite{Mikolov13a}.
-  \item Sometimes just using the explicit context representation suffices ~\cite{Levy14}.
+  %% \item Sometimes just using the explicit context representation suffices ~\cite{Levy14}.
     %% Sometimes these methods end-up modeling the same objective (skip-gram).
     %% what abt random sampling?
   \end{itemize}
@@ -46,8 +75,7 @@
   \begin{align*}
     vec(king) - vec(man) + vec(woman) \approx vec(queen)
   \end{align*}
-  \pause
-  \visible<2->{
+  \visible<1->{
     \begin{figure}
       \includegraphics[scale=0.35]{images/mikolov.png}
       \caption{From ~\cite{Mikolov13a}}
@@ -59,12 +87,46 @@
   %% Levy showed that tranditional methods like count sparse contexts can perform equally well.
   %% ... traditional word similarities can perform just as well as neural embeddings ---\cite{Levy14}
   %% talk about Dont Count Predict paper
-  \visible<3>{
-    This paper claims to explicitly model the properties needed for achieving the above effect.
-  }
+  %% \onslide<2->{
+  %%   No explanation in the original papers! \\
+  %% }
 \end{frame}
 
+\begin{frame}{Why is this Useful?}
+  \onslide<1->{
+    %% This paper claims to that their explicitly model the properties needed for achieving the above effect.
+    \begin{exampleblock}{Questions Like..}
+    \begin{center}
+      man:king :: woman : ?
+    \end{center}
+    \end{exampleblock}
+  }
+  \onslide<2->{
+    \begin{center}
+      So easy to answer now!
+    \end{center}
+    \begin{align*} 
+    \min_x \|x - (king - man + woman)\|^2
+    \end{align*}
+  }
+\end{frame}
 %%   Global Matrix Factorization Methods are prone to ill-effects of predominance of function words.
+%% \begin{frame}{Claim}
+%% This paper claims that their objective explicitly models the properties needed for achieving the above effect.
+%% \end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{GloVe Model - Intuition}
+  \begin{exampleblock}{Question}
+    steam: gas :: ice:?
+    \pause
+    \begin{itemize}[<+->]
+    \item Solid
+    \item Gas
+    \item Water
+    \item Fashion
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{GloVe Model - Intuition}
@@ -184,9 +246,9 @@
 
   \begin{exampleblock}{Training}
     \begin{itemize}[<+->]
-    \item Compute matrix $X$
+    \item Compute co-occurence matrix $X$.
       %% this is a batch computation
-    \item Do SGD.
+    \item Do SGD alternatingly.
       %% you sample a entry from X, compute grad and descend
     \end{itemize}
     \onslide<3->{\textsc{Parameters:} vector dim., context size, corpus, $x_{max},\alpha$.}
@@ -231,14 +293,14 @@
       \hline
       \color<2->{red}{SG} & 300 & 1B & 61.0 & 61.0 & 61.0\\
       \color<2->{red}{CBOW} & 300 & 1.6B & 16.1 & 52.6 & 36.1\\
-      GloVe & 300 & 1.6B & \color<4->{green}{\underline{80.8}} & \underline{61.5} & \underline{70.3}\\
+      GloVe & 300 & 1.6B & \color<4->{blue!80!black}{\underline{80.8}} & \underline{61.5} & \underline{70.3}\\
       \hline
       SVD & 300 & 6B & 6.3 & 8.1 & 7.3\\
       SVD-S & 300 & 6B & 36.7 & 46.6 & 42.1\\
       \color<3->{blue}{SVD-L} & 300 & 6B & 56.6 & 63.0 & 60.1\\
       CBOW & 300 & 6B & 63.6 & \underline{67.4} & 65.7\\
       SG & 300 & 6B & 73.0 & 66.0 & 69.1\\
-      GloVe & 300 & 6B & \color<4->{green}{\underline{77.4}} & 67.0 & \underline{71.7}\\
+      GloVe & 300 & 6B & \color<4->{blue!80!black}{\underline{77.4}} & 67.0 & \underline{71.7}\\
       \hline
       \color<2->{red}{CBOW} & 1000 & 6B & 57.3 & 68.9 & 63.7\\
       \color<2->{red}{SG} & 1000 & 6B & 66.1 & 65.1 & 65.6\\
@@ -262,14 +324,14 @@
       \hline
       Model & Size & WS353 & MC & RG & SCWS & RW\\
       \hline
-      SVD & 6B & 35.3 & 35.1 & 42.5 & 38.3 & 25.6 \\
-      SVD-S & 6B & 56.5 & 71.5 & 71.0 & 53.6 & 34.7\\
+      {SVD} & 6B & 35.3 & 35.1 & 42.5 & 38.3 & 25.6 \\
+      \alert<2->{SVD-S} & 6B & 56.5 & 71.5 & 71.0 & 53.6 & 34.7\\
       \alert<2->{SVD-L} & 6B & 65.7 & 63.0 & 60.1 & 56.5 & 37.0\\
       CBOW & 6B & 57.2 & 65.6 & 68.2 & 57.0 & 32.5\\
       SG & 6B & 62.8 & 65.2 & 69.1 & 58.1 & 37.2\\
       GloVe & 6B & 65.8 & 72.7 & 77.8 & 53.9 & 38.1\\
       \hline
-      \alert<3->{SVD-L} & 42B & 74.0 & 76.4 & 74.1 & 58.3 & 39.9\\
+      \alert<2->{SVD-L} & 42B & 74.0 & 76.4 & 74.1 & 58.3 & 39.9\\
       GloVe & 42B & {\bf 75.9} & {\bf 83.6} & {\bf 82.9} & {\bf 59.6} & {\bf 47.8}\\
       \hline
       \color<4->{red}{CBOW} & 100B & 68.4 & 79.6 & 75.4 & 59.4 & 45.5\\
@@ -280,29 +342,29 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Results on NER}
-  \begin{figure}
-    %% \includegraphics[scale=0.4]{images/ner.png}
-    \begin{tabular}{|c|cccc|}
-      \hline
-      Model & Dev & Test & ACE & MUC7 \\
-      \hline
-      Discrete & 91.0 & 85.4 & 77.4 & 73.4\\
-      SVD & 90.8 & 85.7 & 77.3 & 73.7\\
-      SVD-S & 91.0 & 85.5 & 77.6 & 74.3\\
-      SVD-L & 90.5 & 84.8 & 73.6 & 71.5\\
-      %% HPCA & 92.6 & 88.7 & 81.7 & 80.7 \\
-      %% CW & 92.2 & 87.4 & 81.7 & 80.2\\
-      CBOW & 93.1 & 88.2 & 82.2 & 81.1\\
-      GloVe & 93.2 & 88.3 & 82.9 & 82.2\\
-      \hline
-    \end{tabular}
-    \caption{F1 on NER with 50d vectors.}
-    %% say CBOW and Glove are comparable
-    %% say why ACE vs MUC.
-    %% Better ways of doing this?
-  \end{figure}
-\end{frame}
+%% \begin{frame}{Results on NER}
+%%   \begin{figure}
+%%     %% \includegraphics[scale=0.4]{images/ner.png}
+%%     \begin{tabular}{|c|cccc|}
+%%       \hline
+%%       Model & Dev & Test & ACE & MUC7 \\
+%%       \hline
+%%       Discrete & 91.0 & 85.4 & 77.4 & 73.4\\
+%%       SVD & 90.8 & 85.7 & 77.3 & 73.7\\
+%%       SVD-S & 91.0 & 85.5 & 77.6 & 74.3\\
+%%       SVD-L & 90.5 & 84.8 & 73.6 & 71.5\\
+%%       %% HPCA & 92.6 & 88.7 & 81.7 & 80.7 \\
+%%       %% CW & 92.2 & 87.4 & 81.7 & 80.2\\
+%%       CBOW & 93.1 & 88.2 & 82.2 & 81.1\\
+%%       GloVe & 93.2 & 88.3 & 82.9 & 82.2\\
+%%       \hline
+%%     \end{tabular}
+%%     \caption{F1 on NER with 50d vectors.}
+%%     %% say CBOW and Glove are comparable
+%%     %% say why ACE vs MUC.
+%%     %% Better ways of doing this?
+%%   \end{figure}
+%% \end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -335,12 +397,14 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Conclusion}
-  \begin{itemize}
-  \item Boils down the task of learning representations to a bare minimum
-  \item Nice formulation
-  \item Need of a standardized evaluation
+  \begin{itemize}[<+->]
+    %% Boils down the task of learning representations to a bare minimum
+  \item Matrix Factorization and Learning from Local Context are not that different.
   \item Age-old methods also work very well!
-  %% \item Few experiments were not entirely fair, but ...
+    %% \item Nice formulation
+    %% \item Few experiments were not entirely fair, but ...
+  \item Need of a standardized evaluation?
+  \item Batch Computation?
   \end{itemize}
 \end{frame}
 
