@@ -356,23 +356,27 @@
 \begin{frame}{Results on Word Similarity}
   \begin{figure}
     %% \includegraphics[scale=0.4]{images/results2.png}
+    %% $\rotatebox[origin=c]{90}{time}
+    %% \left\Downarrow
     \begin{tabular}{|cc|ccccc|}
       \hline
       Model & Size & WS353 & MC & RG & SCWS & RW\\
       \hline
-      {SVD} & 6B & 35.3 & 35.1 & 42.5 & 38.3 & 25.6 \\
-      \alert<2->{SVD-S} & 6B & 56.5 & 71.5 & 71.0 & 53.6 & 34.7\\
-      \alert<2->{SVD-L} & 6B & 65.7 & 63.0 & 60.1 & 56.5 & 37.0\\
+      %% {SVD} & 6B & 35.3 & 35.1 & 42.5 & 38.3 & 25.6 \\
+      %% \alert<2->{SVD-S} & 6B & 56.5 & 71.5 & 71.0 & 53.6 & 34.7\\
+      \textbf<2>{\color<2>{blue}{SVD-L}} & 6B & \textbf<2>{\color<2>{blue}{65.7}} & \textbf<2>{\color<2>{blue}{63.0}} & \textbf<2>{\color<2>{blue}{60.1}} & \textbf<2>{\color<2>{blue}{56.5}} & \textbf<2>{\color<2>{blue}{37.0}}\\
       CBOW & 6B & 57.2 & 65.6 & 68.2 & 57.0 & 32.5\\
       SG & 6B & 62.8 & 65.2 & 69.1 & 58.1 & 37.2\\
-      GloVe & 6B & 65.8 & 72.7 & 77.8 & 53.9 & 38.1\\
+      GloVe & 6B & {\bf 65.8} & {\bf 72.7} & {\bf 77.8} & {\bf 53.9} & {\bf 38.1}\\
       \hline
-      \alert<2->{SVD-L} & 42B & 74.0 & 76.4 & 74.1 & 58.3 & 39.9\\
+      \textbf<2>{\color<2>{blue}{SVD-L}} & 42B & \textbf<2>{\color<2>{blue}{74.0}} & \textbf<2>{\color<2>{blue}{76.4}} & \textbf<2>{\color<2>{blue}{74.1}} & \textbf<2>{\color<2>{blue}{58.3}} & \textbf<2>{\color<2>{blue}{39.9}}\\
       GloVe & 42B & {\bf 75.9} & {\bf 83.6} & {\bf 82.9} & {\bf 59.6} & {\bf 47.8}\\
       \hline
-      \color<4->{red}{CBOW} & 100B & 68.4 & 79.6 & 75.4 & 59.4 & 45.5\\
-      \hline
+      %% \color<4->{red}{CBOW} & 100B & 68.4 & 79.6 & 75.4 & 59.4 & 45.5\\
+      %% \hline
     \end{tabular}
+    %% \right\downarrow
+    %% \rotatebox[origin=c]{90}{time}$
     \caption{Spearman's correlation on word similarity with 300 dim. vectors.}
   \end{figure}
 \end{frame}
