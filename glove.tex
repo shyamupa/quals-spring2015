@@ -1,3 +1,4 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
   \begin{center}
     {
@@ -6,8 +7,8 @@
     Pennington,Socher,Manning
   \end{center}
 \end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Introduction - What is a Word Vector?}
   \begin{itemize}[<+->]
   \item A mathematical representation of words as real valued vectors.
@@ -27,7 +28,6 @@
         \node at (-3,-2.3) {muffin};
         \node at (-1,-2) {cake};
       \end{tikzpicture}
-
       %% \includegraphics[scale=0.35]{images/wordvec.png}
       %% here is a 2d projection of vec for a few words. notice the cosine of the angles b/w them
     \end{figure}    
@@ -37,7 +37,6 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-
   \begin{center}
     {
       \huge Why Bother?
@@ -46,9 +45,13 @@
   \pause
   \begin{itemize}[<+->]
   \item Problem with Conventional Methods
+    \begin{itemize}[<+->]
+    \item too much luggage!
+    \item meaning lost!
+    \item loses generalizability
+    \end{itemize}
   \item Distributional Hypothesis to the rescue!
   \end{itemize}
-  
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -59,7 +62,7 @@
     % LSA,PCA,HAL the name of the game is compute co-occurence
     % cmopute co-occurence and use a standard dim red technique
   \item Learn representation from Local Context ~\cite{Mikolov13a}.
-  %% \item Sometimes just using the explicit context representation suffices ~\cite{Levy14}.
+    %% \item Sometimes just using the explicit context representation suffices ~\cite{Levy14}.
     %% Sometimes these methods end-up modeling the same objective (skip-gram).
     %% what abt random sampling?
   \end{itemize}
@@ -82,19 +85,17 @@
       %% vectors offsets illustrate the gender relation. another projection illustrate plurality.
     \end{figure}
   }
+  \onslide<2->
+  This paper claims to that their explicitly model the properties needed for achieving the above effect.
   %% No explanation was given in the original papers.
   %% Remarkably, training such a lexical model induces word repr. with striking semantic and syntactic properties---\cite{Mikolov13a}
   %% Levy showed that tranditional methods like count sparse contexts can perform equally well.
   %% ... traditional word similarities can perform just as well as neural embeddings ---\cite{Levy14}
   %% talk about Dont Count Predict paper
-  %% \onslide<2->{
-  %%   No explanation in the original papers! \\
-  %% }
 \end{frame}
 
 \begin{frame}{Why is this Useful?}
   \onslide<1->{
-    %% This paper claims to that their explicitly model the properties needed for achieving the above effect.
     \begin{exampleblock}{Questions Like..}
     \begin{center}
       man:king :: woman : ?
@@ -102,20 +103,18 @@
     \end{exampleblock}
   }
   \onslide<2->{
-    \begin{center}
-      So easy to answer now!
-    \end{center}
+    %% \begin{center}
+    %%   So easy to answer now!
+    %% \end{center}
     \begin{align*} 
-    \min_x \|x - (king - man + woman)\|^2
+    \only<2> {\min_x \qquad \|x - (king - man + woman)\|^2 \\}
+    \only<3-> {\max_x \qquad \dotprod{x}{king - man + woman} \\}
     \end{align*}
   }
 \end{frame}
-%%   Global Matrix Factorization Methods are prone to ill-effects of predominance of function words.
-%% \begin{frame}{Claim}
-%% This paper claims that their objective explicitly models the properties needed for achieving the above effect.
-%% \end{frame}
+%% Global Matrix Factorization Methods are prone to ill-effects of predominance of function words.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{GloVe Model - Intuition}
+\begin{frame}{GloVe Model - Build-Up}
   \begin{exampleblock}{Question}
     steam: gas :: ice:?
     \pause
@@ -126,10 +125,16 @@
     \item Fashion
     \end{itemize}
   \end{exampleblock}
+  \onslide<6->
+  Ideally,
+  \begin{align*} 
+  steam - gas + solid &= ice \\
+  steam - ice &= gas - solid \\
+  \end{align*}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{GloVe Model - Intuition}
+\begin{frame}{GloVe Model - Build-Up}
   \begin{figure}[scale=0.8]
     %% \includegraphics[scale=0.23]{images/glove_int.png}
     \begin{tabular}{c|cccc}
@@ -147,22 +152,53 @@
   %% whereas in solid and gas the affinity shifts towards a particular related word
   \visible<4->{
     \begin{center}
-      Ratio of probabilities is the key!
+      Ratio indicates affinity to choose b/w two words.
     \end{center}
-      %% \begin{align*}
-      %%   \frac{\Pr(k \mid ice)}{\Pr(k \mid steam)} \approx \frac{\Pr(k \mid solid)}{\Pr(k \mid gas)} \Forall k
-      %% \end{align*}
   }
+\begin{center} 
+  \only<5>{Word likes neither $\implies \frac{\Pr(k \mid ice)}{\Pr(k \mid steam)} \sim 1$}
+  \only<6>{Word prefers ice over steam $\implies \frac{\Pr(k \mid ice)}{\Pr(k \mid steam)} \gg 1$}
+  \only<7>{Word prefers steam over ice $\implies \frac{\Pr(k \mid ice)}{\Pr(k \mid steam)} \ll 1$}
+\end{center}  
+\end{frame}
+
+\begin{frame}{The Intuition}
+  
+  \begin{exampleblock}{Intuition}
+    %% If a word prefers ice over steam, it will also prefer solid over gas. If it prefers neither, then it will prefer neither between solid and gas.
+  \begin{align*}
+    \frac{\Pr(k \mid ice)}{\Pr(k \mid steam)} \approx \frac{\Pr(k \mid solid)}{\Pr(k \mid gas)} \Forall k
+  \end{align*}
+  \end{exampleblock}
+  \begin{center} 
+    \only<2>{So lets work with conditional probabilities and take ratios!}
+    \only<3->{\st{So lets work with conditional probabilities and take ratios!\\}}
+    \onslide<3->{
+      Too cumbersome! \\
+      %% Need a compact representation.
+    }
+  \end{center}
+\end{frame}
+
+\begin{frame}{Approximate with Vectors Representations}
     \begin{align*} 
-      \visible<5->{
+      \onslide<1->{
         w_i^Tw_j &= \log \Pr(j\mid i) \\
       }
-      \visible<6->{
-        (w_{ice}-w_{steam})^T w_j &= \log\frac{\Pr(j \mid ice)}{\Pr(j \mid steam)}
+      \onslide<2->{
+        \underbrace{(w_{ice}-w_{steam})^T}_{\text{``probe to check affinity''}} w_j &= \log\frac{\Pr(j \mid ice)}{\Pr(j \mid steam)} \\
+      }
+      \onslide<3->{
+        (w_{solid}-w_{gas})^T w_j &= \log\frac{\Pr(j \mid solid)}{\Pr(j \mid gas)} \\
+      }
+      \onslide<4->{
+        (w_{ice}-w_{steam})^T w_j & \approx (w_{solid}-w_{gas})^T w_j \\
+      }
+      \onslide<5->{
+        w_{ice}-w_{steam} & \approx w_{solid}-w_{gas}
       }
     \end{align*}
 \end{frame}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{GloVe Model - Derivation of Objective}
   \begin{align*}
@@ -270,12 +306,12 @@
       \end{itemize}
     \item Word Similarity
       \begin{itemize}
-      \item Is \textsc{Tiger} more similar to \textsc{Jaguar} or \textsc{Mammal}?
+      \item Is \textsc{Tiger} more similar to \textsc{Jaguar} or \textsc{Mouse}?
         \end{itemize}
-    \item NER 
-      \begin{itemize}
-      \item Uses word vectors as continuous features in a NER system.
-      \end{itemize}
+    %% \item NER 
+    %%   \begin{itemize}
+    %%   \item Uses word vectors as continuous features in a NER system.
+    %%   \end{itemize}
     \end{itemize}
   \end{alertblock}
 \end{frame}
