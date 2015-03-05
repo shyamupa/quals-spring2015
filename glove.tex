@@ -55,8 +55,8 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Generating Vector Representations}
-  Word vectors can be generated in the following ways:
+\begin{frame}{Obtaining Vector Representations}
+  Word vectors can be obtained in the following ways:
   \begin{itemize}[<+->]
   \item Cooccurence Matrix Factorization ~\cite{Deerwester}
     % LSA,PCA,HAL the name of the game is compute co-occurence
@@ -230,9 +230,9 @@
   \end{align*}
   
   \visible<2->{
-    \begin{center}
-      $f$ should not overweight rare and too-frequent co-occurences.
-    \end{center}
+    %% \begin{center}
+    %%   $f$ should not overweight rare and too-frequent co-occurences.
+    %% \end{center}
     %% f should clip values above a certain threshold
     \begin{align*}
       f(x)=
@@ -327,20 +327,20 @@
       \hline
       Model & Dim. & Size & Sem. & Syn. & Tot.\\
       \hline
-      \color<2->{red}{SG} & 300 & 1B & 61.0 & 61.0 & 61.0\\
-      \color<2->{red}{CBOW} & 300 & 1.6B & 16.1 & 52.6 & 36.1\\
-      GloVe & 300 & 1.6B & \color<4->{blue!80!black}{\underline{80.8}} & \underline{61.5} & \underline{70.3}\\
+      \textbf<2>{\color<2>{red}{SG}} & 300 & 1B & 61.0 & 61.0 & 61.0\\
+      \textbf<2>{\color<2>{red}{CBOW}} & 300 & 1.6B & 16.1 & 52.6 & 36.1\\
+      GloVe & 300 & \textbf<4-5>{\color<4-5>{blue}{1.6B}} & \textbf<4>{\color<4>{blue}{\underline{80.8}}} & \textbf<5>{\color<5>{blue}{\underline{61.5}}} & \underline{70.3}\\
       \hline
-      SVD & 300 & 6B & 6.3 & 8.1 & 7.3\\
-      SVD-S & 300 & 6B & 36.7 & 46.6 & 42.1\\
-      \color<3->{blue}{SVD-L} & 300 & 6B & 56.6 & 63.0 & 60.1\\
+      %% SVD & 300 & 6B & 6.3 & 8.1 & 7.3\\
+      %% SVD-S & 300 & 6B & 36.7 & 46.6 & 42.1\\
+      \textbf<3>{\color<3>{blue}{SVD-L}} & 300 & 6B & \textbf<3>{\color<3>{blue}{56.6}} & \textbf<3>{\color<3>{blue}{63.0}} & \textbf<3>{\color<3>{blue}{60.1}}\\
       CBOW & 300 & 6B & 63.6 & \underline{67.4} & 65.7\\
       SG & 300 & 6B & 73.0 & 66.0 & 69.1\\
-      GloVe & 300 & 6B & \color<4->{blue!80!black}{\underline{77.4}} & 67.0 & \underline{71.7}\\
+      GloVe & 300 & \textbf<4-5>{\color<4-5>{blue}{6B}} & \textbf<4>{\color<4>{blue}{\underline{77.4}}} & \textbf<5>{\color<5>{blue}{\underline{67.0}}} & \underline{71.7}\\
       \hline
-      \color<2->{red}{CBOW} & 1000 & 6B & 57.3 & 68.9 & 63.7\\
-      \color<2->{red}{SG} & 1000 & 6B & 66.1 & 65.1 & 65.6\\
-      \color<3->{blue}{SVD-L} & 300 & 42B & 38.4 & 58.2 & 49.2\\
+      \textbf<2>{\color<2>{red}{CBOW}} & 1000 & 6B & 57.3 & 68.9 & 63.7\\
+      \textbf<2>{\color<2>{red}{SG}} & 1000 & 6B & 66.1 & 65.1 & 65.6\\
+      \textbf<3>{\color<3>{blue}{SVD-L}} & 300 & 42B & \textbf<3>{\color<3>{blue}{38.4}} & \textbf<3>{\color<3>{blue}{58.2}} & \textbf<3>{\color<3>{blue}{49.2}}\\
       GloVe & 300 & 42B & \underline{81.9} & \underline{69.3} & \underline{75.0}\\
       \hline
     \end{tabular}
