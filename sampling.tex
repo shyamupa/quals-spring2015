@@ -41,7 +41,6 @@
   \end{itemize}
       \begin{figure}
         \centering
-
         \begin{tikzpicture}[scale=0.8] % plotting with data in columns
           \begin{axis}[
               ymax=0.5,
@@ -91,59 +90,156 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Motivation}
-  %% motivation stems from a trick made possible by the gumbel distribution 
-  \onslide<1->
-  \begin{property}
-      For $G(i) \sim Gumbel(0)$, and any $B \subseteq [n]$
-      \begin{align*}
-        \onslide<2->{
-          & \max_{i \in B}{G(i)+\phi(i)} \sim Gumbel\left(\log \sum_{i \in B} \exp(\phi(i))\right) \tag{Max-Stability}\\
-          %% max of perturbed gumbels is also gumbelly distributed
-        }
-        \onslide<3->{
-          & \argmax_{i \in B}{G(i)+\phi(i)} \sim \frac{\exp(\phi(i))}{\sum_{i \in B} \exp(\phi(i))}
-        }
-        %% position of the optimas are distributed acc. to gibbs
-        %% proof in \cite{hazan}
-      \end{align*}
-      Also the $\argmax \perp \max$.
-  \end{property}
+%% \begin{frame}{Motivation}
+%%   %% motivation stems from a trick made possible by the gumbel distribution 
+%%   \onslide<1->
+%%   \begin{property}
+%%       For $G(i) \sim Gumbel(0)$, and any $B \subseteq [n]$
+%%       \begin{align*}
+%%         \onslide<2->{
+%%           & \max_{i \in B}{G(i)+\phi(i)} \sim Gumbel\left(\log \sum_{i \in B} \exp(\phi(i))\right) \tag{Max-Stability}\\
+%%           %% max of perturbed gumbels is also gumbelly distributed
+%%         }
+%%         \onslide<3->{
+%%           & \argmax_{i \in B}{G(i)+\phi(i)} \sim \frac{\exp(\phi(i))}{\sum_{i \in B} \exp(\phi(i))}
+%%         }
+%%         %% position of the optimas are distributed acc. to gibbs
+%%         %% proof in \cite{hazan}
+%%       \end{align*}
+%%       \onslide<4->
+%%       Also the $\argmax \perp \max$.
+%%   \end{property}
 
-\end{frame}
+%% \end{frame}
 
 
-\begin{frame}{Motivation}
+\begin{frame}{A Toy Problem}
   %% Suppose you have a discrete distribution specified by un-normalized log probabilities $\{\phi(i)\}_{i=1}^{k}$ over k configurations $\{x_1,\cdots,x_k\}$, i.e.,
   \onslide<1->
-  \begin{usage}[The Gumbel Max-Trick]
-      Drawing samples from following when given only $\phi(i)$,
+  \begin{alertblock}{Problem}
+      Draw samples from following when you only have access to $\phi(i)$,
       \begin{align}
         \Pr(x_i) = \frac{\exp\phi(i)}{\sum_j\exp\phi(j)} \tag{$i \in [k]$}
       \end{align}
       %% We can draw samples $x_i \sim \Pr$ from this distribution using the following procedure.
-      \onslide<2->
-      \begin{align*}
-        & \text{Sample} \qquad G(i) \sim Gumbel(0) \text{ for } i=1..k\\
-        & \text{then} \qquad \text{ Choose } x_j \text{ such that } j= \argmax_i \{G(i) +\phi(i)\}
-      \end{align*}
+      %% \onslide<2->
+      %% \begin{align*}
+      %%   & \text{Sample} \qquad G(i) \sim Gumbel(0) \text{ for } i=1..k\\
+      %%   & \text{then} \qquad \text{ Choose } x_j \text{ such that } j= \argmax_i \{G(i) +\phi(i)\}
+      %% \end{align*}
       %% the argmax of the perturbed probabilities is distributed as eq.\ref{eq:gibbs} above
-  \end{usage}
+  \end{alertblock}
 \end{frame}
+
+\begin{frame}
+\begin{figure} 
+  \centering
+  \begin{tikzpicture}[scale=0.7]
+      \path[draw,black,ultra thick] (0,0)--(11,0);
+      \onslide<1-2>{
+        \node[above] (p1) at (2,0.8) {$\phi(1)$};
+        \path[draw,red,thick] (2,0) -- (p1);
+        \node[below] at (2,0) {$1$};
+
+        \node[above] (p2) at (4,4.2) {$\phi(2)$};
+        \path[draw,red,thick] (4,0) -- (p2);
+        \node[below] at (4,0) {$2$};
+
+        \node[above] (p3) at (6,2.4) {$\phi(3)$};
+        \path[draw,red,thick] (6,0) -- (p3);
+        \node[below] at (6,0) {$3$};
+
+        \node[above] (p4) at (8,1.0) {$\phi(4)$};
+        \path[draw,red,thick] (8,0) -- (p4);
+        \node[below] at (8,0) {$4$};
+
+        \node[above] (p5) at (10,-2.0) {$\phi(5)$};
+        \path[draw,red,thick] (10,0) -- (p5);
+        \node[below] at (10,0) {$5$};
+      }
+      \onslide<2>{
+        \node[above] at (2,5) {G(1)};
+        \node[above] at (4,5) {G(2)};
+        \node[above] at (6,5) {G(3)};
+        \node[above] at (8,5) {G(4)};
+        \node[above] at (10,5) {G(5)};
+      }
+      \onslide<3>{
+        \node[above] (p1) at (2,-1.8) {$\phi(1)+G(1)$};
+        \path[draw,red,thick] (2,0) -- (p1);
+        \node[below] at (2,0) {$1$};
+
+        \node[above] (p2) at (4,3.2) {$\phi(2)+G(2)$};
+        \path[draw,red,thick] (4,0) -- (p2);
+        \node[below] at (4,0) {$2$};
+
+        \node[above] (p3) at (6,4.0) {$\phi(3)+G(3)$};
+        \path[draw,red,thick] (6,0) -- (p3);
+        \node[below] at (6,0) {$3$};
+
+        \node[above] (p4) at (8,-2.0) {$\phi(4)+G(4)$};
+        \path[draw,red,thick] (8,0) -- (p4);
+        \node[below] at (8,0) {$4$};
+
+        \node[above] (p5) at (10,2.0) {$\phi(5)+G(5)$};
+        \path[draw,red,thick] (10,0) -- (p5);
+        \node[below] at (10,0) {$5$};
+      }
+      \onslide<4->{
+        \node[above] (p3) at (6,4.0) {$\phi(3)+G(3)$};
+        \path[draw,red,thick] (6,0) -- (p3);
+        \node[below] at (6,0) {$3$};
+      }
+  \end{tikzpicture}
+
+  \begin{center}
+    \visible<2>{
+     $G(i) \sim Gumbel(0)$ for  i=1..k\\
+    }
+    \visible<3>{
+      Choose $x_j$ such that $j= \argmax_i \{G(i) +\phi(i)\}$\\
+    }
+  \end{center}
+\end{figure}  
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Why?}
+  \begin{property}
+    For $G(i) \sim Gumbel(0)$, and any $B \subseteq [n]$
+    \begin{align*}
+      \onslide<2->{
+        & \argmax_{i \in B}{G(i)+\phi(i)} \sim \frac{\exp(\phi(i))}{\sum_{i \in B} \exp(\phi(i))} \\
+      }
+      \onslide<3->{
+        & \max_{i \in B}{G(i)+\phi(i)} \sim Gumbel\left(\log \sum_{i \in B} \exp(\phi(i))\right)
+        %% max of perturbed gumbels is also gumbelly distributed
+      }
+      %% position of the optimas are distributed acc. to gibbs
+      %% proof in \cite{hazan}
+    \end{align*}
+    \onslide<4->{
+      Also the $\argmax \perp \max$.
+    }
+  \end{property}
+\end{frame}
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Benefits}
   %% Wait ... So What?
   %% All this is cute, but what is the benefit?
   \begin{itemize}[<+->]
-  \item Partition Function estimation $\implies$ Computing (many) perturbed MAPs.
+  \item Drawing a Sample $\implies$ Computing (perturbed) argmax.
+    %% \item Partition Function estimation $\implies$ Computing (many) perturbed MAPs.
     %% We have reduced a to b. No need to compute the partition function, as long as you can compute the (perturbed) argmax!
     %% perturbation is un-normalized
   %% \item \emph{Exact} samples from the target distribution. % Note that the samples are exact. (No approximations!)
     %% examples when things are approximations, MCMC ``once the chain reaches stationary distribution''
   \end{itemize}
-  
   \begin{itemize}[<+->]
-  \item \textsc{Question:} What if $k$ is large?
+    %% \item \textsc{Question:} What if $k$ is large?
   \item \textsc{Question:} What happens if we move from discrete to continuous space?
   \item \textsc{Question:} Is There A Gumbel Max Trick for Continuous Distributions?
   \item {\color{red} This paper --- Yes!}
@@ -153,27 +249,33 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{The Gumbel Process}
+\end{frame}
+\begin{frame}{The Gumbel Process}
     \footnotesize{
-  \begin{definition}
-    $\{G_\mu(B) \mid B \subseteq \Omega\}$ is a Gumbel Process if,
-    \begin{align*} 
-      & G_\mu(B) \sim Gumbel(\log \mu(B)) \tag{samples are regional maxes}\\
-      & G_\mu(B) \perp G_\mu(B^c) \tag{regional maxes are independent}\\
-      & G_\mu(A \cup B) = \max(G_\mu(A),G_\mu(B)) \tag{maxes are consistent}
-    \end{align*}
-  \end{definition}
-  \begin{property}
-    For a Gumbel Process, $\{ \max \{G_k \mid X_k \in B\} \mid B \subseteq \Omega\}$,
-    \begin{align*}
-      \max \{G_k \mid X_k \in B\} \sim Gumbel(log \mu(B)) \\
+
+      %% \begin{definition}
+      %%   $\{G_\mu(B) \mid B \subseteq \Omega\}$ is a Gumbel Process if,
+      %%   \begin{align*} 
+      %%     & G_\mu(B) \sim Gumbel(\log \mu(B)) \tag{samples are regional maxes}\\
+      %%     & G_\mu(B) \perp G_\mu(B^c) \tag{regional maxes are independent}\\
+      %% & G_\mu(A \cup B) = \max(G_\mu(A),G_\mu(B)) \tag{maxes are consistent}
+      %%   \end{align*}
+      %% \end{definition}
+      
+      \begin{property}
+        For a Gumbel Process, $\{ \max \{G_k \mid X_k \in B\} \mid B \subseteq \Omega\}$,
+        \begin{align*}
+          \max \{G_k \mid X_k \in B\} \sim Gumbel(log \mu(B)) \\
       \argmax \{G_k \mid X_k \in B\} \sim \frac{\exp(\phi(x))1_{x \in B}}{\mu(B)}
-    \end{align*}
-    
-  \end{property}
-  }
+        \end{align*}
+        
+      \end{property}
+    }
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 \begin{frame}{Top-Down Construction of Gumbel Process}
     \visible<1->{
   \begin{figure} 
@@ -404,4 +506,23 @@
 \end{frame}
 
 \begin{frame}{Experimental Results}
+\end{frame}
+
+\begin{frame}
+  Backup Slides
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Why?}
+  \begin{itemize}[<+->]
+  \item Naive approach (log-sum-exp trick).
+  \item Sample from Gumbel $-\log(-\log(Uniform(0,1)))$.
+  \item Number of samples from $Uniform(0,1)$ - 1/sample vs. k/sample.
+  \item Number of calls to $\log()$ - k vs 2k calls/sample.
+  \item Two pass vs. One pass.
+  \end{itemize}
+  \onslide<6->
+  \begin{center}
+    Cache!
+  \end{center}
 \end{frame}

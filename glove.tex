@@ -9,8 +9,10 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Introduction - What is a Word Vector?}
+\begin{frame}{Introduction}
   \begin{itemize}[<+->]
+  \item How to represent a word in a machine?
+    % coverage issues
   \item A mathematical representation of words as real valued vectors.
     %% way of representing a word as real valued (possibly dense) vector
     %% conventional way - one hot repr lead to data sparsity, does not take word relationships into account
@@ -18,15 +20,26 @@
     %% should express some notion of similarity b/w words
     \begin{figure}
       \begin{tikzpicture}
-        \draw[step=0.5cm, gray!50] (-4, -3) grid (4,3); % good idea to have a grid
-        \node at (1,0) {car};
-        \node at (1,0.8) {bike};
-        \node at (3,-2.1) {king};
-        \node at (3,-2.5) {queen};
-        \node at (-3,2.3) {book};
-        \node at (-1,2) {magazine};
-        \node at (-3,-2.3) {muffin};
-        \node at (-1,-2) {cake};
+        \draw[step=0.5cm, gray!50] (-4,-3) grid (4,3); % good idea to have a grid
+        \node (car) at (1,0) {car};
+        \node (bike) at (1,0.8) {bike};
+        \node (king) at (3,-2.1) {king};
+        \node (queen) at (3,-2.5) {queen};
+        \node (book) at (-3,2.3) {book};
+        \node (magazine) at (-1,2) {magazine};
+        \node (muffin) at (-3,-2.3) {muffin};
+        \node (cake) at (-1,-2) {cake};
+        \node[inner sep=0pt,minimum size=0.1pt] (origin) at (0,0) {};
+        \onslide<3->{
+          \path[draw,->] (origin)--(car);
+          \path[draw,->] (origin)--(bike);
+          \path[draw,->] (origin)--(king);
+          \path[draw,->] (origin)--(queen);
+          \path[draw,->] (origin)--(book);
+          \path[draw,->] (origin)--(magazine);
+          \path[draw,->] (origin)--(muffin);
+          \path[draw,->] (origin)--(cake);
+        }
       \end{tikzpicture}
       %% \includegraphics[scale=0.35]{images/wordvec.png}
       %% here is a 2d projection of vec for a few words. notice the cosine of the angles b/w them
@@ -35,24 +48,24 @@
 \end{frame}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-  \begin{center}
-    {
-      \huge Why Bother?
-    } \\
-  \end{center}
-  \pause
-  \begin{itemize}[<+->]
-  \item Problem with Conventional Methods
-    \begin{itemize}[<+->]
-    \item too much luggage!
-    \item meaning lost!
-    \item loses generalizability
-    \end{itemize}
-  \item Distributional Hypothesis to the rescue!
-  \end{itemize}
-\end{frame}
+
+%% \begin{frame}
+%%   \begin{center}
+%%     {
+%%       \huge Why Bother?
+%%     } \\
+%%   \end{center}
+%%   \pause
+%%   \begin{itemize}[<+->]
+%%   \item Problem with Conventional Methods
+%%     \begin{itemize}[<+->]
+%%     \item meaning is lost.
+%%     \item loses generalizability
+%%     \item too much luggage.
+%%     \end{itemize}
+%%   \item Distributional Hypothesis to the rescue!
+%%   \end{itemize}
+%% \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Obtaining Vector Representations}
@@ -86,7 +99,7 @@
     \end{figure}
   }
   \onslide<2->
-  This paper claims to that their explicitly model the properties needed for achieving the above effect.
+  This paper claims that they explicitly model the properties needed for achieving the above effect.
   %% No explanation was given in the original papers.
   %% Remarkably, training such a lexical model induces word repr. with striking semantic and syntactic properties---\cite{Mikolov13a}
   %% Levy showed that tranditional methods like count sparse contexts can perform equally well.
@@ -98,7 +111,7 @@
   \onslide<1->{
     \begin{exampleblock}{Questions Like..}
     \begin{center}
-      man:king :: woman : ?
+      man:king :: woman: ?
     \end{center}
     \end{exampleblock}
   }
@@ -114,7 +127,7 @@
 \end{frame}
 %% Global Matrix Factorization Methods are prone to ill-effects of predominance of function words.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{GloVe Model - Build-Up}
+\begin{frame}{GloVe Model - Solving Analogies}
   \begin{exampleblock}{Question}
     steam: gas :: ice:?
     \pause
@@ -134,7 +147,12 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{GloVe Model - Build-Up}
+\begin{frame}{GloVe Model - Solving Analogies}
+  \begin{exampleblock}{Desired}
+    \begin{align*} 
+      steam - ice &= gas - solid
+    \end{align*}    
+  \end{exampleblock}
   \begin{figure}[scale=0.8]
     %% \includegraphics[scale=0.23]{images/glove_int.png}
     \begin{tabular}{c|cccc}
@@ -198,13 +216,19 @@
         w_{ice}-w_{steam} & \approx w_{solid}-w_{gas}
       }
     \end{align*}
+    \onslide<6->
+    \begin{center} 
+      \Huge{
+        Is this new?
+      }
+    \end{center}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{GloVe Model - Derivation of Objective}
   \begin{align*}
     %% & \Pr(\text{word j appears in context of word i}) = \Pr_{ij} \\
     %% \visible<1->{& \Pr_{ij} \propto \exp({w_i}^T{\tilde{w}_j}) \tag{log-bilinear model} \\}
-    \visible<2->{& w_i^T\tilde{w_j} = \log X_{ij} - \log X_{i} \tag{$\Pr_{ik}=\frac{X_{ik}}{X_i}$} \\}
+    \visible<2->{& w_i^T\tilde{w_j} = \log X_{ij} - \log X_{i} \tag{$\Pr(k \mid i)=\frac{X_{ik}}{X_i}$} \\}
     %% & \frac{\Pr_{ik}}{\Pr_{jk}}=\exp(\dotprod{w_i -w_j}{\tilde{w}_k}) \\
     %% & \log \Pr_{ik} - \log\Pr_{jk} = \dotprod{w_i -w_j}{\tilde{w}_k}\\
     \visible<3->{& w_i^T\tilde{w_j} +b_i = \log X_{ij}} \\
@@ -331,7 +355,7 @@
       \textbf<2>{\color<2>{red}{CBOW}} & 300 & 1.6B & 16.1 & 52.6 & 36.1\\
       GloVe & 300 & \textbf<4-5>{\color<4-5>{blue}{1.6B}} & \textbf<4>{\color<4>{blue}{\underline{80.8}}} & \textbf<5>{\color<5>{blue}{\underline{61.5}}} & \underline{70.3}\\
       \hline
-      %% SVD & 300 & 6B & 6.3 & 8.1 & 7.3\\
+      SVD & 300 & 6B & 6.3 & 8.1 & 7.3\\
       %% SVD-S & 300 & 6B & 36.7 & 46.6 & 42.1\\
       \textbf<3>{\color<3>{blue}{SVD-L}} & 300 & 6B & \textbf<3>{\color<3>{blue}{56.6}} & \textbf<3>{\color<3>{blue}{63.0}} & \textbf<3>{\color<3>{blue}{60.1}}\\
       CBOW & 300 & 6B & 63.6 & \underline{67.4} & 65.7\\

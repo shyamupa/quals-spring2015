@@ -2,8 +2,14 @@
 \begin{frame}{About Me}
   \begin{itemize}
   \item Working with Dan Roth since August 2013.
-  \item Interested in machine learning and NLP.
-  \item Publication in AAAI'15 on Learning with Amortized Inference.
+  \item Work on machine learning and NLP.
+  \item Publications
+    \begin{itemize}
+    \item \emph{Learning with Amortized Inference} \\
+      (with Chang, Kundu, Roth) AAAI'15.
+    \item \emph{Understanding Mathematical Relations in Text} \\
+      (with Roy, Roth) Submitted to TACL'15.
+      \end{itemize}
   \end{itemize}
 \end{frame}
 
@@ -22,36 +28,40 @@
 \begin{frame}{The Problem}
 
   \begin{exampleblock}{Example}
-      \textbf<2>{The {\color<3->{red} battle}\only<4->{$\implies$ (Battle of Trafalgar)} was the most decisive naval victory of the {\color<3->{red}war}\only<4->{$\implies$ (Napoleanic Wars)}}. The British led by Admiral Lord Nelson defeated the French off the coast of Spain. Nelson succumbed to his injuries in battle.
+      {The {\color<3->{red} battle}\only<4->{$\implies$ (Battle of Trafalgar)} was the most decisive naval victory of the {\color<3->{red}war}\only<4->{$\implies$ (Napoleanic Wars)}}. The British led by Admiral Lord Nelson defeated the French off the coast of Spain. Nelson succumbed to his injuries in battle.
       \end{exampleblock}
   \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Motivation}
   \begin{itemize}[<+->]
-  \item Event mentions in a text display ambiguity and variability.
+  \item Event mentions in a text display variability and ambiguity.
     \begin{exampleblock}{Variability}
       {Battle of Waterloo, defeat at Waterloo, campaign of Waterloo, the 1815 battle, Napolean's defeat, French cavalry attack}
     \end{exampleblock}
-
     \begin{exampleblock}{Ambiguity}
-      {\highlightchunk{red}{At the Olympics} in Athens, Greece, Kupets won a silver medal with her fellow U.S. team members in the team all-around competition.}
+     At the {\color<3->{red} Olympics } in Athens, Greece, Kupets won a silver medal with her fellow U.S. team members in the team all-around competition.
     \end{exampleblock}
-  \item Benefits of grounding - more context available for downstream tasks like event coreference, news aggregation etc.
+  \item Why is it difficult? - Global Coherence.
   \end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Benefits to Entity Wikification}
-  \begin{block}{Example}
-    After the {\color<2>{blue} death of \highlightchunk{red}{Cromwell}}, \highlightchunk{red}{Charles'} chances of regaining the Crown at first seemed slim as Cromwell was succeeded as Lord Protector by his son, Richard.
+\begin{frame}{Benefits}
+  \begin{itemize}
+  \item More context available for downstream tasks like event coreference, news aggregation etc.
+  \end{itemize}
+  \onslide<2->
+  \begin{block}{Entity Wikification}
+    After the {\color<3>{blue} death of \highlightchunk{red}{Cromwell}}, \highlightchunk{red}{Charles'} chances of regaining the Crown at first seemed slim as Cromwell was succeeded as Lord Protector by his son, Richard.
   \end{block}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Comparison with Entity Wikification}
   \begin{itemize}[<+->]
   \item \emph{Scarcity of training data}: Only 1\% of wikipedia pages are about events.
     %% Number higher if you consider events in subheading of an entity's page (eg. ``Invasion of Russia'' section under the wikipage of \textsc{Napolean}).
-  \item Detection of Event Mention
+  \item Detection of Event Mention.
     %% Mentions are not as specific. "Chicago" vs "the civil war".
   %% \item {\color{red}solution:} Dynamic mention expansion.
   \item Non-Trivial Candidate Generation.
