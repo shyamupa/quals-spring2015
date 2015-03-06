@@ -1,10 +1,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{About Me}
-  \begin{itemize}
+  \begin{itemize}[<+->]
   \item Working with Dan Roth since August 2013.
-  \item Work on machine learning and NLP.
+  %% \item Work on machine learning and NLP.
   \item Publications
-    \begin{itemize}
+    \begin{itemize}[<+->]
     \item \emph{Learning with Amortized Inference} \\
       (with Chang, Kundu, Roth) AAAI'15.
     \item \emph{Understanding Mathematical Relations in Text} \\
@@ -41,18 +41,19 @@
     \begin{exampleblock}{Ambiguity}
      At the {\color<3->{red} Olympics } in Athens, Greece, Kupets won a silver medal with her fellow U.S. team members in the team all-around competition.
     \end{exampleblock}
-  \item Why is it difficult? - Global Coherence.
+  \item Understanding events is difficult - Coherence.
   \end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Benefits}
   \begin{itemize}
-  \item More context available for downstream tasks like event coreference, news aggregation etc.
+  \item More context! - \onslide<2->{event coreference, news aggregation etc.}
   \end{itemize}
-  \onslide<2->
+  \onslide<3->
   \begin{block}{Entity Wikification}
-    After the {\color<3>{blue} death of \highlightchunk{red}{Cromwell}}, \highlightchunk{red}{Charles'} chances of regaining the Crown at first seemed slim as Cromwell was succeeded as Lord Protector by his son, Richard.
+    Following {\color<4>{blue} restoration} of the monarchy under \highlightchunk{red}{Charles}, Taylor emigrated to the ...
+    %% After the {\color<3>{blue} death of \highlightchunk{red}{Cromwell}}, \highlightchunk{red}{Charles'} chances of regaining the Crown at first seemed slim as Cromwell was succeeded as Lord Protector by his son, Richard.
   \end{block}
 \end{frame}
 

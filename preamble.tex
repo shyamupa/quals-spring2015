@@ -14,10 +14,14 @@
 \usepackage{mathrsfs}
 \usepackage{graphicx}
 \usepackage{tikz}
+\usepackage{etex}
 \usetikzlibrary{calc}
 \usetikzlibrary{shapes.geometric}
 \usepackage{pgfplots}
 \usepackage{subcaption}
+\usepackage{tikz-qtree}
+\usepackage{tikz-dependency}
+\tikzstyle{vertex}=[draw,fill=black!15,circle,minimum size=10pt,inner sep=1pt]
 
 
 \DeclareMathOperator*{\argmin}{{arg\,min}}
@@ -81,3 +85,4 @@
 \newtheorem{property}{Property}
 \newtheorem{usage}{Usage}
 % tikzmark command, for shading over items
+\newcommand{\Cross}{$\mathbin{\tikz [x=1.4ex,y=1.4ex,line width=.2ex, red] \draw (0,0) -- (1,1) (0,1) -- (1,0);}$}%

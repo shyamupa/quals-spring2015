@@ -7,28 +7,7 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% \begin{frame}{Introduction - Partition Function Woes}
-%%   \begin{itemize}[<+->]
-%%   \item Gibbs Distribution
-%%     \begin{align*}
-%%       \Pr(\x;\theta) =\frac{\exp(\theta^T\psi(\x))}{Z(\theta)} \tag{$Z=\sum_{\x} \theta^T\psi(\x)$}
-%%     \end{align*}
-%%     %% A standard/popular way of probabilistic modeling 
-%%   \item Parameter Estimation,
-%%     \begin{align*}
-%%       - \frac{1}{T}\nabla_\theta \sum_i\log LLH = \E_{\Pr(x;\theta)}\left[\psi(\x)\right] - \frac{1}{T} \sum_i\psi(x_i)
-%%     \end{align*}
-%%     %% suppose you are doing parameter estimation using MLE.
-%%   \item Computing $\E_{\Pr(x;\theta)}[.]$ often intractable.
-%%     %% may have to sum over exponential # of states
-%%   \item So we resort to approximations.
-%%     %% Sampling from posterior is hard
-%%     %% MCMC, Contrastive Divergence
-%%     %% sampling is inherently tied to Z
-%%     %% but computing Z is #P hard in general
-%%     %% This paper provides a way to obtain exact samples from a intractable distribution.
-%%   \end{itemize}
-%% \end{frame}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}<1-2>[label=framelabel]{Gumbel Distribution}
@@ -225,7 +204,7 @@
   \item Can we use this in continuous spaces?
   \item {\color{red} This paper --- Yes!}
     \begin{itemize}[<+->]
-    \item Need a continuous analog - Gumbel Process.
+    \item Gumbel Process.
     \item A* search.
     \end{itemize}
     %% One that does not resort to making infinite exponential perturbations?
@@ -288,8 +267,15 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Constructing the Gumbel Process}
+  \begin{exampleblock}{Insight}
+    Suppose I draw infinite $(G_i,X_i)$ samples from the Gumbel process and arrange in a heap.
+    This heap can be instantiated top-down.
+  \end{exampleblock}
+\end{frame}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Top-Down Construction of Gumbel Process}
     \visible<1->{
   \begin{figure} 
@@ -416,6 +402,7 @@
       & \text{Let $o(x) = \phi(x) - i(x)$ be bounded}
     }    
   \end{align*}
+  Un-normalized llh $o(x)$, log-prior $i(x)$, log-posterior $\phi(x)$\\
   \visible<4->{
     \begin{property}
       If $G_k \sim Gumbel(\log\nu)$, then, $\{\max\{G_k + o(X_k) \mid X_k \in B\} \mid B \subseteq \R^d\}$ is a Gumbel Process with measure $\mu$.
@@ -431,32 +418,171 @@
 \againframe<3-4>{progress}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Quick Review of A*}
-  %% graph exploration strategy
-  %% Uncover node in search space based on the following criteria
-  Choose based on,
-  \begin{overprint}
-    \onslide<1>
-    \begin{align*}
-      \min_{n \in Q} f(n) = \min_{n \in Q} g(n) + h(n)
-    \end{align*}
-    \begin{itemize}
-    \item g(n) distance from the start node to node n.
-    \item h(n) \emph{estimate} of distance from node n to the goal node.
-    %% optimistic for less cost
-    \end{itemize}
-    \onslide<2>
-    \begin{align*}
-      \max_{n \in Q} F(n) = \max_{n \in Q} G(n) + H(n)
-    \end{align*}
-    \begin{itemize}
-    \item G(n) utility accumulated since the start node to node n.
-    \item H(n) estimate of utility from node n to the goal node.
-    %% optimistic for more reward 
-    \end{itemize}
-  \end{overprint}
+\begin{frame}[fragile]{A* on a Min-Heap}
+\begin{figure} 
+  \centering
+\begin{tikzpicture}[font=\sffamily,thick,level/.style={sibling distance=25mm/#1}]
+  \onslide<1>{
+    \node[vertex] {0}
+    child {
+      node[vertex] {1}
+      child {
+        node[vertex] {3}
+      }
+      child{
+        node[vertex] {5}
+      }
+    }
+    child {
+      node[vertex] {2}
+      child { node[vertex] {6} }
+      child { node[vertex] {4} }
+    };
+  }
+  \onslide<2>{
+    \node[vertex] {10}
+    child {
+      node[vertex] {9}
+      child {
+        node[vertex] {4}
+      }
+      child{
+        node[vertex] {8}
+      }
+    }
+    child {
+      node[vertex] {9.5}
+      child { node[vertex] {16} }
+      child { node[vertex] {14} }
+    };
+  }
+  \onslide<3->{
+    \node[vertex] (a) {10}
+    child {
+      node[vertex] (b) {10}
+      child {
+        node[vertex] (c) {7}
+      }
+      child{
+        node[vertex] {13}
+      }
+    }
+    child {
+      node[vertex] {11.5}
+      child { node[vertex] {22} }
+      child { node[vertex] {18} }
+    };
+  }
+  \onslide<4>{
+    \path[draw, red, ultra thick, ->] (a) -- (b);
+    \path[draw, red, ultra thick, ->] (b) -- (c);
+  }
+
+\end{tikzpicture}
+\end{figure}
+\begin{center}
+    \only<1>{
+    $Cost()$
+  }
+  \only<2>{
+    $Heuristic()$
+  }
+  \only<3>{
+    $Cost()+Heuristic()$
+  }
+  \only<4>{
+    $\min Cost()+Heuristic()$
+  }
+\end{center}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{A* on a Max-Heap (of Gumbels)}
+\begin{figure} 
+  \centering
+\begin{tikzpicture}[font=\sffamily,thick,level/.style={sibling distance=25mm/#1}]
+  \onslide<1>{
+    \node[vertex] {100}
+    child {
+      node[vertex] {70}
+      child {
+        node[vertex] {33}
+      }
+      child{
+        node[vertex] {50}
+      }
+    }
+    child {
+      node[vertex] {82}
+      child { node[vertex] {63} }
+      child { node[vertex] {41} }
+    };
+  }
+  \onslide<2>{
+    \node[vertex] {11}
+    child {
+      node[vertex] {20}
+      child {
+        node[vertex] {-10}
+      }
+      child{
+        node[vertex] {12}
+      }
+    }
+    child {
+      node[vertex] {13}
+      child { node[vertex] {1} }
+      child { node[vertex] {1} }
+    };
+  }
+  \onslide<3->{
+    \node[vertex] (a) {111}
+    child {
+      node[vertex] {90}
+      child {
+        node[vertex] {23}
+      }
+      child{
+        node[vertex] {62}
+      }
+    }
+    child {
+      node[vertex] (b) {95}
+      child { node[vertex] (c) {64} }
+      child { node[vertex] {42} }
+    };
+  }
+  \onslide<4>{
+    \path[draw, red, ultra thick, ->] (a) -- (b);
+    \path[draw, red, ultra thick, ->] (b) -- (c);
+  }
+
+\end{tikzpicture}
+\end{figure}
+\begin{center}
+  \only<1>{
+    $Utility()$\\
+    {\bf Think Gumbel Maxes, $G_i$} \\
+    Heap on $G$ values, each node is $(G_i,X_i)$ \\
+  }
+  \only<2>{
+    $Heuristic()$\\
+    {\bf Think $o(X_i)$} \\
+  }
+  \only<3>{
+    $Cost()+Heuristic()$\\
+    {\bf Think $G_i + o(X_i)$}
+  }
+  \only<4>{
+    $\max Utility()+Heuristic()$ \\
+  }
+  \only<5>{
+    Not as simple, as we only know bounds of $o(X)$
+  }
+\end{center}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Main Idea}
   \begin{figure} 
     \centering
@@ -488,7 +614,7 @@
         \node[above] at (0,4.25) {$g_1+o(x_1)$};
       }
       
-      \only<2,3>{
+      \only<2-4>{
         \path[draw,green,dotted,very thick] (-5,4) edge node[below right] {\only<2>{lower bound}} (5,4);
       }
       
@@ -503,13 +629,14 @@
         \path[draw,dotted,blue,very thick] (-5,3.5) -- (0,3.5);
       }
       
-      \only<3>{
+      \only<3-4>{
         \path[draw,dotted,blue,very thick] (0,4.75) -- (5,4.75);
       }
       \only<4->{
-        \path[draw,green,dotted,very thick] (-5,4.5) -- (5,4.5);
+        \node at (-3,3.2) {\Cross};
       }
-      \only<4->{
+      \only<5->{
+        \path[draw,green,dotted,very thick] (-5,4.5) -- (5,4.5);
         \path[draw,blue,dotted,very thick] (0,3.75) -- (3,3.75);
         \path[draw,blue,dotted,very thick] (3,3.25) -- (5,3.25);
         \path[draw,red,thick] (1.5,0.8) -- (1.5,0) circle (1.5pt);
@@ -527,7 +654,7 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Why?}
+\begin{frame}{Why Use Gumbel-Max Trick?}
   \begin{itemize}[<+->]
   \item Naive approach (log-sum-exp trick).
   \item Sample from Gumbel $-\log(-\log(Uniform(0,1)))$.
@@ -541,4 +668,51 @@
   \end{center}
 \end{frame}
 
-\againframe<3>{framelabel}
+\begin{frame}{Quick Review of A*}
+  %% graph exploration strategy
+  %% Uncover node in search space based on the following criteria
+  Choose based on,
+  \begin{overprint}
+    \onslide<1>
+    \begin{align*}
+      \min_{n \in Q} f(n) = \min_{n \in Q} g(n) + h(n)
+    \end{align*}
+    \begin{itemize}
+    \item g(n) distance from the start node to node n.
+    \item h(n) \emph{estimate} of distance from node n to the goal node.
+    %% optimistic for less cost
+    \end{itemize}
+    \onslide<2>
+    \begin{align*}
+      \max_{n \in Q} F(n) = \max_{n \in Q} G(n) + H(n)
+    \end{align*}
+    \begin{itemize}
+    \item G(n) utility accumulated since the start node to node n.
+    \item H(n) estimate of utility from node n to the goal node.
+    %% optimistic for more reward 
+    \end{itemize}
+  \end{overprint}
+\end{frame}
+\begin{frame}{Introduction - Partition Function Woes}
+  \begin{itemize}[<+->]
+  \item Gibbs Distribution
+    \begin{align*}
+      \Pr(\x;\theta) =\frac{\exp(\theta^T\psi(\x))}{Z(\theta)} \tag{$Z=\sum_{\x} \theta^T\psi(\x)$}
+    \end{align*}
+    %% A standard/popular way of probabilistic modeling 
+  \item Parameter Estimation,
+    \begin{align*}
+      - \frac{1}{T}\nabla_\theta \sum_i\log LLH = \E_{\Pr(x;\theta)}\left[\psi(\x)\right] - \frac{1}{T} \sum_i\psi(x_i)
+    \end{align*}
+    %% suppose you are doing parameter estimation using MLE.
+  \item Computing $\E_{\Pr(x;\theta)}[.]$ often intractable.
+    %% may have to sum over exponential # of states
+  \item So we resort to approximations.
+    %% Sampling from posterior is hard
+    %% MCMC, Contrastive Divergence
+    %% sampling is inherently tied to Z
+    %% but computing Z is #P hard in general
+    %% This paper provides a way to obtain exact samples from a intractable distribution.
+  \end{itemize}
+  \againframe<3>{framelabel}
+\end{frame}

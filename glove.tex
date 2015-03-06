@@ -121,13 +121,13 @@
     %% \end{center}
     \begin{align*} 
     \only<2> {\min_x \qquad \|x - (king - man + woman)\|^2 \\}
-    \only<3-> {\max_x \qquad \dotprod{x}{king - man + woman} \\}
+    \only<3-> {\max_x \qquad \dotprod{x}{king} - \dotprod{x}{man} + \dotprod{x}{woman} \\}
     \end{align*}
   }
 \end{frame}
 %% Global Matrix Factorization Methods are prone to ill-effects of predominance of function words.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{GloVe Model - Solving Analogies}
+\begin{frame}{GloVe Model - What We Want}
   \begin{exampleblock}{Question}
     steam: gas :: ice:?
     \pause
@@ -147,7 +147,7 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{GloVe Model - Solving Analogies}
+\begin{frame}{GloVe Model - Insight}
   \begin{exampleblock}{Desired}
     \begin{align*} 
       steam - ice &= gas - solid
@@ -180,7 +180,7 @@
 \end{center}  
 \end{frame}
 
-\begin{frame}{The Intuition}
+\begin{frame}{The Intuition behind the Model}
   
   \begin{exampleblock}{Intuition}
     %% If a word prefers ice over steam, it will also prefer solid over gas. If it prefers neither, then it will prefer neither between solid and gas.
@@ -304,7 +304,6 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Training and Evaluation}
-
   \begin{exampleblock}{Training}
     \begin{itemize}[<+->]
     \item Compute co-occurence matrix $X$.
@@ -312,10 +311,9 @@
     \item Do SGD alternatingly.
       %% you sample a entry from X, compute grad and descend
     \end{itemize}
-    \onslide<3->{\textsc{Parameters:} vector dim., context size, corpus, $x_{max},\alpha$.}
+    \onslide<3->{\textsc{Parameters:} vector dim., context size, corpus, $x_{max},\alpha$, iterations}
     %% wide range of parameters that you can play with, and they do have effect
   \end{exampleblock}
-  
   \onslide<4->
   \begin{alertblock}{Evaluation}
     %% we will evaluate the model on 3 fronts
@@ -331,7 +329,7 @@
       \end{itemize}
     \item Word Similarity
       \begin{itemize}
-      \item Is \textsc{Tiger} more similar to \textsc{Jaguar} or \textsc{Mouse}?
+      \item Is \textsc{Tiger} more similar to \textsc{Cheetah} or \textsc{Mouse}?
         \end{itemize}
     %% \item NER 
     %%   \begin{itemize}
@@ -470,6 +468,7 @@
     %% \item Few experiments were not entirely fair, but ...
   \item Need of a standardized evaluation?
   \item Batch Computation?
+  \item Interpretable vectors?
   \end{itemize}
 \end{frame}
 
