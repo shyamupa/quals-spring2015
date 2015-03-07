@@ -89,7 +89,7 @@
   \end{alertblock}
 \end{frame}
 
-\begin{frame}
+\begin{frame}{Gumbel Max Trick}
 \begin{figure} 
   \centering
   \begin{tikzpicture}[scale=0.7]
@@ -150,6 +150,11 @@
       }
   \end{tikzpicture}
   \begin{center}
+    \visible<1>{
+      \begin{align}
+        \Pr(x_i) = \frac{\exp\phi(i)}{\sum_j\exp\phi(j)} \tag{$i \in [k]$}
+      \end{align}
+    }
     \visible<2>{
      $G(i) \sim Gumbel(0)$ for  $i=1..k$\\
     }
@@ -212,6 +217,19 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% \begin{frame}{View as Noise and its Location}
+%%   \begin{property}
+%%     For $G'(i) \sim Gumbel(\log \sum_{i \in B} \exp(\phi(i)))$, and any $B \subseteq [n]$
+%%     \begin{align*}
+%%       \onslide<2->{
+%%         & \argmax_{i \in B}{G'(i)} \sim \frac{\exp(\phi(i))}{\sum_{i \in B} \exp(\phi(i))} \\
+%%       }
+%%       \onslide<3->{
+%%         & \max_{i \in B}{G'(i)} \sim Gumbel\left(\log \sum_{i \in B} \exp(\phi(i))\right)
+%%       }
+%%     \end{align*}
+%% \end{frame}
+
 \tikzstyle{trap}=[trapezium, draw, minimum width=12cm,trapezium left angle=120,trapezium right angle=60]
 \begin{frame}{The Gumbel Process}
   \begin{figure} 
@@ -373,8 +391,8 @@
     \onslide<4>
     \textbf{Problems}
     \begin{itemize} 
-    \item {\color{blue} Solution} Decompose! % I can draw samples from easier distribution, because I know its log Z. and then add the hard part to the samples before taking argmax.
-    \item {\color{red} Problem 2:} Drawing infinite samples to compute argmax on. % We do not want to draw infinite samples to compute argmax on.
+    \item {\color{blue} Solution} Decompose! $\phi(x) = i(x) + o(x)$% I can draw samples from easier distribution, because I know its log Z. and then add the hard part to the samples before taking argmax.
+    \item {\color{red} Problem 2:} Decomposition breaks the heap property of the top-down construction. How to compute $\argmax_k G_k + o(X_k)$? % We do not want to draw infinite samples to compute argmax on.
     \end{itemize}
 
     \onslide<5>
@@ -570,7 +588,7 @@
     {\bf Think $o(X_i)$} \\
   }
   \only<3>{
-    $Cost()+Heuristic()$\\
+    $Utility()+Heuristic()$\\
     {\bf Think $G_i + o(X_i)$}
   }
   \only<4>{
@@ -647,6 +665,12 @@
 \end{frame}
 
 \begin{frame}{Experimental Results}
+  \begin{figure} 
+    \centering
+      \includegraphics[scale=0.30]{images/astar.png}
+  \end{figure}
+  Sample from $p(x)=\frac{\exp(-x)}{(1+x)^a},x>0,a>0$ using $exp(-x)$ as proposal.
+  $o(x) = -a\log(1+x)$ is unimodal. 
 \end{frame}
 
 \begin{frame}

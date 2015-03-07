@@ -71,7 +71,7 @@
     {\bf Think $o(X_i)$} \\
   }
   \only<3>{
-    $Cost()+Heuristic()$\\
+    $Utility()+Heuristic()$\\
     {\bf Think $G_i + o(X_i)$}
   }
   \only<4>{
