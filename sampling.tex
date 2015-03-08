@@ -183,8 +183,8 @@
       %% position of the optimas are distributed acc. to gibbs
       %% proof in \cite{hazan}
     \end{align*}
-    \onslide<4->{
-    }
+    %% \onslide<4->{
+    %% }
   \end{property}
 \end{frame}
 
@@ -232,11 +232,15 @@
 
 \tikzstyle{trap}=[trapezium, draw, minimum width=12cm,trapezium left angle=120,trapezium right angle=60]
 \begin{frame}{The Gumbel Process}
+  \onslide<1>{
+    \begin{center} 
+      {\large $\frac{\exp(\phi(x))1_{x \in B}}{\mu(B)}, B \subseteq \Omega$}
+    \end{center}
+  }
   \begin{figure} 
     \centering
     \begin{tikzpicture}
       \node at (5,2) {$\Omega$};
-
       \node[trap,ultra thick,trapezium stretches=false,minimum height=1cm,inner xsep=6pt]
       at (0,0) {};
       %% \path[draw,black,ultra thick] (0,0)--(11,0);
@@ -348,10 +352,11 @@
     \only<4>{
       $X_2 \sim \exp(\phi(x))1_{x \in B}/\mu(B)$ \\
       $G_2 \sim TruncGumbel(\log\mu(B),G_1)$ \\
-
     }
     \only<5>{
-      Do same for other partition $B^c$\\
+      $X_3 \sim \exp(\phi(x))1_{x \in B^c}/\mu(B^c)$ \\
+      $G_3 \sim TruncGumbel(\log\mu(B^c),G_1)$ \\
+      %% Do same for other partition $B^c$\\
       %% first sampling the argmax $X_i$ \\
       %% and then sampling its value $G_i$.
     }
@@ -376,7 +381,7 @@
     \onslide<3>
     \textbf{Problems}
     \begin{itemize}
-    \item {\color{red}Problem 1:} Computing $\int \exp(\phi(x))$        % Drawing samples from the distribution requires knowing Z of my target distribution.
+    \item {\color{red}Problem 1:} Top down construction requires knowing $\int \exp(\phi(x))$        % Drawing samples from the distribution requires knowing Z of my target distribution.
       %% \item {\color{red}Problem 2:} Drawing infinite samples to compute argmax on. % We do not want to draw infinite samples to compute argmax on.
     \end{itemize}
 
@@ -401,6 +406,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Solution - Perturbing Gumbel Processes} % Main Idea
+  Use a easier proxy distribution,
   \begin{align*}
     \visible<1->{
       & \mu(B) = \int_{x\in B} \exp(\phi(x)) \tag{hard}\\
@@ -430,7 +436,7 @@
 \againframe<3-4>{progress}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}[fragile]{A* on a Min-Heap}
+\begin{frame}[fragile]{A* Review}
 \begin{figure} 
   \centering
 \begin{tikzpicture}[font=\sffamily,thick,level/.style={sibling distance=25mm/#1}]
@@ -590,7 +596,8 @@
     {\bf $\max G_i + o(X_i)$}
   }
   \only<5>{
-    Not as simple, as sometimes we only know upper and lower bounds of $o(X)$.
+    Not as simple, as sometimes we only know upper bounds of $o(X)$.
+    $o(x) \le U(B) \Forall x \in B$.
   }
 \end{center}
 \end{frame}
@@ -617,7 +624,7 @@
       %% \end{axis}
       
       \only<2>{
-        \path[draw,dotted,blue,very thick] (-5,5.5) edge node[above] {upper bound} (5,5.5);
+        \path[draw,dotted,blue,very thick] (-5,5.5) edge node[above] {upper bound $G_1+U(\Omega)$} (5,5.5);
       }
       %% \addplot+[ycomb,black,thick] {1};
       %% \node[above] (g1) at (0,4) {};

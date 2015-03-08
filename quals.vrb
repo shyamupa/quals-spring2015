@@ -79,6 +79,7 @@
     {\bf $\max G_i + o(X_i)$}
   }
   \only<5>{
-    Not as simple, as sometimes we only know upper and lower bounds of $o(X)$.
+    Not as simple, as sometimes we only know upper bounds of $o(X)$.
+    $o(x) \le U(B) \Forall x \in B$.
   }
 \end{center}

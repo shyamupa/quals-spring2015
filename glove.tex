@@ -98,8 +98,6 @@
       %% vectors offsets illustrate the gender relation. another projection illustrate plurality.
     \end{figure}
   }
-  \onslide<2->
-  This paper claims that they explicitly model the properties needed for achieving the above effect.
   %% No explanation was given in the original papers.
   %% Remarkably, training such a lexical model induces word repr. with striking semantic and syntactic properties---\cite{Mikolov13a}
   %% Levy showed that tranditional methods like count sparse contexts can perform equally well.
@@ -109,7 +107,7 @@
 
 \begin{frame}{Why is this Useful?}
   \onslide<1->{
-    \begin{exampleblock}{Questions Like..}
+    \begin{exampleblock}{Solve Questions Like..}
     \begin{center}
       man:king :: woman: ?
     \end{center}
@@ -124,6 +122,9 @@
     \only<3-> {\max_x \qquad \dotprod{x}{king} - \dotprod{x}{man} + \dotprod{x}{woman} \\}
     \end{align*}
   }
+  \onslide<4->
+  This paper claims that they explicitly model the properties needed for achieving the above effect.
+
 \end{frame}
 %% Global Matrix Factorization Methods are prone to ill-effects of predominance of function words.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -211,18 +212,18 @@
         (w_{solid}-w_{gas})^T w_j &= \log\frac{\Pr(j \mid solid)}{\Pr(j \mid gas)} \\
       }
       \onslide<4->{
-        (w_{ice}-w_{steam})^T w_j & \approx (w_{solid}-w_{gas})^T w_j \\
+        (w_{ice}-w_{steam})^T w_j & \approx (w_{solid}-w_{gas})^T w_j \Forall j\\
       }
       \onslide<5->{
         w_{ice}-w_{steam} & \approx w_{solid}-w_{gas}
       }
     \end{align*}
-    \onslide<6->
-    \begin{center} 
-      \Huge{
-        Is this new?
-      }
-    \end{center}
+    %% \onslide<6->
+    %% \begin{center} 
+    %%   \Huge{
+    %%     Is this new?
+    %%   }
+    %% \end{center}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{GloVe Model - Derivation of Objective}
@@ -243,9 +244,9 @@
     \end{align*}
   }
   %% note the similarity with matrix factorization
-  \begin{center}
-    \visible<6->{But wait!}
-  \end{center}
+  %% \begin{center}
+  %%   \visible<6->{But wait!}
+  %% \end{center}
   %% The problem is that X_ij are estimated from data. Some values will be very large/small (most of them will be zero), so our learning algo will waste effort on optimizing to fit the useless entries.
 \end{frame}
 
@@ -464,12 +465,14 @@
   \begin{itemize}[<+->]
     %% Boils down the task of learning representations to a bare minimum
     %% \item Matrix Factorization and Learning from Local Context are not that different.
-  \item Nice formulation
+  \item Nice formulation.
   \item Age-old methods also work very well!
-    %% \item Few experiments were not entirely fair, but ...
-  \item Need of a standardized evaluation?
-  \item Batch Computation?
+  \item What if I do not want to solve analogies?
+  \item Parameters are very crucial.
   \item Interpretable vectors?
+    %% \item Few experiments were not entirely fair, but ...
+    %% \item Need of a standardized evaluation?
+    %% \item Memory Footprint?
   \end{itemize}
 \end{frame}
 
