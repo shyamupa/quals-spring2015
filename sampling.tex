@@ -150,7 +150,7 @@
       }
   \end{tikzpicture}
   \begin{center}
-    \visible<1>{
+    \only<1>{
       \begin{align}
         \Pr(x_i) = \frac{\exp\phi(i)}{\sum_j\exp\phi(j)} \tag{$i \in [k]$}
       \end{align}
@@ -337,18 +337,12 @@
   \begin{center}
     \only<2>{
       $X_1 \sim \exp(\phi(x))/\mu(\Omega)$ \\% (global maximum)
-      %% and partition space accordingly
-      
-      %% \begin{align*}
-      %%   & X_1 \sim \exp(\phi(x))/\mu(\Omega) \tag{assume $\log \mu(\Omega)$ is computable}\\
-      %%   & G_1 \sim Gumbel(\log\mu(\Omega))
-      %% \end{align*}
+      \begin{center} 
+      assume $\mu(\Omega)$ is computable for now.
+      \end{center}      %% and partition space accordingly
     }
     \only<3>{
       $G_1 \sim Gumbel(\log\mu(\Omega))$ \\
-      \begin{center} 
-      assume $\log\mu(\Omega)$ is computable for now.
-      \end{center}
       %% sample $X_2$ from partition $B$, and also sample the regional max $G_2$.
     }
     \only<4>{
@@ -418,13 +412,15 @@
       & \text{Let $o(x) = \phi(x) - i(x)$ be bounded}
     }    
   \end{align*}
-  Un-normalized llh $o(x)$, log-prior $i(x)$, log-posterior $\phi(x)$\\
   \visible<4->{
+    Un-normalized llh $o(x)$, log-prior $i(x)$, log-posterior $\phi(x)$\\
+  }
+  \visible<5->{
     \begin{property}
-      If $G_k \sim Gumbel(\log\nu)$, then, $\{\max\{G_k + o(X_k) \mid X_k \in B\} \mid B \subseteq \R^d\}$ is a Gumbel Process with measure $\mu$.
+      If $G_k \sim Gumbel(\log\nu)$, then, $\{\max\{G_k + o(X_k) \mid X_k \in B\} \mid B \subseteq \Omega\}$ is a Gumbel Process with measure $\mu$.
     \end{property}
   }  
-  \visible<5->{
+  \visible<6->{
     \emph{We can transform a Gumbel process into another by adding the difference of their log densities.} \\
   }
   %% So if I can easily draw samples from the prior and I have a way to compute the bound on the log-likelihood, then I can use Gumbel.
@@ -665,13 +661,13 @@
 
 \begin{frame}{Experimental Results}
   Sample from $p(x)=\frac{\exp(-x)}{(1+x)^a},x>0,a>0$ using $exp(-x)$ as proposal.
+  $o(x) = -a\log(1+x)$ is unimodal. 
   \onslide<2->{
   \begin{figure} 
     \centering
       \includegraphics[scale=0.30]{images/astar.png}
   \end{figure}
   }
-  $o(x) = -a\log(1+x)$ is unimodal. 
 \end{frame}
 
 \begin{frame}
