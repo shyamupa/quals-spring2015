@@ -76,8 +76,9 @@
   }
   \only<4>{
     $\max Utility()+Heuristic()$ \\
+    {\bf $\max G_i + o(X_i)$}
   }
   \only<5>{
-    Not as simple, as we only know bounds of $o(X)$
+    Not as simple, as sometimes we only know upper and lower bounds of $o(X)$.
   }
 \end{center}
