@@ -1,56 +1,56 @@
-\frametitle{A* on a Max-Heap (of Gumbels)}
+\frametitle{A* Review}
 \begin{figure}
   \centering
 \begin{tikzpicture}[font=\sffamily,thick,level/.style={sibling distance=25mm/#1}]
   \onslide<1>{
-    \node[vertex] {100}
+    \node[vertex] {0}
     child {
-      node[vertex] {70}
+      node[vertex] {1}
       child {
-        node[vertex] {33}
+        node[vertex] {3}
       }
       child{
-        node[vertex] {50}
+        node[vertex] {5}
       }
     }
     child {
-      node[vertex] {82}
-      child { node[vertex] {63} }
-      child { node[vertex] {41} }
+      node[vertex] {2}
+      child { node[vertex] {6} }
+      child { node[vertex] {4} }
     };
   }
   \onslide<2>{
-    \node[vertex] {11}
+    \node[vertex] {10}
     child {
-      node[vertex] {20}
+      node[vertex] {9}
       child {
-        node[vertex] {-10}
+        node[vertex] {4}
       }
       child{
-        node[vertex] {12}
+        node[vertex] {8}
       }
     }
     child {
-      node[vertex] {13}
-      child { node[vertex] {1} }
-      child { node[vertex] {1} }
+      node[vertex] {9.5}
+      child { node[vertex] {16} }
+      child { node[vertex] {14} }
     };
   }
   \onslide<3->{
-    \node[vertex] (a) {111}
+    \node[vertex] (a) {10}
     child {
-      node[vertex] {90}
+      node[vertex] (b) {10}
       child {
-        node[vertex] {23}
+        node[vertex] (c) {7}
       }
       child{
-        node[vertex] {62}
+        node[vertex] {13}
       }
     }
     child {
-      node[vertex] (b) {95}
-      child { node[vertex] (c) {64} }
-      child { node[vertex] {42} }
+      node[vertex] {11.5}
+      child { node[vertex] {22} }
+      child { node[vertex] {18} }
     };
   }
   \onslide<4>{
@@ -61,25 +61,16 @@
 \end{tikzpicture}
 \end{figure}
 \begin{center}
-  \only<1>{
-    $Utility()$\\
-    {\bf Think Gumbel Maxes, $G_i$} \\
-    Heap on $G$ values, each node is $(G_i,X_i)$ \\
+    \only<1>{
+    $Cost()$
   }
   \only<2>{
-    $Heuristic()$\\
-    {\bf Think $o(X_i)$} \\
+    $Heuristic()$
   }
   \only<3>{
-    $Utility()+Heuristic()$\\
-    {\bf Think $G_i + o(X_i)$}
+    $Cost()+Heuristic()$
   }
   \only<4>{
-    $\max Utility()+Heuristic()$ \\
-    {\bf $\max G_i + o(X_i)$}
-  }
-  \only<5>{
-    Not as simple, as sometimes we only know upper bounds of $o(X)$.
-    $o(x) \le U(B) \Forall x \in B$.
+    $\min Cost()+Heuristic()$
   }
 \end{center}

@@ -79,13 +79,6 @@
       \begin{align}
         \Pr(x_i) = \frac{\exp\phi(i)}{\sum_j\exp\phi(j)} \tag{$i \in [k]$}
       \end{align}
-      %% We can draw samples $x_i \sim \Pr$ from this distribution using the following procedure.
-      %% \onslide<2->
-      %% \begin{align*}
-      %%   & \text{Sample} \qquad G(i) \sim Gumbel(0) \text{ for } i=1..k\\
-      %%   & \text{then} \qquad \text{ Choose } x_j \text{ such that } j= \argmax_i \{G(i) +\phi(i)\}
-      %% \end{align*}
-      %% the argmax of the perturbed probabilities is distributed as eq.\ref{eq:gibbs} above
   \end{alertblock}
 \end{frame}
 
@@ -231,7 +224,7 @@
 %% \end{frame}
 
 \tikzstyle{trap}=[trapezium, draw, minimum width=12cm,trapezium left angle=120,trapezium right angle=60]
-\begin{frame}{The Gumbel Process}
+\begin{frame}{The Gumbel Process - Intuitive}
   \onslide<1>{
     \begin{center} 
       {\large $\frac{\exp(\phi(x))1_{x \in B}}{\mu(B)}, B \subseteq \Omega$}
@@ -539,7 +532,7 @@
   \onslide<2>{
     \node[vertex] {11}
     child {
-      node[vertex] {20}
+      node[vertex] {-20}
       child {
         node[vertex] {-10}
       }
@@ -556,7 +549,7 @@
   \onslide<3->{
     \node[vertex] (a) {111}
     child {
-      node[vertex] {90}
+      node[vertex] {50}
       child {
         node[vertex] {23}
       }
@@ -596,7 +589,7 @@
     {\bf $\max G_i + o(X_i)$}
   }
   \only<5>{
-    Not as simple, as sometimes we only know upper bounds of $o(X)$.
+    Not as simple, as we do not know to test for goal node, so we compute upper bounds on $G+o(X)$ and prune space.
     $o(x) \le U(B) \Forall x \in B$.
   }
 \end{center}
@@ -677,6 +670,14 @@
   }
 \end{frame}
 
+\begin{frame}{Conclusions}
+  \begin{itemize}
+  \item Extension of a known trick to continuous space.
+  \item Does not work well in high dimensions.
+  \item Can we estimate partition function using this?
+  \end{itemize}
+\end{frame}
+
 \begin{frame}
   Backup Slides
 \end{frame}
@@ -725,7 +726,7 @@
   \begin{itemize}[<+->]
   \item Gibbs Distribution
     \begin{align*}
-      \Pr(\x;\theta) =\frac{\exp(\theta^T\psi(\x))}{Z(\theta)} \tag{$Z=\sum_{\x} \theta^T\psi(\x)$}
+      \Pr(\x;\theta) =\frac{\exp(\theta^T\psi(\x))}{Z(\theta)} \tag{$Z=\sum_{\x} \exp(\theta^T\psi(\x))$}
     \end{align*}
     %% A standard/popular way of probabilistic modeling 
   \item Parameter Estimation,
